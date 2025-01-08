@@ -1,0 +1,3 @@
+export const PACKAGES = 'PACKAGES';
+export const SEND_PACKAGE = 'SEND_PACKAGE';
+export const PACKAGE_CATEGORIES = 'PACKAGE_CATEGORIES';
