@@ -55,7 +55,7 @@ export default function AdminLayout({
 
   // Don't show sidebar on login page
   if (pathname === "/admin/login") {
-    return <Provider store={store}>{children}</Provider>;
+    return <>{children}</>;
   }
 
   if (isLoading) {
@@ -67,13 +67,11 @@ export default function AdminLayout({
   }
 
   return (
-    <Provider store={store}>
-      <div className="flex h-screen bg-[#0f172a] text-white">
-        <Sidebar />
-        <main className="flex-1 overflow-auto">
-          <div className="p-8">{children}</div>
-        </main>
-      </div>
-    </Provider>
+    <div className="flex h-screen bg-[#0f172a] text-white">
+      <Sidebar />
+      <main className="flex-1 overflow-auto">
+        <div className="p-8">{children}</div>
+      </main>
+    </div>
   );
 }

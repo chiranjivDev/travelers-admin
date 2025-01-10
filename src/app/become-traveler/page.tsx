@@ -71,6 +71,7 @@ export default function BecomeTraveler() {
 
   const handleNext = () => setStep((prev) => Math.min(prev + 1, 4));
   const handleBack = () => setStep((prev) => Math.max(prev - 1, 1));
+
   const handleSubmit = async () => {
     // TODO: Implement submission logic
     console.log('Submitting form data:', formData);

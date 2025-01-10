@@ -1,5 +1,7 @@
 'use client';
 
+import { toast } from 'react-toastify';
+
 import axios from 'axios';
 import {
   createContext,
@@ -107,7 +109,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data } = response;
       setUser(data);
       localStorage.setItem('user', JSON.stringify(data));
+
+      // Show success toast after successful login
+      toast.success('Login successful! Welcome back.');
     } catch (err) {
+      toast.error('Login failed. Please try again.');
       throw new Error('Login failed. Please try again.');
     }
   };
@@ -115,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setUser(null);
     localStorage.removeItem('user');
+    toast.success('Logout successful!');
   };
 
   // const register = async (email: string, password: string, role: UserRole) => {
@@ -159,9 +166,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       );
       console.log('response from UI, SIGNUP', response);
       const { data } = response;
+      // Show success toast after successful registration
+      toast.success('Registration successful! Welcome to our platform.');
       // setUser(data);
       // localStorage.setItem('user', JSON.stringify(data));
     } catch (err) {
+      toast.error('Registration failed. Please try again.');
       throw new Error('Registration failed. Please try again.');
     }
   };

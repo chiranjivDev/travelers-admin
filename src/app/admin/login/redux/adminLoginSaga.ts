@@ -15,7 +15,6 @@ export function* adminloginSaga(action) {
 
     if (response.status === 200 && response.data) {
       yield put(loginSuccess(response.data));
-      console.log("Success", response.data.access_token);
     } else {
       yield put(loginFailure("Invalid credentials"));
     }

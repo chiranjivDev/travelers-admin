@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   FiPackage,
   FiSearch,
@@ -11,57 +11,93 @@ import {
   FiEye,
   FiCheck,
   FiX,
-} from 'react-icons/fi'
+} from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { type } from "os";
+import {
+  DELETE_PACKAGE,
+  GET_ALL_PACKAGES,
+  UPDATE_PACKAGE_STATUS,
+} from "./redux/packagesAction";
 
 // Mock data
 const mockPackages = [
   {
-    id: 'PKG001',
-    title: 'Electronics Package',
-    sender: 'John Doe',
-    receiver: 'Jane Smith',
-    status: 'In Transit',
-    origin: 'New York',
-    destination: 'Los Angeles',
+    id: "PKG001",
+    title: "Electronics Package",
+    sender: "John Doe",
+    receiver: "Jane Smith",
+    status: "In Transit",
+    origin: "New York",
+    destination: "Los Angeles",
     price: 149.99,
-    created_at: '2024-12-20',
+    created_at: "2024-12-20",
   },
   {
-    id: 'PKG002',
-    title: 'Clothing Items',
-    sender: 'Mike Johnson',
-    receiver: 'Sarah Wilson',
-    status: 'Pending',
-    origin: 'Chicago',
-    destination: 'Miami',
+    id: "PKG002",
+    title: "Clothing Items",
+    sender: "Mike Johnson",
+    receiver: "Sarah Wilson",
+    status: "Pending",
+    origin: "Chicago",
+    destination: "Miami",
     price: 79.99,
-    created_at: '2024-12-19',
+    created_at: "2024-12-19",
   },
   // Add more mock packages here
-]
+];
 
 const statusColors = {
-  'In Transit': 'bg-blue-500',
-  'Pending': 'bg-yellow-500',
-  'Delivered': 'bg-green-500',
-  'Cancelled': 'bg-red-500',
-}
+  "In Transit": "bg-blue-500",
+  Pending: "bg-yellow-500",
+  Delivered: "bg-green-500",
+  Cancelled: "bg-red-500",
+};
 
 export default function PackagesPage() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('All')
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const dispatch = useDispatch();
+  const packages = useSelector((state) => state.adminpackages.packages);
+  const status = useSelector((state) => state.adminpackages.status);
+  const packageId = useSelector((state) => state.adminpackages.packageId);
+  const deletePackageId = useSelector(
+    (state) => state.adminpackages.deletePackageId
+  );
 
-  const filteredPackages = mockPackages.filter(pkg => {
-    const matchesSearch = 
-      pkg.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.sender.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.receiver.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === 'All' || pkg.status === statusFilter
-    
-    return matchesSearch && matchesStatus
-  })
+  useEffect(() => {
+    dispatch({ type: GET_ALL_PACKAGES });
+  }, [dispatch, status, packageId, deletePackageId]);
+
+  const filteredPackages = packages.filter((pkg) => {
+    const matchesSearch =
+      pkg.packageID.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.sender.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.sender.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus = statusFilter === "All" || pkg.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const handleEditClick = (id, currentStatus) => {
+    const payload = {
+      id: id,
+      status: currentStatus,
+    };
+    dispatch({ type: UPDATE_PACKAGE_STATUS, payload });
+  };
+
+  const handleDeleteClick = (id) => {
+    const payload = {
+      userId: id,
+    };
+    dispatch({
+      type: DELETE_PACKAGE,
+      payload,
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -143,25 +179,31 @@ export default function PackagesPage() {
             </thead>
             <tbody className="divide-y divide-gray-700">
               {filteredPackages.map((pkg) => (
-                <tr key={pkg.id} className="hover:bg-gray-700/50">
+                <tr key={pkg.packageID} className="hover:bg-gray-700/50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                    {pkg.id}
+                    {pkg.packageID}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                    {pkg.title}
+                    {pkg.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-white">{pkg.sender}</div>
-                    <div className="text-sm text-gray-400">{pkg.receiver}</div>
+                    <div className="text-sm text-white">{pkg.sender.name}</div>
+                    <div className="text-sm text-gray-400">
+                      {pkg.sender.name}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full text-white ${statusColors[pkg.status]}`}>
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full text-white ${statusColors[pkg.status]}`}
+                    >
                       {pkg.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-white">{pkg.origin}</div>
-                    <div className="text-sm text-gray-400">{pkg.destination}</div>
+                    <div className="text-sm text-gray-400">
+                      {pkg.deliveryLocation}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                     ${pkg.price}
@@ -179,16 +221,22 @@ export default function PackagesPage() {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="p-1 hover:text-yellow-400"
+                        onClick={() =>
+                          handleEditClick(pkg.packageID, pkg.status)
+                        }
                       >
                         <FiEdit2 className="w-5 h-5" />
                       </motion.button>
-                      <motion.button
+                      {/* <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="p-1 hover:text-red-400"
+                        onClick={() => {
+                          handleDeleteClick(pkg.packageID);
+                        }}
                       >
                         <FiTrash2 className="w-5 h-5" />
-                      </motion.button>
+                      </motion.button> */}
                     </div>
                   </td>
                 </tr>
@@ -198,5 +246,5 @@ export default function PackagesPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

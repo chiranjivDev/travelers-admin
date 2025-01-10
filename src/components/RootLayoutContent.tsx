@@ -9,6 +9,8 @@ import { SavedPackagesProvider } from '@/contexts/SavedPackagesContext';
 import { SavedTripsProvider } from '@/contexts/SavedTripsContext';
 import { NotificationProvider } from '@/contexts/NotificationContext';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import store from '../store/store';
 
 export default function RootLayoutContent({
@@ -30,6 +32,7 @@ export default function RootLayoutContent({
                 <main className="flex-grow">{children}</main>
                 {!isAdminRoute && <Footer />}
               </div>
+              <ToastContainer />
             </SavedTripsProvider>
           </SavedPackagesProvider>
         </NotificationProvider>

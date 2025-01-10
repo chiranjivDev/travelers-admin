@@ -112,8 +112,8 @@ export default function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
             text-white px-4 py-2 focus:outline-none focus:border-blue-500"
         >
           <option value="active">Active</option>
-          <option value="pending">Pending</option>
-          <option value="suspended">Suspended</option>
+          {/* <option value="pending">Pending</option> */}
+          {/* <option value="suspended">Suspended</option> */}
           <option value="inactive">Inactive</option>
         </select>
       </div>

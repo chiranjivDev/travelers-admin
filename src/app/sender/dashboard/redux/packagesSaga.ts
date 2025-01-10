@@ -21,7 +21,7 @@ export function* fetchPackagesSaga() {
   try {
     yield put(fetchPackagesRequest());
 
-    const response = yield call(axiosInstance.get, API_URL.PACKAGES);
+    const response = yield call(axiosInstance.get, API_URL.ACTIVE_PACKAGES);
     console.log('fetch packages saga response', response);
     yield put(fetchPackagesSuccess(response.data));
 

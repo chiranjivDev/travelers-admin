@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import RootLayoutContent from "@/components/RootLayoutContent";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import RootLayoutContent from '@/components/RootLayoutContent';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "DeliveryConnect - Connect Travelers with Package Senders",
+  title: 'DeliveryConnect - Connect Travelers with Package Senders',
   description:
-    "Save money on shipping by connecting with travelers heading to your destination. Join our community of trusted travelers and senders.",
+    'Save money on shipping by connecting with travelers heading to your destination. Join our community of trusted travelers and senders.',
 };
 
 export default function RootLayout({

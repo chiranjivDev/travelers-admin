@@ -22,9 +22,19 @@ import {
 } from '@/app/admin/users/redux/userSaga';
 import { LOGIN, REGISTER } from '@/app/signup/redux/authActions';
 import { loginSaga, signupSaga } from '@/app/signup/redux/authSaga';
-import { TRIPS } from '@/app/traveler/redux/tripsAction';
-import { fetchTripsSaga } from '@/app/traveler/redux/tripsSaga';
+import { CREATE_TRIP, TRIPS } from '@/app/traveler/redux/tripsAction';
+import { addTripSaga, fetchTripsSaga } from '@/app/traveler/redux/tripsSaga';
 import { all, takeLatest } from 'redux-saga/effects';
+import {
+  DELETE_PACKAGE,
+  GET_ALL_PACKAGES,
+  UPDATE_PACKAGE_STATUS,
+} from '@/app/admin/packages/redux/packagesAction';
+import {
+  deletePackageSaga,
+  PackagesSaga,
+  updatepackagesStatusSaga,
+} from '@/app/admin/packages/redux/packagesSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -38,11 +48,15 @@ export default function* rootSaga() {
 
     // traveler packages
     yield takeLatest(TRIPS, fetchTripsSaga),
+    yield takeLatest(CREATE_TRIP, addTripSaga),
 
-    //
+    // admin
     yield takeLatest(GET_ALL_USERS, fetchUsersSaga),
     yield takeLatest(UPDATE_USER_STATUS, updateUserStatusSaga),
     yield takeLatest(DELETE_USER, deleteUserSaga),
     yield takeLatest(ADMIN_LOGIN, adminloginSaga),
+    yield takeLatest(GET_ALL_PACKAGES, PackagesSaga),
+    yield takeLatest(UPDATE_PACKAGE_STATUS, updatepackagesStatusSaga),
+    yield takeLatest(DELETE_PACKAGE, deletePackageSaga),
   ]);
 }

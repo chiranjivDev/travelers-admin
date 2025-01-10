@@ -19,11 +19,9 @@ export const axiosInstance = axios.create({
 
 //         // Extract the access_token
 //         const token = user?.access_token;
-//         console.log('Access token from user object:', token);
 
 //         // If token exists, set it in the Authorization header
 //         if (token) {
-//           console.log('inside token');
 //           config.headers['Authorization'] = `Bearer ${token}`;
 //         }
 //       } catch (error) {
@@ -48,10 +46,8 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const { admin } = store.getState();
-    console.log('token:456 ', admin);
 
     const token = admin?.user?.access_token;
-    console.log('token:123 ', token);
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

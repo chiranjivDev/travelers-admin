@@ -9,6 +9,7 @@ import {
 } from './authSlice';
 import { axiosInstance } from '@/services/httpServices';
 import { API_URL } from '@/services/webConstants';
+import { toast } from 'react-toastify';
 
 // Signup Saga
 export function* signupSaga(action) {
@@ -22,8 +23,10 @@ export function* signupSaga(action) {
     );
 
     yield put(signupSuccess(response.data));
+    toast.success('Signup successful!');
   } catch (error) {
     yield put(signupFailure(error.response?.data?.message || error.message));
+    toast.error(error.response?.data?.message || error.message);
   }
 }
 
@@ -49,7 +52,9 @@ export function* loginSaga(action) {
         refresh_token: response.data.refresh_token,
       })
     );
+    toast.success('Login successful!');
   } catch (error) {
     yield put(loginFailure(error.response?.data?.message || error.message));
+    toast.error(error.response?.data?.message || error.message);
   }
 }
