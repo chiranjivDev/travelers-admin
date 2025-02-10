@@ -29,7 +29,11 @@ import {
   calculateDistance,
 } from '@/utils/geolocation';
 import { useDispatch, useSelector } from 'react-redux';
-import { PACKAGES } from '../sender/dashboard/redux/packagesAction';
+import {
+  PACKAGES,
+  SEARCH_SENDER_PACKAGE,
+} from '../sender/dashboard/redux/packagesAction';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface Filters {
   size: string[];
@@ -73,9 +77,9 @@ export default function BrowsePackagesPage() {
   console.log('packages from browse packages', MOCK_PACKAGES);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch({ type: PACKAGES });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({ type: PACKAGES });
+  // }, []);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -107,249 +111,297 @@ export default function BrowsePackagesPage() {
   const [isLoadingDistances, setIsLoadingDistances] = useState(false);
 
   // Load filters from URL params
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    const loadedFilters: Partial<Filters> = {};
+  // useEffect(() => {
+  //   const params = new URLSearchParams(searchParams);
+  //   const loadedFilters: Partial<Filters> = {};
 
-    if (params.has('search')) setSearchQuery(params.get('search') || '');
-    if (params.has('sort')) setSortBy(params.get('sort') || 'date-newest');
-    if (params.has('view'))
-      setViewMode((params.get('view') || 'grid') as 'grid' | 'list');
+  //   if (params.has('search')) setSearchQuery(params.get('search') || '');
+  //   if (params.has('sort')) setSortBy(params.get('sort') || 'date-newest');
+  //   if (params.has('view'))
+  //     setViewMode((params.get('view') || 'grid') as 'grid' | 'list');
 
-    // Load array filters
-    if (params.has('size'))
-      loadedFilters.size = params.get('size')?.split(',') || [];
-    if (params.has('category'))
-      loadedFilters.category = params.get('category')?.split(',') || [];
+  //   // Load array filters
+  //   if (params.has('size'))
+  //     loadedFilters.size = params.get('size')?.split(',') || [];
+  //   if (params.has('category'))
+  //     loadedFilters.category = params.get('category')?.split(',') || [];
 
-    // Load range filters
-    if (params.has('weight_min'))
-      loadedFilters.weight = {
-        min: Number(params.get('weight_min')),
-        max: Number(params.get('weight_max')),
-      };
-    if (params.has('price_min'))
-      loadedFilters.price = {
-        min: Number(params.get('price_min')),
-        max: Number(params.get('price_max')),
-      };
+  //   // Load range filters
+  //   if (params.has('weight_min'))
+  //     loadedFilters.weight = {
+  //       min: Number(params.get('weight_min')),
+  //       max: Number(params.get('weight_max')),
+  //     };
+  //   if (params.has('price_min'))
+  //     loadedFilters.price = {
+  //       min: Number(params.get('price_min')),
+  //       max: Number(params.get('price_max')),
+  //     };
 
-    // Load date range
-    if (params.has('date_start'))
-      loadedFilters.date = {
-        start: new Date(params.get('date_start')),
-        end: new Date(params.get('date_end')),
-      };
+  //   // Load date range
+  //   if (params.has('date_start'))
+  //     loadedFilters.date = {
+  //       start: new Date(params.get('date_start')),
+  //       end: new Date(params.get('date_end')),
+  //     };
 
-    // Load boolean filters
-    if (params.has('fragile'))
-      loadedFilters.fragile = params.get('fragile') === 'true';
+  //   // Load boolean filters
+  //   if (params.has('fragile'))
+  //     loadedFilters.fragile = params.get('fragile') === 'true';
 
-    setFilters((prev) => ({ ...prev, ...loadedFilters }));
-  }, [searchParams]);
+  //   setFilters((prev) => ({ ...prev, ...loadedFilters }));
+  // }, [searchParams]);
 
   // Update URL when filters change
-  useEffect(() => {
-    const params = new URLSearchParams();
+  // useEffect(() => {
+  //   const params = new URLSearchParams();
 
-    if (searchQuery) params.set('search', searchQuery);
-    if (sortBy !== 'date-newest') params.set('sort', sortBy);
-    if (viewMode !== 'grid') params.set('view', viewMode);
+  //   if (searchQuery) params.set('search', searchQuery);
+  //   if (sortBy !== 'date-newest') params.set('sort', sortBy);
+  //   if (viewMode !== 'grid') params.set('view', viewMode);
 
-    // Add array filters
-    if (filters.size.length) params.set('size', filters.size.join(','));
-    if (filters.category.length)
-      params.set('category', filters.category.join(','));
+  //   // Add array filters
+  //   if (filters.size.length) params.set('size', filters.size.join(','));
+  //   if (filters.category.length)
+  //     params.set('category', filters.category.join(','));
 
-    // Add range filters
-    if (filters.weight.min > 0)
-      params.set('weight_min', filters.weight.min.toString());
-    if (filters.weight.max < 50)
-      params.set('weight_max', filters.weight.max.toString());
-    if (filters.price.min > 0)
-      params.set('price_min', filters.price.min.toString());
-    if (filters.price.max < 1000)
-      params.set('price_max', filters.price.max.toString());
+  //   // Add range filters
+  //   if (filters.weight.min > 0)
+  //     params.set('weight_min', filters.weight.min.toString());
+  //   if (filters.weight.max < 50)
+  //     params.set('weight_max', filters.weight.max.toString());
+  //   if (filters.price.min > 0)
+  //     params.set('price_min', filters.price.min.toString());
+  //   if (filters.price.max < 1000)
+  //     params.set('price_max', filters.price.max.toString());
 
-    // Add date range
-    if (filters.date.start)
-      params.set('date_start', filters.date.start.toISOString());
-    if (filters.date.end)
-      params.set('date_end', filters.date.end.toISOString());
+  //   // Add date range
+  //   if (filters.date.start)
+  //     params.set('date_start', filters.date.start.toISOString());
+  //   if (filters.date.end)
+  //     params.set('date_end', filters.date.end.toISOString());
 
-    // Add boolean filters
-    if (filters.fragile) params.set('fragile', 'true');
+  //   // Add boolean filters
+  //   if (filters.fragile) params.set('fragile', 'true');
 
-    router.push(`?${params.toString()}`, { scroll: false });
-  }, [filters, searchQuery, sortBy, viewMode, router]);
+  //   router.push(`?${params.toString()}`, { scroll: false });
+  // }, [filters, searchQuery, sortBy, viewMode, router]);
 
   // Get user's location on mount
-  useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const location = await getLocation();
-        setUserLocation(location);
-      } catch (error) {
-        console.error('Failed to get user location:', error);
-      }
-    };
-    fetchLocation();
-  }, []);
+  // useEffect(() => {
+  //   const fetchLocation = async () => {
+  //     try {
+  //       const location = await getLocation();
+  //       setUserLocation(location);
+  //     } catch (error) {
+  //       console.error('Failed to get user location:', error);
+  //     }
+  //   };
+  //   fetchLocation();
+  // }, []);
 
   // Calculate distances when user location is available
-  useEffect(() => {
-    const calculateDistances = async () => {
-      if (!userLocation) return;
+  // useEffect(() => {
+  //   const calculateDistances = async () => {
+  //     if (!userLocation) return;
 
-      setIsLoadingDistances(true);
-      const distances = new Map<string, number>();
+  //     setIsLoadingDistances(true);
+  //     const distances = new Map<string, number>();
 
-      try {
-        for (const pkg of MOCK_PACKAGES) {
-          const fromCoords = await getCachedGeocode(pkg.origin);
-          const toCoords = await getCachedGeocode(pkg.destination);
+  //     try {
+  //       for (const pkg of MOCK_PACKAGES) {
+  //         const fromCoords = await getCachedGeocode(pkg.origin);
+  //         const toCoords = await getCachedGeocode(pkg.destination);
 
-          // Calculate distance from user to pickup location
-          const pickupDistance = calculateDistance(
-            userLocation.latitude,
-            userLocation.longitude,
-            fromCoords.latitude,
-            fromCoords.longitude
-          );
+  //         // Calculate distance from user to pickup location
+  //         const pickupDistance = calculateDistance(
+  //           userLocation.latitude,
+  //           userLocation.longitude,
+  //           fromCoords.latitude,
+  //           fromCoords.longitude
+  //         );
 
-          distances.set(pkg.id, pickupDistance);
-        }
+  //         distances.set(pkg.id, pickupDistance);
+  //       }
 
-        setPackageDistances(distances);
-      } catch (error) {
-        console.error('Failed to calculate distances:', error);
-      } finally {
-        setIsLoadingDistances(false);
-      }
-    };
+  //       setPackageDistances(distances);
+  //     } catch (error) {
+  //       console.error('Failed to calculate distances:', error);
+  //     } finally {
+  //       setIsLoadingDistances(false);
+  //     }
+  //   };
 
-    if (sortBy === 'distance') {
-      calculateDistances();
-    }
-  }, [userLocation, sortBy]);
+  //   if (sortBy === 'distance') {
+  //     calculateDistances();
+  //   }
+  // }, [userLocation, sortBy]);
 
-  const sortOptions: SortOption[] = [
-    { label: 'Newest First', value: 'date-newest', icon: FiClock },
-    { label: 'Oldest First', value: 'date-oldest', icon: FiClock },
-    { label: 'Price: Low to High', value: 'price-lowest', icon: FiDollarSign },
-    { label: 'Price: High to Low', value: 'price-highest', icon: FiDollarSign },
-    { label: 'Weight: Low to High', value: 'weight-lowest', icon: FiPackage },
-    { label: 'Weight: High to Low', value: 'weight-highest', icon: FiPackage },
-    { label: 'Distance: Nearest', value: 'distance', icon: FiTruck },
-  ];
+  // const sortOptions: SortOption[] = [
+  //   { label: 'Newest First', value: 'date-newest', icon: FiClock },
+  //   { label: 'Oldest First', value: 'date-oldest', icon: FiClock },
+  //   { label: 'Price: Low to High', value: 'price-lowest', icon: FiDollarSign },
+  //   { label: 'Price: High to Low', value: 'price-highest', icon: FiDollarSign },
+  //   { label: 'Weight: Low to High', value: 'weight-lowest', icon: FiPackage },
+  //   { label: 'Weight: High to Low', value: 'weight-highest', icon: FiPackage },
+  //   { label: 'Distance: Nearest', value: 'distance', icon: FiTruck },
+  // ];
 
-  const categories = [
-    'Electronics',
-    'Documents',
-    'Clothing',
-    'Art',
-    'Books',
-    'Food',
-    'Medical',
-    'Fragile',
-    'Furniture',
-    'Automotive',
-    'Sports Equipment',
-    'Musical Instruments',
-    'Other',
-  ];
+  // const categories = [
+  //   'Electronics',
+  //   'Documents',
+  //   'Clothing',
+  //   'Art',
+  //   'Books',
+  //   'Food',
+  //   'Medical',
+  //   'Fragile',
+  //   'Furniture',
+  //   'Automotive',
+  //   'Sports Equipment',
+  //   'Musical Instruments',
+  //   'Other',
+  // ];
 
   // Save search to recent searches
-  const saveRecentSearch = useCallback((query: string) => {
-    setRecentSearches((prev) => {
-      const newSearches = [query, ...prev.filter((s) => s !== query)].slice(
-        0,
-        5
-      );
-      localStorage.setItem(
-        'recentPackageSearches',
-        JSON.stringify(newSearches)
-      );
-      return newSearches;
-    });
-  }, []);
+  // const saveRecentSearch = useCallback((query: string) => {
+  //   setRecentSearches((prev) => {
+  //     const newSearches = [query, ...prev.filter((s) => s !== query)].slice(
+  //       0,
+  //       5
+  //     );
+  //     localStorage.setItem(
+  //       'recentPackageSearches',
+  //       JSON.stringify(newSearches)
+  //     );
+  //     return newSearches;
+  //   });
+  // }, []);
 
   // Load recent searches on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('recentPackageSearches');
-    if (saved) {
-      setRecentSearches(JSON.parse(saved));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const saved = localStorage.getItem('recentPackageSearches');
+  //   if (saved) {
+  //     setRecentSearches(JSON.parse(saved));
+  //   }
+  // }, []);
 
-  const handleSearch = useCallback(
-    (query: string) => {
-      setSearchQuery(query);
-      if (query.trim()) {
-        saveRecentSearch(query.trim());
-      }
-    },
-    [saveRecentSearch]
+  // const handleSearch = useCallback(
+  //   (query: string) => {
+  //     setSearchQuery(query);
+  //     if (query.trim()) {
+  //       saveRecentSearch(query.trim());
+  //     }
+  //   },
+  //   [saveRecentSearch]
+  // );
+
+  // const filteredAndSortedPackages = MOCK_PACKAGES.filter((pkg) => {
+  //   // Search query filter
+  //   if (searchQuery) {
+  //     const searchLower = searchQuery.toLowerCase();
+  //     return (
+  //       pkg.origin.toLowerCase().includes(searchLower) ||
+  //       pkg.destination.toLowerCase().includes(searchLower) ||
+  //       pkg.description.toLowerCase().includes(searchLower)
+  //     );
+  //   }
+
+  //   // Apply filters
+  //   if (filters.weight.min > 0 && pkg.weight < filters.weight.min) return false;
+  //   if (filters.weight.max < 50 && pkg.weight > filters.weight.max)
+  //     return false;
+  //   if (filters.price.min > 0 && pkg.price < filters.price.min) return false;
+  //   if (filters.price.max < 1000 && pkg.price > filters.price.max) return false;
+  //   if (
+  //     filters.category.length &&
+  //     pkg.category &&
+  //     !filters.category.includes(pkg.category)
+  //   )
+  //     return false;
+
+  //   // Date filter
+  //   if (filters.date.start && filters.date.end) {
+  //     const packageDate = new Date(pkg.date);
+  //     if (
+  //       isBefore(packageDate, filters.date.start) ||
+  //       isAfter(packageDate, filters.date.end)
+  //     ) {
+  //       return false;
+  //     }
+  //   }
+
+  //   return true;
+  // }).sort((a, b) => {
+  //   switch (sortBy) {
+  //     case 'date-newest':
+  //       return new Date(b.date).getTime() - new Date(a.date).getTime();
+  //     case 'date-oldest':
+  //       return new Date(a.date).getTime() - new Date(b.date).getTime();
+  //     case 'price-lowest':
+  //       return a.price - b.price;
+  //     case 'price-highest':
+  //       return b.price - a.price;
+  //     case 'weight-lowest':
+  //       return a.weight - b.weight;
+  //     case 'weight-highest':
+  //       return b.weight - a.weight;
+  //     case 'distance':
+  //       const distanceA = packageDistances.get(a.id) || Infinity;
+  //       const distanceB = packageDistances.get(b.id) || Infinity;
+  //       return distanceA - distanceB;
+  //     default:
+  //       return 0;
+  //   }
+  // });
+
+  // elastic search implementation=============================================>
+  useEffect(() => {
+    if (!MOCK_PACKAGES.length) {
+      dispatch({
+        type: SEARCH_SENDER_PACKAGE,
+        payload: {
+          searchKeyword: '',
+          startDate: '',
+          endDate: '',
+        },
+      });
+    }
+  }, [dispatch]);
+
+  // Debounce the search query
+  const debouncedSearch = useDebounce(searchQuery, 700);
+  console.log('debouncedSearch', debouncedSearch);
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const keyword = e.target.value;
+    setSearchQuery(keyword);
+  };
+
+  // Dispatch action when debounced search value changes
+  useEffect(() => {
+    dispatch({
+      type: SEARCH_SENDER_PACKAGE,
+      payload: {
+        searchKeyword: debouncedSearch,
+        startDate: '',
+        endDate: '',
+      },
+    });
+  }, [debouncedSearch, dispatch]);
+
+  // test filtered : to be removed
+  const filteredAndSortedPackages = MOCK_PACKAGES.filter(
+    (pkg) => pkg.sender?.id
   );
 
-  const filteredAndSortedPackages = MOCK_PACKAGES.filter((pkg) => {
-    // Search query filter
-    if (searchQuery) {
-      const searchLower = searchQuery.toLowerCase();
-      return (
-        pkg.origin.toLowerCase().includes(searchLower) ||
-        pkg.destination.toLowerCase().includes(searchLower) ||
-        pkg.description.toLowerCase().includes(searchLower)
-      );
-    }
-
-    // Apply filters
-    if (filters.weight.min > 0 && pkg.weight < filters.weight.min) return false;
-    if (filters.weight.max < 50 && pkg.weight > filters.weight.max)
-      return false;
-    if (filters.price.min > 0 && pkg.price < filters.price.min) return false;
-    if (filters.price.max < 1000 && pkg.price > filters.price.max) return false;
-    if (
-      filters.category.length &&
-      pkg.category &&
-      !filters.category.includes(pkg.category)
-    )
-      return false;
-
-    // Date filter
-    if (filters.date.start && filters.date.end) {
-      const packageDate = new Date(pkg.date);
-      if (
-        isBefore(packageDate, filters.date.start) ||
-        isAfter(packageDate, filters.date.end)
-      ) {
-        return false;
-      }
-    }
-
-    return true;
-  }).sort((a, b) => {
-    switch (sortBy) {
-      case 'date-newest':
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      case 'date-oldest':
-        return new Date(a.date).getTime() - new Date(b.date).getTime();
-      case 'price-lowest':
-        return a.price - b.price;
-      case 'price-highest':
-        return b.price - a.price;
-      case 'weight-lowest':
-        return a.weight - b.weight;
-      case 'weight-highest':
-        return b.weight - a.weight;
-      case 'distance':
-        const distanceA = packageDistances.get(a.id) || Infinity;
-        const distanceB = packageDistances.get(b.id) || Infinity;
-        return distanceA - distanceB;
-      default:
-        return 0;
-    }
-  });
+  // navigate to chat
+  const handleChatClick = useCallback(
+    (senderId: string) => {
+      router.push(`/chat?user=${senderId}`);
+    },
+    [router]
+  );
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
@@ -377,14 +429,15 @@ export default function BrowsePackagesPage() {
                 type="text"
                 placeholder="Search by location, category, or description..."
                 value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
+                // onChange={(e) => handleSearch(e.target.value)}
+                onChange={handleSearchChange}
                 className="w-full bg-gray-800 text-white pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           {/* Sort Dropdown */}
-          <div className="w-full md:w-48">
+          {/* <div className="w-full md:w-48">
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -396,16 +449,16 @@ export default function BrowsePackagesPage() {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
 
           {/* Filter Button */}
-          <button
+          {/* <button
             onClick={() => setShowFilters(!showFilters)}
             className="flex items-center justify-center space-x-2 bg-blue-600 px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
             <FiSliders className="w-5 h-5" />
             <span>Filters</span>
-          </button>
+          </button> */}
         </div>
 
         {/* Filter Panel */}
@@ -456,7 +509,7 @@ export default function BrowsePackagesPage() {
                   </div>
 
                   {/* Categories */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-400 mb-2">
                       Categories
                     </label>
@@ -490,10 +543,10 @@ export default function BrowsePackagesPage() {
                         </label>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Weight Range */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-400 mb-2">
                       Weight Range (kg)
                     </label>
@@ -535,10 +588,10 @@ export default function BrowsePackagesPage() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Price Range */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-400 mb-2">
                       Price Range ($)
                     </label>
@@ -580,10 +633,10 @@ export default function BrowsePackagesPage() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Date Filter */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-400 mb-2">
                       Delivery Date
                     </label>
@@ -635,10 +688,10 @@ export default function BrowsePackagesPage() {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Fragile */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-400 mb-2">
                       Fragile
                     </label>
@@ -658,7 +711,7 @@ export default function BrowsePackagesPage() {
                         <span>Fragile</span>
                       </label>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Reset Filters Button */}
@@ -741,6 +794,7 @@ export default function BrowsePackagesPage() {
                 key={pkg.id}
                 package={pkg}
                 onViewDetails={() => setSelectedPackage(pkg)}
+                onChatClick={handleChatClick}
               />
             ) : (
               <PackageListItem

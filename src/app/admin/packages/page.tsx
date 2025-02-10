@@ -59,15 +59,10 @@ export default function PackagesPage() {
   const [statusFilter, setStatusFilter] = useState("All");
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.adminpackages.packages);
-  const status = useSelector((state) => state.adminpackages.status);
-  const packageId = useSelector((state) => state.adminpackages.packageId);
-  const deletePackageId = useSelector(
-    (state) => state.adminpackages.deletePackageId
-  );
 
   useEffect(() => {
     dispatch({ type: GET_ALL_PACKAGES });
-  }, [dispatch, status, packageId, deletePackageId]);
+  }, []);
 
   const filteredPackages = packages.filter((pkg) => {
     const matchesSearch =
@@ -200,9 +195,9 @@ export default function PackagesPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-white">{pkg.origin}</div>
+                    <div className="text-sm text-white">{pkg.origin.city}</div>
                     <div className="text-sm text-gray-400">
-                      {pkg.deliveryLocation}
+                      {pkg.destination.city}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
@@ -227,7 +222,7 @@ export default function PackagesPage() {
                       >
                         <FiEdit2 className="w-5 h-5" />
                       </motion.button>
-                      {/* <motion.button
+                      <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="p-1 hover:text-red-400"
@@ -236,7 +231,7 @@ export default function PackagesPage() {
                         }}
                       >
                         <FiTrash2 className="w-5 h-5" />
-                      </motion.button> */}
+                      </motion.button>
                     </div>
                   </td>
                 </tr>

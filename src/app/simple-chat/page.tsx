@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import SimpleChat from '@/components/chat/SimpleChat'
-import { SimpleChatProvider } from '@/contexts/SimpleChatContext'
-import { NotificationProvider } from '@/components/chat/NotificationSystem'
+import SimpleChat from '@/components/chat/SimpleChat';
+import { SimpleChatProvider } from '@/contexts/SimpleChatContext';
+import { NotificationProvider } from '@/components/chat/NotificationSystem';
 
 export default function SimpleChatPage() {
   return (
@@ -11,5 +11,5 @@ export default function SimpleChatPage() {
         <SimpleChat />
       </SimpleChatProvider>
     </NotificationProvider>
-  )
+  );
 }

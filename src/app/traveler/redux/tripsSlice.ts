@@ -11,6 +11,16 @@ const tripsSlice = createSlice({
     addTripLoading: false,
     addTripSuccess: false,
     addTripError: null,
+
+    // Fetch single package
+    singlePackage: null,
+    singlePackageLoading: false,
+    singlePackageError: null,
+
+    // Fetch traveler details
+    traveler: null,
+    travelerLoading: false,
+    travelerError: null,
   },
   reducers: {
     // Fetch Trips Actions
@@ -43,6 +53,39 @@ const tripsSlice = createSlice({
       state.addTripSuccess = false;
       state.addTripError = action.payload;
     },
+
+    // Fetch single package actions
+    fetchSinglePackageRequest(state) {
+      state.singlePackageLoading = true;
+      state.singlePackageError = null;
+    },
+    fetchSinglePackageSuccess(state, action) {
+      state.singlePackageLoading = false;
+      state.singlePackage = action.payload;
+    },
+    fetchSinglePackageFailure(state, action) {
+      state.singlePackageLoading = false;
+      state.singlePackageError = action.payload;
+    },
+
+    // Fetch Traveler Details Actions
+    fetchTravelerDetailsRequest(state) {
+      state.travelerLoading = true;
+      state.travelerError = null;
+    },
+    fetchTravelerDetailsSuccess(state, action) {
+      state.travelerLoading = false;
+      state.traveler = action.payload;
+    },
+    fetchTravelerDetailsFailure(state, action) {
+      state.travelerLoading = false;
+      state.travelerError = action.payload;
+    },
+
+    // Clear state
+    clearTripsState(state) {
+      state.addTripSuccess = false;
+    },
   },
 });
 
@@ -54,6 +97,16 @@ export const {
   addTripRequest,
   addTripSuccess,
   addTripFailure,
+
+  fetchSinglePackageRequest,
+  fetchSinglePackageSuccess,
+  fetchSinglePackageFailure,
+
+  fetchTravelerDetailsRequest,
+  fetchTravelerDetailsSuccess,
+  fetchTravelerDetailsFailure,
+
+  clearTripsState,
 } = tripsSlice.actions;
 
 export default tripsSlice.reducer;

@@ -72,12 +72,10 @@ export default function UsersPage() {
 
   const dispatch = useDispatch();
   const Users = useSelector((state) => state.users.users);
-  const status = useSelector((state) => state.users.status);
-  const statusId = useSelector((state) => state.users.statusId);
 
   useEffect(() => {
     dispatch({ type: GET_ALL_USERS });
-  }, [dispatch, status, statusId]);
+  }, []);
 
   const filteredUsers = Users.filter((user) => {
     const matchesSearch =

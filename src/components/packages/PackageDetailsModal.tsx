@@ -90,11 +90,13 @@ export default function PackageDetailsModal({
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center space-x-3">
                         <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                          {pkg.sender.name.charAt(0)}
+                          {/* {pkg.sender.name.charAt(0)} */}
+                          {pkg.name.charAt(0)}
                         </div>
                         <div>
                           <h5 className="text-white font-medium">
-                            {pkg.sender.name}
+                            {/* {pkg.sender.name} */}
+                            {pkg.name}
                           </h5>
                           <div className="flex items-center space-x-2 text-sm text-gray-300">
                             <div className="flex items-center">
@@ -126,10 +128,10 @@ export default function PackageDetailsModal({
                       <FiMapPin className="text-gray-400" />
                       <div>
                         <div className="text-white">
-                          From: {pkg.pickupLocation}
+                          From: {pkg?.origin?.city}
                         </div>
                         <div className="text-white">
-                          To: {pkg.deliveryLocation}
+                          To: {pkg?.destination?.city}
                         </div>
                       </div>
                     </div>
@@ -163,7 +165,7 @@ export default function PackageDetailsModal({
                     <div>
                       <div className="text-gray-400 mb-2">Category</div>
                       <div className="text-white">
-                        {pkg.category.name || 'Not specified'}
+                        {pkg?.category?.name || 'Not specified'}
                       </div>
                     </div>
                   </div>

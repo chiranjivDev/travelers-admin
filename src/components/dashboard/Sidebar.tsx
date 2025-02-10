@@ -28,6 +28,7 @@ interface SidebarItem {
 
 const sidebarItems: SidebarItem[] = [
   // Sender Items
+
   {
     id: 'packages',
     label: 'My Packages',
@@ -107,6 +108,15 @@ const sidebarItems: SidebarItem[] = [
     label: 'Help & Support',
     icon: FiHelpCircle,
     path: '/dashboard/help',
+    role: 'all',
+  },
+
+  // Orders
+  {
+    id: 'orders',
+    label: 'My Orders',
+    icon: FiPackage,
+    path: '/sender/dashboard/orders',
     role: 'all',
   },
 ];

@@ -26,7 +26,7 @@ const VerifyPage = () => {
   const verifyToken = async (token: string) => {
     try {
       const response = await fetch(
-        'https://delivery-package.onrender.com/auth/verify-email',
+        `${process.env.NEXT_PUBLIC_API_URL}auth/verify-email`,
         {
           method: 'POST',
           headers: {

@@ -8,10 +8,16 @@ const packagesSlice = createSlice({
     loading: false,
     error: null,
 
+    // Fetch sender-specific packages
+    senderPackages: [],
+    fetchSenderPackagesLoading: false,
+    fetchSenderPackagesError: null,
+
     // send package
     sendPackageLoading: false,
     sendPackageSuccess: false,
     sendPackageError: null,
+    sendPackageResponse: null,
 
     // Fetch category actions
     fetchCategoriesLoading: false,
@@ -39,10 +45,13 @@ const packagesSlice = createSlice({
       state.sendPackageLoading = true;
       state.sendPackageSuccess = false;
       state.sendPackageError = null;
+      state.sendPackageResponse = null;
     },
-    sendPackageSuccess(state) {
+    sendPackageSuccess(state, action) {
+      console.log('package response', action);
       state.sendPackageLoading = false;
       state.sendPackageSuccess = true;
+      state.sendPackageResponse = action.payload;
     },
     sendPackageFailure(state, action) {
       state.sendPackageLoading = false;
@@ -63,6 +72,25 @@ const packagesSlice = createSlice({
       state.fetchCategoriesLoading = false;
       state.fetchCategoriesError = action.payload;
     },
+
+    // Fetch Sender-specific Packages Actions
+    fetchSenderPackagesRequest(state) {
+      state.fetchSenderPackagesLoading = true;
+      state.fetchSenderPackagesError = null;
+    },
+    fetchSenderPackagesSuccess(state, action) {
+      state.fetchSenderPackagesLoading = false;
+      state.senderPackages = action.payload;
+    },
+    fetchSenderPackagesFailure(state, action) {
+      state.fetchSenderPackagesLoading = false;
+      state.fetchSenderPackagesError = action.payload;
+    },
+
+    // Clear state
+    clearPackagesState(state) {
+      state.sendPackageSuccess = false;
+    },
   },
 });
 
@@ -78,6 +106,12 @@ export const {
   fetchCategoriesRequest,
   fetchCategoriesSuccess,
   fetchCategoriesFailure,
+
+  fetchSenderPackagesRequest,
+  fetchSenderPackagesSuccess,
+  fetchSenderPackagesFailure,
+
+  clearPackagesState,
 } = packagesSlice.actions;
 
 export default packagesSlice.reducer;

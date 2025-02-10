@@ -12,6 +12,7 @@ import {
 } from "./packagesSlice";
 import { axiosInstance } from "@/services/httpServices";
 import { API_URL } from "@/services/webConstants";
+import { GET_ALL_PACKAGES } from "./packagesAction";
 
 // Fetch Packages Saga
 export function* PackagesSaga() {
@@ -42,9 +43,8 @@ export function* updatepackagesStatusSaga(action) {
       payload
     );
     if (response.status === 200) {
-      yield put(
-        updatePackagesStatusSuccess({ id, status: response.data.status })
-      );
+      yield put(updatePackagesStatusSuccess());
+      yield put({ type: GET_ALL_PACKAGES });
     }
   } catch (error) {
     yield put(updatePackagesStatusFailure(error.message));
@@ -57,9 +57,14 @@ export function* deletePackageSaga(action) {
     yield put(deletePackageRequest());
 
     const { userId } = action.payload;
-    yield call(axiosInstance.delete, `${API_URL.ADMIN_PACKAGES}/${userId}`);
-
-    yield put(deletePackageSuccess({ userId }));
+    const response = yield call(
+      axiosInstance.delete,
+      `${API_URL.ADMIN_PACKAGES}/${userId}`
+    );
+    if (response.status === 200) {
+      yield put(deletePackageSuccess({ userId }));
+      yield put({ type: GET_ALL_PACKAGES });
+    }
   } catch (error) {
     yield put(
       deletePackageFailure(error.response?.data?.message || error.message)

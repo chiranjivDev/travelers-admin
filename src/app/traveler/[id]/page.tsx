@@ -1,44 +1,64 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useParams } from 'next/navigation'
-import { FiStar, FiMapPin, FiCalendar, FiPackage, FiCheck, FiClock, FiMessageSquare, FiFlag } from 'react-icons/fi'
-import { MOCK_TRIPS } from '@/data/mockTrips'
-import { MOCK_USERS } from '@/data/mockUsers'
-import Avatar from '@/components/common/Avatar'
-import TripCard from '@/components/trips/TripCard'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import {
+  FiStar,
+  FiMapPin,
+  FiCalendar,
+  FiPackage,
+  FiCheck,
+  FiClock,
+  FiMessageSquare,
+  FiFlag,
+} from 'react-icons/fi';
+// import { MOCK_TRIPS } from '@/data/mockTrips'
+import { MOCK_USERS } from '@/data/mockUsers';
+import Avatar from '@/components/common/Avatar';
+import TripCard from '@/components/trips/TripCard';
+import { useNotification } from '@/contexts/NotificationContext';
+import { MOCK_TRIPS } from '../redux/tripsSaga';
+import { useDispatch } from 'react-redux';
+import { TRAVELER_DETAIL } from '../redux/tripsAction';
 
 export default function TravelerProfile() {
-  const params = useParams()
-  const { showNotification } = useNotification()
-  const [showContactInfo, setShowContactInfo] = useState(false)
+  const params = useParams();
+  const { showNotification } = useNotification();
+  const [showContactInfo, setShowContactInfo] = useState(false);
+
+  // fetch single trip
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch({ type: TRAVELER_DETAIL, payload: params?.id });
+  }, [params?.id]);
 
   // Safely access the id parameter
-  const travelerId = params?.id as string
-  
+  const travelerId = params?.id as string;
+
   // Find traveler from mock data (only if we have an id)
-  const traveler = travelerId ? MOCK_USERS.find(user => user.id === travelerId) : null
-  const travelerTrips = travelerId ? MOCK_TRIPS.filter(trip => trip.traveler.id === travelerId) : []
+  const traveler = travelerId
+    ? MOCK_USERS.find((user) => user.id === travelerId)
+    : null;
+  const travelerTrips = travelerId
+    ? MOCK_TRIPS.filter((trip) => trip.traveler.id === travelerId)
+    : [];
 
   if (!travelerId || !traveler) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center text-gray-400">
-          Traveler not found
-        </div>
+        <div className="text-center text-gray-400">Traveler not found</div>
       </div>
-    )
+    );
   }
 
   const handleChatClick = (travelerId: string) => {
-    showNotification('Opening chat...', 'info')
+    showNotification('Opening chat...', 'info');
     // Handle chat logic here
-  }
+  };
 
   const handleReport = () => {
-    showNotification('Report submitted', 'success')
-  }
+    showNotification('Report submitted', 'success');
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -64,11 +84,15 @@ export default function TravelerProfile() {
               <div className="flex items-center space-x-4 text-gray-400">
                 <div className="flex items-center">
                   <FiStar className="mr-1 text-yellow-500" />
-                  <span className="font-medium text-white">{traveler.rating}</span>
+                  <span className="font-medium text-white">
+                    {traveler.rating}
+                  </span>
                   <span className="ml-1">({traveler.reviewCount} reviews)</span>
                 </div>
                 <div>
-                  <span className="font-medium text-white">{traveler.completedTrips}</span>
+                  <span className="font-medium text-white">
+                    {traveler.completedTrips}
+                  </span>
                   <span className="ml-1">trips completed</span>
                 </div>
               </div>
@@ -76,8 +100,11 @@ export default function TravelerProfile() {
                 <div className="mt-4">
                   <div className="text-sm text-gray-400 mb-2">Languages</div>
                   <div className="flex space-x-2">
-                    {traveler.languages.map(lang => (
-                      <span key={lang} className="bg-gray-700 text-gray-300 text-sm px-3 py-1 rounded-full">
+                    {traveler.languages.map((lang) => (
+                      <span
+                        key={lang}
+                        className="bg-gray-700 text-gray-300 text-sm px-3 py-1 rounded-full"
+                      >
                         {lang}
                       </span>
                     ))}
@@ -150,7 +177,7 @@ export default function TravelerProfile() {
         <h2 className="text-xl font-semibold text-white">Active Trips</h2>
         {travelerTrips.length > 0 ? (
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-            {travelerTrips.map(trip => (
+            {travelerTrips.map((trip) => (
               <TripCard
                 key={trip.id}
                 trip={trip}
@@ -159,11 +186,9 @@ export default function TravelerProfile() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-400">
-            No active trips
-          </div>
+          <div className="text-center py-8 text-gray-400">No active trips</div>
         )}
       </div>
     </div>
-  )
+  );
 }

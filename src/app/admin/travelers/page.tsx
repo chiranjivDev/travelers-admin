@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import {
   FiUser,
   FiSearch,
@@ -12,56 +12,161 @@ import {
   FiStar,
   FiCheckCircle,
   FiXCircle,
-} from 'react-icons/fi'
+} from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  DELETE_TRAVELLERS,
+  GET_ALL_TRAVELLERS,
+  UPDATE_TRAVELLERS_STATUS,
+} from "./redux/travelerAction";
 
 // Mock data
-const mockTravelers = [
+export const mockTravelers = [
   {
-    id: 'TRV001',
-    name: 'John Smith',
-    email: 'john.smith@example.com',
-    status: 'Active',
+    id: "1a2b3c4d-7e8f-9g0h-1i2j-3k4l5m6n7o8p",
+    email: "alex.johnson@example.com",
+    password: "$2b$10$abcdefg1234567890qwertyuiopasdfghjklzxcvbnm",
+    name: "Alex Johnson",
+    picture_url: null,
+    permissions: "traveler",
+    passwordReset: null,
+    status: "active",
+    phone: "9876543210",
+    is_email_verified: true,
+    created_at: "2025-01-01T12:00:00.000Z",
+    updated_at: "2025-01-10T08:30:00.000Z",
+  },
+  {
+    id: "2b3c4d5e-8f9g0h1i-2j3k4l5m-6n7o8p9q0r",
+    email: "jessica.miller@example.com",
+    password: "$2b$10$zxcvbnmasdfghjklqwertyuiop1234567890abcdefg",
+    name: "Jessica Miller",
+    picture_url: "https://example.com/picture2.jpg",
+    permissions: "traveler",
+    passwordReset: null,
+    status: "inactive",
+    phone: "1234509876",
+    is_email_verified: false,
+    created_at: "2025-01-02T15:45:30.000Z",
+    updated_at: "2025-01-11T09:15:20.000Z",
+  },
+  {
+    id: "3c4d5e6f-9g0h1i2j-3k4l5m6n7o8p9q0r1s",
+    email: "michael.brown@example.com",
+    password: "$2b$10$qwertyuiopasdfghjklzxcvbnm1234567890abcdefg",
+    name: "Michael Brown",
+    picture_url: null,
+    permissions: "traveler",
+    passwordReset: null,
+    status: "active",
+    phone: "7890123456",
+    is_email_verified: true,
+    created_at: "2025-01-03T10:20:30.000Z",
+    updated_at: "2025-01-12T06:40:50.000Z",
+  },
+  {
+    id: "4d5e6f7g-0h1i2j3k-4l5m6n7o8p9q0r1s2t",
+    email: "emily.davis@example.com",
+    password: "$2b$10$asdfghjklzxcvbnmqwertyuiop1234567890abcdefg",
+    name: "Emily Davis",
+    picture_url: "https://example.com/picture4.jpg",
+    permissions: "traveler",
+    passwordReset: null,
+    status: "inactive",
+    phone: "4567890123",
+    is_email_verified: false,
+    created_at: "2025-01-04T14:30:00.000Z",
+    updated_at: "2025-01-13T07:50:40.000Z",
+  },
+  {
+    id: "5e6f7g8h-1i2j3k4l-5m6n7o8p9q0r1s2t3u",
+    email: "sophia.lee@example.com",
+    password: "$2b$10$zxcvbnmqwertyuiopasdfghjkl1234567890abcdefg",
+    name: "Sophia Lee",
+    picture_url: null,
+    permissions: "traveler",
+    passwordReset: null,
+    status: "active",
+    phone: "3210987654",
+    is_email_verified: true,
+    created_at: "2025-01-05T09:10:15.000Z",
+    updated_at: "2025-01-13T10:25:35.000Z",
+  },
+  {
+    id: "TRV001",
+    name: "John Smith",
+    email: "john.smith@example.com",
+    status: "Active",
     rating: 4.8,
     completedDeliveries: 45,
-    verificationStatus: 'Verified',
-    joinDate: '2024-01-15',
-    lastActive: '2024-12-20',
+    verificationStatus: "Verified",
+    joinDate: "2024-01-15",
+    lastActive: "2024-12-20",
   },
   {
-    id: 'TRV002',
-    name: 'Emma Wilson',
-    email: 'emma.w@example.com',
-    status: 'On Trip',
+    id: "TRV002",
+    name: "Emma Wilson",
+    email: "emma.w@example.com",
+    status: "On Trip",
     rating: 4.5,
     completedDeliveries: 28,
-    verificationStatus: 'Pending',
-    joinDate: '2024-02-20',
-    lastActive: '2024-12-19',
+    verificationStatus: "Pending",
+    joinDate: "2024-02-20",
+    lastActive: "2024-12-19",
   },
   // Add more mock travelers here
-]
+];
 
 const statusColors = {
-  'Active': 'bg-green-500',
-  'On Trip': 'bg-blue-500',
-  'Inactive': 'bg-gray-500',
-  'Suspended': 'bg-red-500',
-}
+  Active: "bg-green-500",
+  "On Trip": "bg-blue-500",
+  Inactive: "bg-gray-500",
+  Suspended: "bg-red-500",
+};
 
 export default function TravelersPage() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('All')
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
-  const filteredTravelers = mockTravelers.filter(traveler => {
-    const matchesSearch = 
+  const dispatch = useDispatch();
+  const Travellers = useSelector((state) => state.admintraveler.travelers);
+
+  useEffect(() => {
+    const payload = {
+      role: "traveler",
+    };
+    dispatch({ type: GET_ALL_TRAVELLERS, payload });
+  }, []);
+
+  const filteredTravelers = Travellers.filter((traveler) => {
+    const matchesSearch =
       traveler.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       traveler.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      traveler.id.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === 'All' || traveler.status === statusFilter
-    
-    return matchesSearch && matchesStatus
-  })
+      traveler.id.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All" || traveler.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const handleEditClick = (id, currentStatus) => {
+    const payload = {
+      id: id,
+      status: currentStatus,
+    };
+    dispatch({ type: UPDATE_TRAVELLERS_STATUS, payload });
+  };
+
+  const handleDeleteClick = (id) => {
+    const payload = {
+      userId: id,
+    };
+    dispatch({
+      type: DELETE_TRAVELLERS,
+      payload,
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -152,13 +257,19 @@ export default function TravelersPage() {
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-white">{traveler.name}</div>
-                        <div className="text-sm text-gray-400">{traveler.email}</div>
+                        <div className="text-sm font-medium text-white">
+                          {traveler.name}
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          {traveler.email}
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full text-white ${statusColors[traveler.status]}`}>
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full text-white ${statusColors[traveler.status]}`}
+                    >
                       {traveler.status}
                     </span>
                   </td>
@@ -172,7 +283,7 @@ export default function TravelersPage() {
                     {traveler.completedDeliveries}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {traveler.verificationStatus === 'Verified' ? (
+                    {traveler.verificationStatus === "Verified" ? (
                       <span className="flex items-center text-green-400">
                         <FiCheckCircle className="mr-1" />
                         Verified
@@ -200,16 +311,22 @@ export default function TravelersPage() {
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="p-1 hover:text-yellow-400"
+                        onClick={() =>
+                          handleEditClick(traveler.id, traveler.status)
+                        }
                       >
                         <FiEdit2 className="w-5 h-5" />
                       </motion.button>
-                      <motion.button
+                      {/* <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="p-1 hover:text-red-400"
+                        onClick={() => {
+                          handleDeleteClick(traveler.id);
+                        }}
                       >
                         <FiTrash2 className="w-5 h-5" />
-                      </motion.button>
+                      </motion.button> */}
                     </div>
                   </td>
                 </tr>
@@ -219,5 +336,5 @@ export default function TravelersPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

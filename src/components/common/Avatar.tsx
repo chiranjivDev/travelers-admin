@@ -1,23 +1,28 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 interface AvatarProps {
-  src: string | null
-  alt: string
-  size?: number
-  className?: string
+  src: string | null;
+  alt: string;
+  size?: number;
+  className?: string;
 }
 
-export default function Avatar({ src, alt, size = 40, className = '' }: AvatarProps) {
-  const [imageError, setImageError] = useState(false)
+export default function Avatar({
+  src,
+  alt,
+  size = 40,
+  className = '',
+}: AvatarProps) {
+  const [imageError, setImageError] = useState(false);
   const initials = alt
-    .split(' ')
-    .map(word => word[0])
+    ?.split(' ')
+    .map((word) => word[0])
     .join('')
     .toUpperCase()
-    .slice(0, 2)
+    .slice(0, 2);
 
   if (!src || imageError) {
     return (
@@ -27,7 +32,7 @@ export default function Avatar({ src, alt, size = 40, className = '' }: AvatarPr
       >
         <span className="text-sm">{initials}</span>
       </div>
-    )
+    );
   }
 
   return (
@@ -41,5 +46,5 @@ export default function Avatar({ src, alt, size = 40, className = '' }: AvatarPr
         onError={() => setImageError(true)}
       />
     </div>
-  )
+  );
 }

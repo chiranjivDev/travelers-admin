@@ -12,6 +12,7 @@ import {
 } from "./userSlice";
 import { axiosInstance } from "@/services/httpServices";
 import { API_URL } from "@/services/webConstants";
+import { GET_ALL_USERS } from "./userAction";
 
 // Fetch Users Saga
 export function* fetchUsersSaga() {
@@ -45,7 +46,8 @@ export function* updateUserStatusSaga(action) {
       userStatus
     );
     if (response.status === 200) {
-      yield put(updateUserStatusSuccess({ id, status: response.data.status }));
+      yield put(updateUserStatusSuccess());
+      yield put({ type: GET_ALL_USERS });
     }
   } catch (error) {
     yield put(

@@ -6,8 +6,6 @@ const userSlice = createSlice({
     users: [],
     loading: false,
     error: null,
-    status: null,
-    statusId: null,
   },
   reducers: {
     fetchUsersRequest: (state) => {
@@ -28,11 +26,8 @@ const userSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    updateUserStatusSuccess: (state, action) => {
+    updateUserStatusSuccess: (state) => {
       state.loading = false;
-      const { id, status } = action.payload;
-      state.status = status;
-      state.statusId = id;
     },
     updateUserStatusFailure: (state, action) => {
       state.loading = false;

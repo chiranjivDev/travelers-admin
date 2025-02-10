@@ -6,9 +6,6 @@ const packageSlice = createSlice({
     packages: [],
     loading: false,
     error: null,
-    status: null,
-    packageId: null,
-    deletePackageId: false,
   },
   reducers: {
     // Fetch Packages Actions
@@ -29,14 +26,8 @@ const packageSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    updatePackagesStatusSuccess(state, action) {
+    updatePackagesStatusSuccess(state) {
       state.loading = false;
-      const { id, status } = action.payload;
-
-      if (id && status) {
-        state.status = status;
-        state.packageId = id;
-      }
     },
     updatePackagesStatusFailure(state, action) {
       state.loading = false;
@@ -49,7 +40,6 @@ const packageSlice = createSlice({
     },
     deletePackageSuccess(state, action) {
       state.loading = false;
-      state.deletePackageId = action.payload.userId;
       state.packages = state.packages.filter(
         (pkg) => pkg.id !== action.payload.userId
       );

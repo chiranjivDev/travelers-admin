@@ -10,6 +10,9 @@ import {
   useEffect,
   ReactNode,
 } from 'react';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { USER_LOGGED_IN } from '@/app/signup/redux/authActions';
 
 export type UserRole = 'Sender' | 'Traveler' | 'Admin';
 
@@ -64,6 +67,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
     // Check for stored auth token and validate it
     const checkAuth = async () => {
@@ -94,10 +99,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // };
 
   // Temporary Implementation for login
+  const dispatch = useDispatch();
   const login = async (email: string, password: string) => {
     try {
       const response = await axios.post(
-        'https://delivery-package.onrender.com/auth/login',
+        `${process.env.NEXT_PUBLIC_API_URL}auth/login`,
         {
           email,
           password,
@@ -112,6 +118,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Show success toast after successful login
       toast.success('Login successful! Welcome back.');
+      // Dispatch user_logged_in action
+      dispatch({ type: USER_LOGGED_IN });
     } catch (err) {
       toast.error('Login failed. Please try again.');
       throw new Error('Login failed. Please try again.');
@@ -120,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     setUser(null);
+    router.push('/');
     localStorage.removeItem('user');
     toast.success('Logout successful!');
   };
@@ -155,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     console.log('role ====>', role);
     try {
       const response = await axios.post(
-        'https://delivery-package.onrender.com/users',
+        `${process.env.NEXT_PUBLIC_API_URL}users`,
         {
           name: fullName,
           email,

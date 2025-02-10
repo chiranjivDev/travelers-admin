@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { memo, useState, useCallback, useEffect } from 'react'
-import { 
-  FiStar, 
-  FiPackage, 
-  FiCalendar, 
-  FiMapPin, 
-  FiCheck, 
-  FiClock, 
-  FiMessageSquare, 
+import { memo, useState, useCallback, useEffect } from 'react';
+import {
+  FiStar,
+  FiPackage,
+  FiCalendar,
+  FiMapPin,
+  FiCheck,
+  FiClock,
+  FiMessageSquare,
   FiInfo,
   FiBookmark,
   FiHeart,
@@ -16,102 +16,124 @@ import {
   FiMoreVertical,
   FiLink,
   FiUser,
-  FiTruck
-} from 'react-icons/fi'
-import { TripDetails } from '@/data/mockTrips'
-import Link from 'next/link'
-import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, Transition } from '@headlessui/react'
-import { useNotification } from '@/contexts/NotificationContext'
-import { useSavedTrips } from '@/contexts/SavedTripsContext'
-import { format, parseISO } from 'date-fns'
-import Avatar from '@/components/common/Avatar'
+  FiTruck,
+} from 'react-icons/fi';
+import { TripDetails } from '@/data/mockTrips';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, Transition } from '@headlessui/react';
+import { useNotification } from '@/contexts/NotificationContext';
+import { useSavedTrips } from '@/contexts/SavedTripsContext';
+import { format, parseISO } from 'date-fns';
+import Avatar from '@/components/common/Avatar';
 
 // Create a client-only wrapper component
 const ClientOnly = ({ children }: { children: React.ReactNode }) => {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  if (!mounted) return null
-  return <>{children}</>
-}
+  if (!mounted) return null;
+  return <>{children}</>;
+};
 
 interface DestinationFlexibility {
-  city: string
-  extraCharge?: number
-  estimatedTime?: string
+  city: string;
+  extraCharge?: number;
+  estimatedTime?: string;
 }
 
 interface TripCardProps {
-  trip: TripDetails
-  onChatClick: (travelerId: string) => void
+  trip: TripDetails;
+  onChatClick: (travelerId: string) => void;
 }
 
 const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  const [showDestinations, setShowDestinations] = useState(false)
-  const [showFullDescription, setShowFullDescription] = useState(false)
-  const [isSaved, setIsSaved] = useState(false)
-  const [isLiked, setIsLiked] = useState(false)
-  const { showNotification } = useNotification()
-  const { isTripSaved, saveTrip, unsaveTrip } = useSavedTrips()
+  const [isHovered, setIsHovered] = useState(false);
+  const [showDestinations, setShowDestinations] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const { showNotification } = useNotification();
+  const { isTripSaved, saveTrip, unsaveTrip } = useSavedTrips();
 
   useEffect(() => {
-    setIsSaved(isTripSaved(trip.id))
-  }, [isTripSaved, trip.id])
+    setIsSaved(isTripSaved(trip.id));
+  }, [isTripSaved, trip.id]);
 
-  const handleSave = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsSaved(!isSaved)
-    if (isSaved) {
-      unsaveTrip(trip.id)
-      showNotification('Trip removed from saved items', 'info', <FiBookmark />)
-    } else {
-      saveTrip(trip.id)
-      showNotification('Trip saved for later', 'success', <FiBookmark />)
-    }
-  }, [isSaved, trip.id, saveTrip, unsaveTrip, showNotification])
+  // handle Save
+  const handleSave = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setIsSaved(!isSaved);
+      if (isSaved) {
+        unsaveTrip(trip.id);
+        showNotification(
+          'Trip removed from saved items',
+          'info',
+          <FiBookmark />
+        );
+      } else {
+        saveTrip(trip.id);
+        showNotification('Trip saved for later', 'success', <FiBookmark />);
+      }
+    },
+    [isSaved, trip.id, saveTrip, unsaveTrip, showNotification]
+  );
 
-  const handleLike = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation()
-    setIsLiked(!isLiked)
-    showNotification(
-      isLiked ? 'Trip removed from favorites' : 'Trip added to favorites',
-      'info',
-      <FiHeart />
-    )
-  }, [isLiked, showNotification])
+  // handle Like
+  const handleLike = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setIsLiked(!isLiked);
+      showNotification(
+        isLiked ? 'Trip removed from favorites' : 'Trip added to favorites',
+        'info',
+        <FiHeart />
+      );
+    },
+    [isLiked, showNotification]
+  );
 
-  const handleShare = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation()
-    const url = `${window.location.origin}/trip/${trip.id}`
-    const title = `Trip from ${trip.route.from} to ${trip.route.to}`
-    const text = `Check out this trip by ${trip.traveler.name}`
+  // handle share
+  const handleShare = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      const url = `${window.location.origin}/trip/${trip.id}`;
+      const title = `Trip from ${trip.route.from} to ${trip.route.to}`;
+      const text = `Check out this trip by ${trip.traveler.name}`;
 
-    const shareData = {
-      title,
-      text,
-      url,
-    }
+      const shareData = {
+        title,
+        text,
+        url,
+      };
 
-    if (navigator.share) {
-      navigator.share(shareData)
-        .then(() => {
-          showNotification('Trip shared successfully', 'success', <FiShare2 />)
-        })
-        .catch(console.error)
-    } else {
-      navigator.clipboard.writeText(url)
-        .then(() => {
-          showNotification('Link copied to clipboard', 'success', <FiLink />)
-        })
-        .catch(console.error)
-    }
-  }, [trip, showNotification])
+      if (navigator.share) {
+        navigator
+          .share(shareData)
+          .then(() => {
+            showNotification(
+              'Trip shared successfully',
+              'success',
+              <FiShare2 />
+            );
+          })
+          .catch(console.error);
+      } else {
+        navigator.clipboard
+          .writeText(url)
+          .then(() => {
+            showNotification('Link copied to clipboard', 'success', <FiLink />);
+          })
+          .catch(console.error);
+      }
+    },
+    [trip, showNotification]
+  );
 
   return (
     <motion.div
@@ -120,26 +142,32 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
       className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden hover:border-gray-600 transition-colors"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
-        setIsHovered(false)
-        setShowDestinations(false)
+        setIsHovered(false);
+        setShowDestinations(false);
       }}
     >
       <div className="p-6">
         {/* Action buttons */}
-        <ClientOnly>
+        {/* <ClientOnly>
           <div className="flex justify-end space-x-2 mb-4">
             <button
               onClick={handleSave}
               className={`p-2 rounded-full transition-colors ${
-                isSaved ? 'bg-blue-500/10 text-blue-500' : 'hover:bg-gray-700 text-gray-400'
+                isSaved
+                  ? 'bg-blue-500/10 text-blue-500'
+                  : 'hover:bg-gray-700 text-gray-400'
               }`}
             >
-              <FiBookmark className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`} />
+              <FiBookmark
+                className={`w-5 h-5 ${isSaved ? 'fill-current' : ''}`}
+              />
             </button>
             <button
               onClick={handleLike}
               className={`p-2 rounded-full transition-colors ${
-                isLiked ? 'bg-red-500/10 text-red-500' : 'hover:bg-gray-700 text-gray-400'
+                isLiked
+                  ? 'bg-red-500/10 text-red-500'
+                  : 'hover:bg-gray-700 text-gray-400'
               }`}
             >
               <FiHeart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
@@ -171,7 +199,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
                             active ? 'bg-gray-700' : ''
                           } group flex w-full items-center rounded-md px-2 py-2 text-sm text-gray-300`}
                           onClick={() => {
-                            showNotification('Trip reported', 'info')
+                            showNotification('Trip reported', 'info');
                           }}
                         >
                           Report Trip
@@ -185,7 +213,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
                             active ? 'bg-gray-700' : ''
                           } group flex w-full items-center rounded-md px-2 py-2 text-sm text-gray-300`}
                           onClick={() => {
-                            showNotification('Traveler blocked', 'info')
+                            showNotification('Traveler blocked', 'info');
                           }}
                         >
                           Block Traveler
@@ -197,11 +225,13 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
               </Transition>
             </Menu>
           </div>
-        </ClientOnly>
+        </ClientOnly> */}
 
         {/* Quick Actions - Visible on Hover */}
-        <ClientOnly>
-          <div className={`absolute right-4 top-4 space-y-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        {/* <ClientOnly>
+          <div
+            className={`absolute right-4 top-4 space-y-2 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+          >
             <button
               onClick={() => onChatClick(trip.traveler.id)}
               className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
@@ -217,25 +247,29 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
               <FiInfo />
             </Link>
           </div>
-        </ClientOnly>
+        </ClientOnly> */}
 
         {/* Header with traveler info and price */}
         <div className="flex justify-between items-start mb-6">
           <div className="flex items-center">
             <Avatar
-              src={trip.traveler.avatar}
+              src={trip.traveler.picture_url}
               alt={trip.traveler.name}
               size={48}
               className="rounded-full"
             />
             <div className="ml-3">
               <div className="flex items-center">
-                <h3 className="text-lg font-semibold text-white">{trip.traveler.name}</h3>
-                {trip.traveler.isVerified && (
-                  <span className="ml-2 px-2 py-1 text-xs bg-green-500/10 text-green-500 rounded-full">Verified</span>
-                )}
+                <h3 className="text-lg font-semibold text-white">
+                  {trip.traveler.name}
+                </h3>
+                {/* {trip.traveler.isVerified && (
+                  <span className="ml-2 px-2 py-1 text-xs bg-green-500/10 text-green-500 rounded-full">
+                    Verified
+                  </span>
+                )} */}
               </div>
-              <div className="flex items-center text-sm text-gray-400">
+              {/* <div className="flex items-center text-sm text-gray-400">
                 <span className="flex items-center">
                   <FiStar className="mr-1 text-yellow-500" />
                   {trip.stats.rating}
@@ -247,19 +281,19 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
                     Super Traveler
                   </span>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="text-right">
             <div className="text-2xl font-bold text-white">
-              ${trip.pricing.base}
+              ${trip.pricingDetails.baseRate}
               <span className="text-sm text-gray-400 font-normal ml-1">
-                +${trip.pricing.perKg}/kg
+                +${trip.pricingDetails.perKgRate}/kg
               </span>
             </div>
-            {trip.pricing.express > 0 && (
+            {trip.pricingDetails.express > 0 && (
               <div className="text-sm text-gray-400">
-                Express available (+${trip.pricing.express})
+                Express available (+${trip.pricingDetails.express})
               </div>
             )}
           </div>
@@ -270,19 +304,26 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
           <div className="flex items-start">
             <FiMapPin className="mt-1 mr-3 text-blue-400" />
             <div className="flex-1">
-              <div className="text-white font-medium">{trip.route.from}</div>
-              {trip.route.stops && trip.route.stops.length > 0 && (
+              <div className="text-white font-medium">
+                {trip.tripDetails.departureLocation}
+              </div>
+              {/* {trip.route.stops && trip.route.stops.length > 0 && (
                 <div className="relative mx-2 my-2">
                   <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-700" />
                   {trip.route.stops.map((stop, index) => (
-                    <div key={index} className="relative flex items-center ml-3 mb-2">
+                    <div
+                      key={index}
+                      className="relative flex items-center ml-3 mb-2"
+                    >
                       <div className="w-2 h-2 rounded-full bg-gray-600 absolute -left-4" />
                       <span className="text-gray-400 text-sm">{stop}</span>
                     </div>
                   ))}
                 </div>
-              )}
-              <div className="text-white font-medium mt-1">{trip.route.to}</div>
+              )} */}
+              <div className="text-white font-medium mt-1">
+                {trip.tripDetails.arrivalLocation}
+              </div>
             </div>
           </div>
 
@@ -291,13 +332,18 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
             <FiCalendar className="mr-3 text-green-400" />
             <div>
               <div className="text-white">
-                {format(parseISO(trip.dates.departure), 'MMM d')} - {format(parseISO(trip.dates.arrival), 'MMM d, yyyy')}
+                {format(parseISO(trip.tripDetails.departureDateTime), 'MMM d')}{' '}
+                -{' '}
+                {format(
+                  parseISO(trip.tripDetails.arrivalDateTime),
+                  'MMM d, yyyy'
+                )}
               </div>
-              {trip.dates.flexibility > 0 && (
+              {/* {trip.dates.flexibility > 0 && (
                 <div className="text-gray-400 text-sm">
                   ±{trip.dates.flexibility} days flexible
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 
@@ -306,20 +352,22 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
             <FiPackage className="mr-3 text-purple-400" />
             <div>
               <div className="text-white">
-                {trip.capacity.available}kg available
+                {trip.pricingDetails.weight} kg available
               </div>
               <div className="text-gray-400 text-sm">
-                Max {trip.preferences.maxWeight}kg per package
+                Max {trip.transportDetails.maxWeightCapacity} kg per package
               </div>
             </div>
           </div>
         </div>
 
         {/* Description */}
-        {trip.description && (
+        {/* {trip.description && (
           <div className="mb-6">
             <div className="text-gray-300 text-sm">
-              {showFullDescription ? trip.description : trip.description.slice(0, 100)}
+              {showFullDescription
+                ? trip.description
+                : trip.description.slice(0, 100)}
               {trip.description.length > 100 && (
                 <button
                   onClick={() => setShowFullDescription(!showFullDescription)}
@@ -330,12 +378,12 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
               )}
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Preferences */}
         <div className="space-y-4">
           {/* Accepted Items */}
-          <div>
+          {/* <div>
             <div className="text-sm text-gray-400 mb-2">Accepted Items:</div>
             <div className="flex flex-wrap gap-2">
               {trip.preferences.acceptedTypes.map((type, index) => (
@@ -347,10 +395,10 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
                 </span>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Restrictions */}
-          {trip.preferences.restrictions.length > 0 && (
+          {/* {trip.preferences.restrictions.length > 0 && (
             <div>
               <div className="text-sm text-gray-400 mb-2">Restrictions:</div>
               <div className="flex flex-wrap gap-2">
@@ -364,11 +412,11 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 py-4 mt-4 border-t border-gray-700">
+        {/* <div className="grid grid-cols-3 gap-4 py-4 mt-4 border-t border-gray-700">
           <div>
             <div className="text-gray-400 text-sm">Response</div>
             <div className="text-white flex items-center">
@@ -390,7 +438,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
               {trip.stats.completedTrips}
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Actions */}
         <div className="flex space-x-4 mt-4 pt-4 border-t border-gray-700">
@@ -409,7 +457,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
         </div>
       </div>
     </motion.div>
-  )
-})
+  );
+});
 
-export default TripCard
+export default TripCard;

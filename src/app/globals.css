@@ -41,4 +41,22 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 2px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent; /* Track ka color */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #d7d7d7; /* Scrollbar ka color */
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #dbedff; /* Hover pe dark color */
+  }
 }

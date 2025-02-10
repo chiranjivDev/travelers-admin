@@ -13,6 +13,12 @@ import {
   PACKAGE_CATEGORIES,
   SEND_PACKAGE,
 } from '../sender/dashboard/redux/packagesAction';
+import { useRouter } from 'next/navigation';
+import { clearPackagesState } from '../sender/dashboard/redux/packagesSlice';
+import { TRIPS } from '../traveler/redux/tripsAction';
+import { CREATE_ORDER } from '../sender/dashboard/redux/orderAction';
+import { useAuth } from '@/contexts/AuthContext';
+import { clearOrdersState } from '../sender/dashboard/redux/orderSlice';
 
 interface AddressDetails {
   streetAddress: string;
@@ -24,6 +30,9 @@ interface AddressDetails {
 }
 
 interface FormData {
+  packageName: string; // package name
+  price: number; // price
+  description: string; // description
   category: string;
   subcategory: string;
   selectedSize?: 'small' | 'medium' | 'large' | 'custom';
@@ -76,20 +85,33 @@ interface FormData {
 
 export default function SendPackage() {
   // use selector for categories
-  const { categories: packageCategories } = useSelector(
-    (state) => state.packages
-  );
+  const [showOrderComponent, setShowOrderComponent] = useState(false);
+  const {
+    categories: packageCategories,
+    sendPackageSuccess,
+    sendPackageResponse,
+  } = useSelector((state) => state.packages);
+
   const dispatch = useDispatch();
 
-  // console.log('categories from send package ', packageCategories);
+  console.log('send package response ==> ', sendPackageResponse);
+
+  useEffect(() => {
+    if (sendPackageSuccess) {
+      setShowOrderComponent(true);
+      dispatch(clearPackagesState());
+    }
+  }, [sendPackageSuccess]);
 
   useEffect(() => {
     dispatch({ type: PACKAGE_CATEGORIES });
   }, []);
-  //
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
+    packageName: '', // package name
+    price: '', // price
+    description: '', // description
     category: '',
     subcategory: '',
     selectedSize: undefined,
@@ -218,8 +240,10 @@ export default function SendPackage() {
     },
     {
       id: 3,
-      title: 'Review',
-      subtitle: 'Confirm details',
+      // title: 'Review',
+      // subtitle: 'Confirm details',
+      title: 'Package Delivery',
+      subtitle: 'Set Delivery details',
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -259,11 +283,9 @@ export default function SendPackage() {
   const handleNext = () => setStep(step + 1);
   const handlePrev = () => setStep(step - 1);
 
-  // log form data
-  console.log('create package form data ', formData);
-
   // Handle send package form submit
   const handleSubmit = (e: React.FormEvent) => {
+    console.log('current step', step);
     e.preventDefault();
     console.log('Send package Form submitted:', formData);
 
@@ -276,8 +298,30 @@ export default function SendPackage() {
     });
   };
 
+  const handleParentStep = () => {
+    setStep((prev) => prev + 1);
+  };
+
+  // Handle File Upload
+  const handleFileUpload = (e) => {
+    console.log('inside handle file upload');
+    const files = Array.from(e.target.files || []);
+    const newPhotos = files.map((file) => URL.createObjectURL(file));
+    console.log('new photos', newPhotos);
+    setFormData((prev) => ({
+      ...prev,
+      packagePhotos: [...prev.packagePhotos, ...newPhotos],
+    }));
+  };
+
+  const removePhoto = (index) => {
+    const updatedPhotos = formData.packagePhotos.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, packagePhotos: updatedPhotos }));
+  };
+
   const renderStep = () => {
     switch (step) {
+      // What are you sending
       case 1:
         return (
           <motion.div
@@ -299,6 +343,53 @@ export default function SendPackage() {
                 </p>
               </div>
 
+              {/* Additional Fields as per our DB degin */}
+              <div>
+                {/* Add a package name */}
+                <div className="mb-6">
+                  <label
+                    htmlFor="packageName"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Package Name
+                  </label>
+                  <input
+                    type="text"
+                    id="packageName"
+                    className="w-full p-3 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                    value={formData.packageName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, packageName: e.target.value })
+                    }
+                    aria-label="Enter package name"
+                    placeholder="Enter package name"
+                  />
+                </div>
+              </div>
+
+              <div>
+                {/* Add a package description */}
+                <div className="mb-6">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Package Description
+                  </label>
+                  <input
+                    type="text"
+                    id="description"
+                    className="w-full p-3 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                    value={formData.description}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
+                    aria-label="Enter package Description"
+                    placeholder="Enter package Description"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-6">
                 <div>
                   <label
@@ -317,12 +408,6 @@ export default function SendPackage() {
                     aria-label="Select package category"
                   >
                     <option value="">Select Category</option>
-                    {/* {packageCategories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.name}
-                      </option>
-                    ))} */}
-
                     {packageCategories.map((category) => (
                       <option
                         key={category.categoryId}
@@ -334,6 +419,7 @@ export default function SendPackage() {
                   </select>
                 </div>
 
+                {/* Subcategory: conditionally visible based on category selection */}
                 {formData.category && (
                   <div>
                     <label
@@ -355,14 +441,6 @@ export default function SendPackage() {
                       aria-label="Select package type"
                     >
                       <option value="">Select Type</option>
-                      {/* {packageCategories
-                        .find((cat) => cat.id === formData.category)
-                        ?.subcategories.map((sub) => (
-                          <option key={sub.id} value={sub.id}>
-                            {sub.name}
-                          </option>
-                        ))} */}
-
                       {packageCategories
                         .find(
                           (category) =>
@@ -380,6 +458,7 @@ export default function SendPackage() {
                   </div>
                 )}
 
+                {/* Package Details : size and custom size */}
                 <PackageDetails
                   value={{ selectedSize: formData.selectedSize }}
                   onChange={(details) => {
@@ -394,9 +473,32 @@ export default function SendPackage() {
                   }}
                 />
 
+                {/* Add a Price */}
+                <div className="mb-6">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    id="price"
+                    className="w-full p-3 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                    value={formData.price}
+                    onChange={(e) =>
+                      setFormData({ ...formData, price: e.target.value })
+                    }
+                    aria-label="Enter price"
+                    placeholder="Enter price"
+                  />
+                </div>
+
                 {/* Package Photos Section */}
                 <div className="mt-8">
-                  <h3 className="text-lg font-semibold mb-4">Package Photos</h3>
+                  <h3 className="text-lg font-semibold mb-4  text-gray-700">
+                    Package Photos
+                  </h3>
                   <p className="text-sm text-gray-600 mb-4">
                     Add photos of your package to help travelers better
                     understand its appearance and condition. This also helps
@@ -433,12 +535,7 @@ export default function SendPackage() {
                               className="sr-only"
                               accept="image/*"
                               multiple
-                              onChange={(e) => {
-                                const files = Array.from(e.target.files || []);
-                                // Here you would typically upload these files to your server
-                                // and get back URLs to store in formData.packagePhotos
-                                console.log('Files selected:', files);
-                              }}
+                              onChange={handleFileUpload}
                             />
                           </label>
                           <p className="pl-1">or drag and drop</p>
@@ -467,16 +564,17 @@ export default function SendPackage() {
                               <button
                                 type="button"
                                 className="absolute top-2 right-2 p-1.5 rounded-full bg-red-100 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={() => {
-                                  const newPhotos =
-                                    formData.packagePhotos.filter(
-                                      (_, i) => i !== index
-                                    );
-                                  setFormData({
-                                    ...formData,
-                                    packagePhotos: newPhotos,
-                                  });
-                                }}
+                                // onClick={() => {
+                                //   const newPhotos =
+                                //     formData.packagePhotos.filter(
+                                //       (_, i) => i !== index
+                                //     );
+                                //   setFormData({
+                                //     ...formData,
+                                //     packagePhotos: newPhotos,
+                                //   });
+                                // }}
+                                onClick={() => removePhoto(index)}
                               >
                                 <svg
                                   className="w-4 h-4"
@@ -499,6 +597,7 @@ export default function SendPackage() {
                     </div>
                   )}
 
+                  {/* Information about photos */}
                   <div className="mt-4 bg-blue-50 rounded-lg p-4">
                     <h4 className="text-sm font-medium text-blue-900 mb-2">
                       Photo Guidelines
@@ -521,6 +620,7 @@ export default function SendPackage() {
           </motion.div>
         );
 
+      // Pick up details
       case 2:
         return (
           <motion.div
@@ -540,7 +640,6 @@ export default function SendPackage() {
                   Set your package handling preferences and requirements.
                 </p>
               </div>
-
               <div className="space-y-6">
                 <DeliveryMethod
                   type="pickup"
@@ -549,11 +648,11 @@ export default function SendPackage() {
                     setFormData({ ...formData, pickupMethod: method })
                   }
                   className="w-full"
+                  triggerParentStep={handleParentStep} // add this
                 />
               </div>
-
               {/* Step Navigation */}
-              <div className="mt-8 flex justify-between">
+              {/* <div className="mt-8 flex justify-between">
                 <button
                   type="button"
                   onClick={() => handlePickupStepChange(currentPickupStep - 1)}
@@ -568,11 +667,12 @@ export default function SendPackage() {
                 >
                   Continue
                 </button>
-              </div>
+              </div> */}
             </div>
           </motion.div>
         );
 
+      // Confirm details
       case 3:
         return (
           <motion.div
@@ -586,26 +686,31 @@ export default function SendPackage() {
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-black">
-                  Communication Preferences
+                  {/* Communication Preferences */}
+                  Delivery Address
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  Choose how you'd like to coordinate with the traveler.
+                  {/* Choose how you'd like to coordinate with the traveler. */}
+                  Where this packages is to be delivered
                 </p>
               </div>
 
               <div className="space-y-6">
                 <DeliveryMethod
-                  type="pickup"
-                  value={formData.pickupMethod}
-                  onChange={(method) =>
-                    setFormData({ ...formData, pickupMethod: method })
+                  type="delivery" // modified for testing
+                  value={formData.deliveryMethod} // modified for testing
+                  onChange={
+                    (method) =>
+                      setFormData({ ...formData, deliveryMethod: method }) // modified for testing
                   }
                   className="w-full"
+                  triggerParentStep={handleParentStep} // added for testing
                 />
               </div>
 
               {/* Step Navigation */}
-              <div className="mt-8 flex justify-between">
+              {/* Comment out for now */}
+              {/* <div className="mt-8 flex justify-between">
                 <button
                   type="button"
                   onClick={() => handlePickupStepChange(currentPickupStep - 1)}
@@ -621,7 +726,7 @@ export default function SendPackage() {
                 >
                   Continue
                 </button>
-              </div>
+              </div> */}
             </div>
           </motion.div>
         );
@@ -631,13 +736,18 @@ export default function SendPackage() {
     }
   };
 
+  // Additional step for placing order
+  if (showOrderComponent) {
+    return <SelectTraveler sendPackageResponse={sendPackageResponse} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Progress Steps */}
           <div className="mb-8">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center p-6">
               {steps.map((s) => (
                 <div
                   key={s.id}
@@ -677,7 +787,7 @@ export default function SendPackage() {
 
           {/* Form Content */}
           <div className="px-8 py-6">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Render send package steps conditionally */}
               <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
 
@@ -723,3 +833,70 @@ export default function SendPackage() {
     </div>
   );
 }
+
+// compoent for selecting a traveler and placing an order
+const SelectTraveler = ({ sendPackageResponse }) => {
+  const [selectedTrip, setSelectedTrip] = useState('');
+  const { trips } = useSelector((state) => state.trips);
+  const { createOrderSuccess } = useSelector((state) => state.order);
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  // fetch user information
+  const { user } = useAuth();
+
+  useEffect(() => {
+    dispatch({ type: TRIPS });
+  }, [dispatch]);
+
+  // handle create Order
+  const handleCreateOrder = (e) => {
+    e.preventDefault();
+    if (!selectedTrip) {
+      alert('Please select a traveler package.');
+      return;
+    }
+    const payload = {
+      senderId: sendPackageResponse?.sender?.id,
+      traveler_package_id: selectedTrip,
+      sender_package_id: sendPackageResponse?.packageID,
+    };
+    dispatch({ type: CREATE_ORDER, payload });
+  };
+
+  useEffect(() => {
+    if (createOrderSuccess) {
+      router.push('/');
+      dispatch(clearOrdersState());
+    }
+  }, [createOrderSuccess]);
+
+  return (
+    <div className="flex flex-col items-center p-6 bg-gray-100 rounded shadow-lg max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">
+        Select a Traveler and Place Your Order
+      </h2>
+      {/* Select a trip/traveler package */}
+      <select
+        value={selectedTrip}
+        onChange={(e) => setSelectedTrip(e.target.value)}
+        className="mb-6 p-3 border border-gray-300 rounded-lg w-full bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
+      >
+        <option value="">Select a Trip</option>
+        {trips?.map((trip) => (
+          <option key={trip.id} value={trip.id}>
+            {trip.name}
+          </option>
+        ))}
+      </select>
+      {/* Place Order Button */}
+      <button
+        onClick={handleCreateOrder}
+        className="py-3 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+      >
+        Submit and Place Order
+      </button>
+    </div>
+  );
+};

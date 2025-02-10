@@ -9,9 +9,14 @@ import {
   fetchCategoriesRequest,
   fetchCategoriesSuccess,
   fetchCategoriesFailure,
+  fetchSenderPackagesRequest,
+  fetchSenderPackagesSuccess,
+  fetchSenderPackagesFailure,
 } from './packagesSlice';
 import { axiosInstance } from '@/services/httpServices';
 import { API_URL } from '@/services/webConstants';
+import { toast } from 'react-toastify';
+
 // import { MOCK_PACKAGES } from '@/data/mockPackages';
 // import { packageCategories } from '@/app/send-package/packageCategories';
 
@@ -34,68 +39,72 @@ export function* fetchPackagesSaga() {
   }
 }
 
-// Saga for sending a package
-export function* sendPackageSaga(action: {
-  type: string;
-  payload: { userId: string; data: any };
-}) {
-  console.log('inside send package saga', action);
-  try {
-    yield put(sendPackageRequest());
+// Saga for sending a package (previous form)
+// export function* sendPackageSaga(action: {
+//   type: string;
+//   payload: { userId: string; data: any };
+// }) {
+//   console.log('inside send package saga', action);
+//   try {
+//     yield put(sendPackageRequest());
 
-    const { data } = action.payload;
-    console.log('inside send package saga payload data ===> ', data);
+//     const { data } = action.payload;
+//     console.log('inside send package saga payload data ===> ', data);
 
-    // Construct a test payload as per our API
-    const payload = {
-      name: 'cv',
-      price: 5559.99,
-      description: 'This is a basic package that includes a set of features.',
-      requiresCarefulHandling:
-        data.pickupMethod.packageHandling.requiresCarefulHandling || false,
-      isFragile: data.pickupMethod.packageHandling.isFragile || false,
-      specialInstructions:
-        data.pickupMethod.packageHandling.specialInstructions || '',
-      packagePhotos: [
-        'https://example.com/photo1.jpg',
-        'https://example.com/photo2.jpg',
-      ],
-      availabilityDates: '2025-01-07T11:03:47.523Z',
-      pickupLocation: data.pickupMethod.defaultLocation.city || '',
-      deliveryLocation: data.pickupMethod.defaultLocation.city || '',
-      deliveryDate:
-        data.pickupMethod.timing.deliveryDate.preferredDate || '2025-01-02',
-      // dimensions: data.selectedSize || '',
-      dimensions: 2,
-      weight: 2,
-      insurance: true,
-      priority: true,
-      tracking: 'tracking',
-      communicationPreferences: 'whatsApp',
-      preferredTimes: 'Weekdays after 5 PM',
-      preferredDate: '2025-01-02',
-      allowPostalDelivery: true,
-      postalDeliveryDetails: 'Postal code 12345',
-      restricted: false,
-      categoryId: data.category,
-      subcategoryId: data.subcategory,
-    };
+//     // Construct a test payload as per our API
+//     const payload = {
+//       name: data?.packageName || '',
+//       categoryId: data.category,
+//       subcategoryId: data.subcategory,
+//       price: Number(data?.price) || 50,
+//       description: data?.description || 'place holder description',
+//       requiresCarefulHandling:
+//         data.pickupMethod.packageHandling.requiresCarefulHandling || false,
+//       isFragile: data.pickupMethod.packageHandling.isFragile || false,
+//       specialInstructions:
+//         data.pickupMethod.packageHandling.specialInstructions || '',
+//       packagePhotos: [
+//         'https://example.com/photo1.jpg',
+//         'https://example.com/photo2.jpg',
+//       ],
+//       availabilityDates: '2025-01-07T11:03:47.523Z',
+//       pickupLocation: data.pickupMethod.defaultLocation.city || '',
+//       deliveryLocation: data.deliveryMethod.defaultLocation.city || '',
+//       deliveryDate:
+//         data.pickupMethod.timing.deliveryDate.preferredDate || '2025-01-02',
+//       // dimensions: data.selectedSize || '',
+//       dimensions: 10,
+//       weight: 10,
+//       insurance: true,
+//       priority: true,
+//       tracking: 'tracking',
+//       communicationPreferences: 'whatsApp',
+//       preferredTimes: 'Weekdays after 5 PM',
+//       preferredDate: '2025-01-02',
+//       allowPostalDelivery: true,
+//       postalDeliveryDetails: 'Postal code 12345',
+//       restricted: false,
 
-    console.log('Constructed payload for create package API ===>', payload);
+//       // size: data.selectedSize || ''
+//     };
 
-    const response = yield call(
-      axiosInstance.post,
-      `${API_URL.PACKAGES}`,
-      payload
-    );
+//     console.log('Constructed payload for create package API ===>', payload);
 
-    yield put(sendPackageSuccess(response.data));
-  } catch (error) {
-    yield put(
-      sendPackageFailure(error.response?.data?.message || error.message)
-    );
-  }
-}
+//     const response = yield call(
+//       axiosInstance.post,
+//       `${API_URL.PACKAGES}`,
+//       payload
+//     );
+
+//     yield put(sendPackageSuccess(response.data));
+//     toast.success('Package Created successfully!');
+//   } catch (error) {
+//     yield put(
+//       sendPackageFailure(error.response?.data?.message || error.message)
+//     );
+//     toast.error('Package Creation Failed', error);
+//   }
+// }
 
 // Fetch Categories Saga
 export function* fetchCategoriesSaga() {
@@ -112,6 +121,82 @@ export function* fetchCategoriesSaga() {
   } catch (error) {
     yield put(
       fetchCategoriesFailure(error.response?.data?.message || error.message)
+    );
+  }
+}
+
+// Fetch Sender-Specific Packages Saga
+export function* fetchSenderPackagesSaga(action) {
+  console.log('inside fetchSenderPackagesSaga');
+  try {
+    yield put(fetchSenderPackagesRequest());
+
+    const { senderId } = action.payload;
+    const response = yield call(
+      axiosInstance.get,
+      `${API_URL.SENDER_PACKAGES}/${senderId}`
+    );
+
+    console.log('fetch sender packages saga response', response);
+    yield put(fetchSenderPackagesSuccess(response.data));
+  } catch (error) {
+    yield put(
+      fetchSenderPackagesFailure(error.response?.data?.message || error.message)
+    );
+  }
+}
+
+// send package saga for new form
+export function* sendPackageSaga(action) {
+  console.log('inside send package saga', action);
+  try {
+    yield put(sendPackageRequest());
+    console.log('inside send package saga payload data ===> ', action.payload);
+    const response = yield call(
+      axiosInstance.post,
+      `${API_URL.PACKAGES}`,
+      action.payload
+    );
+    yield put(sendPackageSuccess(response.data));
+    toast.success('Package Created successfully!');
+  } catch (error) {
+    yield put(
+      sendPackageFailure(error.response?.data?.message || error.message)
+    );
+    toast.error('Package Creation Failed', error);
+  }
+}
+
+// Search Sender Packages Saga
+export function* searchSenderPackageSaga(action) {
+  const { searchKeyword, startDate, endDate } = action.payload;
+  console.log(
+    'Searching for sender packages with keyword/dates:',
+    searchKeyword,
+    startDate,
+    endDate
+  );
+  try {
+    yield put(fetchPackagesRequest());
+
+    const params = {
+      ...(searchKeyword && { keyword: searchKeyword }),
+      ...(startDate && { startDate }),
+      ...(endDate && { endDate }),
+    };
+
+    const response = yield call(
+      axiosInstance.get,
+      `${API_URL.PACKAGES}/search`,
+      {
+        params,
+      }
+    );
+    console.log('Search sender packages saga response', response);
+    yield put(fetchPackagesSuccess(response.data));
+  } catch (error) {
+    yield put(
+      fetchPackagesFailure(error.response?.data?.message || error.message)
     );
   }
 }
