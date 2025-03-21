@@ -1,12 +1,17 @@
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useTranslations } from 'next-intl';
 import { FiInfo } from 'react-icons/fi';
 
 const TripDetails = ({ register, errors }) => {
+  const t = useTranslations('travellerForm.steps.step1');
   return (
     <div className="space-y-8">
       <div className="flex items-center space-x-3 mb-8">
         <div className="w-1.5 h-8 bg-blue-500 rounded-full" />
-        <h2 className="text-2xl font-bold text-black">Trip Details</h2>
+        <h2 className="text-2xl font-bold text-black">
+          {/* Trip Details */}
+          {t('title')}
+        </h2>
         <Tooltip content="Provide your travel information to help coordinate package delivery">
           <FiInfo className="w-5 h-5 text-gray-600 hover:text-gray-500 transition-colors" />
         </Tooltip>
@@ -42,9 +47,8 @@ const TripDetails = ({ register, errors }) => {
 };
 
 export default TripDetails;
-
-// Location Details Component
 const LocationSection = ({ type, register, errors }) => {
+  const t = useTranslations('travellerForm.steps.step1.fields');
   return (
     <div className="relative">
       <div
@@ -53,7 +57,8 @@ const LocationSection = ({ type, register, errors }) => {
       >
         <div className="flex items-center space-x-1">
           <span>
-            {type === 'departure' ? 'Departure' : 'Arrival'} Location Details
+            {/* {type === 'departure' ? 'Departure' : 'Arrival'} Location Details */}
+            {t(type)}
           </span>
         </div>
 
@@ -62,7 +67,10 @@ const LocationSection = ({ type, register, errors }) => {
             <div className="grid grid-cols-2 gap-4">
               <div className="col-span-2">
                 <div className="p-3 bg-gray-800/30 border border-gray-700/30 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">Street</div>
+                  <div className="text-xs text-gray-500 mb-1">
+                    {/* Street */}
+                    {t('street')}
+                  </div>
                   <input
                     type="text"
                     {...register(`${type}.street`, { required: true })}
@@ -78,7 +86,10 @@ const LocationSection = ({ type, register, errors }) => {
               </div>
               <div>
                 <div className="p-3 bg-gray-800/30 border border-gray-700/30 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">City</div>
+                  <div className="text-xs text-gray-500 mb-1">
+                    {/* City */}
+                    {t('city')}
+                  </div>
                   <input
                     type="text"
                     {...register(`${type}.city`, { required: true })}
@@ -94,7 +105,10 @@ const LocationSection = ({ type, register, errors }) => {
               </div>
               <div>
                 <div className="p-3 bg-gray-800/30 border border-gray-700/30 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">State</div>
+                  <div className="text-xs text-gray-500 mb-1">
+                    {/* State */}
+                    {t('state')}
+                  </div>
                   <input
                     type="text"
                     {...register(`${type}.state`, { required: true })}
@@ -110,7 +124,10 @@ const LocationSection = ({ type, register, errors }) => {
               </div>
               <div>
                 <div className="p-3 bg-gray-800/30 border border-gray-700/30 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">Country</div>
+                  <div className="text-xs text-gray-500 mb-1">
+                    {/* Country */}
+                    {t('country')}
+                  </div>
                   <input
                     type="text"
                     {...register(`${type}.country`, { required: true })}
@@ -126,7 +143,10 @@ const LocationSection = ({ type, register, errors }) => {
               </div>
               <div>
                 <div className="p-3 bg-gray-800/30 border border-gray-700/30 rounded-lg">
-                  <div className="text-xs text-gray-500 mb-1">Postal Code</div>
+                  <div className="text-xs text-gray-500 mb-1">
+                    {/* Postal Code */}
+                    {t('postalCode')}
+                  </div>
                   <input
                     type="text"
                     {...register(`${type}.postalCode`, { required: true })}
@@ -147,23 +167,26 @@ const LocationSection = ({ type, register, errors }) => {
     </div>
   );
 };
-
-// Traveler Schedule Section
 const TravelScheduleSection = ({ register, errors }) => {
+  const t = useTranslations('travellerForm.steps.step1.fields.travelSchedule');
   return (
     <div className="p-6 rounded-xl bg-gray-900/80 backdrop-blur-lg border border-gray-700 shadow-lg transition-all duration-200 hover:bg-gray-900/90">
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-1.5 h-8 bg-yellow-500 rounded-full" />
-        <h3 className="text-xl font-bold text-white">Travel Schedule</h3>
+        <h3 className="text-xl font-bold text-white">
+          {/* Travel Schedule */}
+          {t('title')}
+        </h3>
       </div>
 
       <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Departure Date/Time */}
           <div>
             <div className="flex items-center space-x-1 mb-2">
               <label className="text-base font-medium text-white">
-                Departure
+                {/* Departure */}
+                {t('departure')}
               </label>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -203,7 +226,8 @@ const TravelScheduleSection = ({ register, errors }) => {
           <div>
             <div className="flex items-center space-x-1 mb-2">
               <label className="text-base font-medium text-white">
-                Arrival
+                {/* Arrival */}
+                {t('arrival')}
               </label>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -242,45 +266,45 @@ const TravelScheduleSection = ({ register, errors }) => {
     </div>
   );
 };
-
-// Package Reception Section
 const ReceptionSection = ({ register, errors }) => {
-  // Reception Methods
+  const t = useTranslations(
+    'travellerForm.steps.step1.fields.packageReception',
+  );
   const RECEPTION_METHODS = [
     {
       id: 'departure-point',
-      name: 'At Departure Point',
-      description: 'Meet at the airport/station on travel day',
+      name: t('receptionMethod.departurePoint.name'),
+      description: t('receptionMethod.departurePoint.description'),
     },
     {
       id: 'advance-home',
-      name: 'Advance Home Delivery',
-      description: 'Receive at your address before travel date',
+      name: t('receptionMethod.advanceHome.name'),
+      description: t('receptionMethod.advanceHome.description'),
     },
     {
       id: 'meeting-point',
-      name: 'Convenient Meeting Point',
-      description: 'Arrange a mutual meeting location',
+      name: t('receptionMethod.meetingPoint.name'),
+      description: t('receptionMethod.meetingPoint.description'),
     },
   ];
 
   const ADVANCE_NOTICE_OPTIONS = [
-    { value: '1', label: '1 day notice' },
-    { value: '2', label: '2 days notice' },
-    { value: '3', label: '3 days notice' },
-    { value: 'flexible', label: 'Flexible (coordinate with sender)' },
+    { value: '1', label: t('oneDayNotice') },
+    { value: '2', label: t('twoDaysNotice') },
+    { value: '3', label: t('threeDaysNotice') },
+    { value: 'flexible', label: t('flexibleNotice') },
   ];
 
   const WEEKDAY_OPTIONS = [
-    { value: 'weekdayMorning', label: 'Morning (6 AM - 12 PM)' },
-    { value: 'weekdayAfternoon', label: 'Afternoon (12 PM - 6 PM)' },
-    { value: 'weekdayEvening', label: 'Evening (6 PM - 10 PM)' },
+    { value: 'weekdayMorning', label: t('morning') },
+    { value: 'weekdayAfternoon', label: t('afternoon') },
+    { value: 'weekdayEvening', label: t('evening') },
   ];
 
   const WEEKEND_OPTIONS = [
-    { value: 'weekendMorning', label: 'Morning (6 AM - 12 PM)' },
-    { value: 'weekendAfternoon', label: 'Afternoon (12 PM - 6 PM)' },
-    { value: 'weekendEvening', label: 'Evening (6 PM - 10 PM)' },
+    { value: 'weekendMorning', label: t('morning') },
+    { value: 'weekendAfternoon', label: t('afternoon') },
+    { value: 'weekendEvening', label: t('evening') },
   ];
 
   return (
@@ -291,7 +315,8 @@ const ReceptionSection = ({ register, errors }) => {
       <div className="flex items-center space-x-3 mb-6">
         <div className="w-1.5 h-8 bg-green-500 rounded-full" />
         <h3 className="text-xl font-bold text-white">
-          Package Reception Details
+          {/* Package Reception Details */}
+          {t('title')}
         </h3>
         <Tooltip content="Configure how you want to receive packages from senders">
           <FiInfo className="w-4 h-4 text-gray-600 hover:text-gray-500 transition-colors ml-1" />
@@ -299,11 +324,12 @@ const ReceptionSection = ({ register, errors }) => {
       </div>
 
       {/* Reception method */}
-      <div className="space-y-6">
+      <div className="mt-4">
         <div>
           <div className="flex items-center space-x-1 mb-2">
             <label className="text-base font-medium text-white">
-              Reception Method
+              {/* Reception Method */}
+              {t('receptionMethod.title')}
             </label>
             <Tooltip content="Choose how you prefer to receive packages from senders">
               <FiInfo className="w-4 h-4 text-gray-600 hover:text-gray-500 transition-colors ml-1" />
@@ -339,10 +365,11 @@ const ReceptionSection = ({ register, errors }) => {
       </div>
 
       {/* Advanced notice required */}
-      <div>
+      <div className="mt-4">
         <div className="flex items-center space-x-1 mb-2">
           <label className="text-base font-medium text-white">
-            Advance Notice Required
+            {/* Advance Notice Required */}
+            {t('advanceNoticeRequired')}
           </label>
           <Tooltip content="How much notice do you need before receiving packages?">
             <FiInfo className="w-4 h-4 text-gray-600 hover:text-gray-500 transition-colors ml-1" />
@@ -377,10 +404,11 @@ const ReceptionSection = ({ register, errors }) => {
       </div>
 
       {/* Available Reception Times */}
-      <div>
+      <div className="mt-4">
         <div className="flex items-center space-x-1 mb-4">
           <label className="text-base font-medium text-white">
-            Available Reception Times
+            {/* Available Reception Times */}
+            {t('availableReceptionTimes')}
           </label>
           <Tooltip content="Select the time slots when you're available to receive packages">
             <FiInfo className="w-4 h-4 text-gray-600 hover:text-gray-500 transition-colors ml-1" />
@@ -393,7 +421,10 @@ const ReceptionSection = ({ register, errors }) => {
           {/* Weekdays */}
           <div className="space-y-3">
             <div className="flex items-center space-x-1">
-              <h4 className="text-lg font-medium text-white">Weekdays</h4>
+              <h4 className="text-lg font-medium text-white">
+                {/* Weekdays */}
+                {t('weekdays')}
+              </h4>
               <Tooltip content="Select your available time slots during weekdays">
                 <FiInfo className="w-4 h-4 text-gray-600 hover:text-gray-500 transition-colors ml-1" />
               </Tooltip>
@@ -407,7 +438,7 @@ const ReceptionSection = ({ register, errors }) => {
                 <input
                   type="checkbox"
                   {...register(
-                    `packageReceptionDetails.availableTimes.${option.value}`
+                    `packageReceptionDetails.availableTimes.${option.value}`,
                   )}
                   className="w-5 h-5 rounded border-gray-600 bg-gray-700 text-blue-500 
                           focus:ring-blue-500/20 focus:ring-offset-0"
@@ -429,7 +460,10 @@ const ReceptionSection = ({ register, errors }) => {
           {/* Weekends */}
           <div className="space-y-3">
             <div className="flex items-center space-x-1">
-              <h4 className="text-lg font-medium text-white">Weekends</h4>
+              <h4 className="text-lg font-medium text-white">
+                {/* Weekends */}
+                {t('weekends')}
+              </h4>
               <Tooltip content="Select your available time slots during weekends">
                 <FiInfo className="w-4 h-4 text-gray-600 hover:text-gray-500 transition-colors ml-1" />
               </Tooltip>
@@ -443,7 +477,7 @@ const ReceptionSection = ({ register, errors }) => {
                 <input
                   type="checkbox"
                   {...register(
-                    `packageReceptionDetails.availableTimes.${option.value}`
+                    `packageReceptionDetails.availableTimes.${option.value}`,
                   )}
                   className="w-5 h-5 rounded border-gray-600 bg-gray-700 text-blue-500 
                           focus:ring-blue-500/20 focus:ring-offset-0"

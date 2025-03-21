@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   LineChart,
   Line,
@@ -18,10 +18,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts'
-import { FiDownload, FiCalendar } from 'react-icons/fi'
-
-// Mock data
+} from 'recharts';
+import { FiDownload, FiCalendar } from 'react-icons/fi';
 const deliveryData = [
   { name: 'Jan', completed: 65, cancelled: 12, pending: 23 },
   { name: 'Feb', completed: 78, cancelled: 8, pending: 28 },
@@ -29,7 +27,7 @@ const deliveryData = [
   { name: 'Apr', completed: 95, cancelled: 10, pending: 25 },
   { name: 'May', completed: 110, cancelled: 7, pending: 29 },
   { name: 'Jun', completed: 125, cancelled: 11, pending: 35 },
-]
+];
 
 const revenueData = [
   { name: 'Jan', revenue: 12500 },
@@ -38,18 +36,18 @@ const revenueData = [
   { name: 'Apr', revenue: 18900 },
   { name: 'May', revenue: 22400 },
   { name: 'Jun', revenue: 25600 },
-]
+];
 
 const userTypeData = [
   { name: 'Regular Users', value: 60 },
   { name: 'Travelers', value: 25 },
   { name: 'Business', value: 15 },
-]
+];
 
-const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444']
+const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
 
 export default function AnalyticsPage() {
-  const [timeRange, setTimeRange] = useState('6M')
+  const [timeRange, setTimeRange] = useState('6M');
 
   return (
     <div className="space-y-6">
@@ -57,9 +55,11 @@ export default function AnalyticsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-white">Analytics Dashboard</h1>
-          <p className="text-gray-400 mt-1">Monitor your platform's performance</p>
+          <p className="text-gray-400 mt-1">
+            Monitor your platform's performance
+          </p>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           {/* Time Range Selector */}
           <div className="flex items-center space-x-2 bg-gray-800 rounded-lg p-1">
@@ -94,7 +94,9 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Delivery Trends */}
         <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Delivery Trends</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">
+            Delivery Trends
+          </h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={deliveryData}>
@@ -141,7 +143,9 @@ export default function AnalyticsPage() {
 
         {/* Revenue Chart */}
         <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Revenue Overview</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">
+            Revenue Overview
+          </h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={revenueData}>
@@ -172,7 +176,9 @@ export default function AnalyticsPage() {
 
         {/* User Distribution */}
         <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">User Distribution</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">
+            User Distribution
+          </h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -188,7 +194,10 @@ export default function AnalyticsPage() {
                   label
                 >
                   {userTypeData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip
@@ -207,7 +216,9 @@ export default function AnalyticsPage() {
 
         {/* Monthly Stats */}
         <div className="bg-gray-800 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Monthly Performance</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">
+            Monthly Performance
+          </h2>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={deliveryData}>
@@ -245,12 +256,16 @@ export default function AnalyticsPage() {
             className="bg-gray-800 rounded-lg p-6"
             whileHover={{ y: -4 }}
           >
-            <h3 className="text-gray-400 text-sm font-medium">{metric.title}</h3>
+            <h3 className="text-gray-400 text-sm font-medium">
+              {metric.title}
+            </h3>
             <p className="text-2xl font-bold text-white mt-2">{metric.value}</p>
-            <span className="text-green-400 text-sm font-medium">{metric.change}</span>
+            <span className="text-green-400 text-sm font-medium">
+              {metric.change}
+            </span>
           </motion.div>
         ))}
       </div>
     </div>
-  )
+  );
 }

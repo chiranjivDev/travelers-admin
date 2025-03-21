@@ -12,19 +12,38 @@ import {
   FiMapPin,
   FiSettings,
   FiUser,
-  FiMessageSquare,
-  FiBell,
   FiLogOut,
-  FiUserPlus,
 } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslations } from 'next-intl';
+import { useRef } from 'react';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [locale, setLocale] = useState('');
+
   const pathname = usePathname();
   const { user, logout, switchRole } = useAuth();
+
+  const t = useTranslations('Navbar');
+  const router = useRouter();
+  useEffect(() => {
+    const localeCookie = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('NEXT_LOCALE='))
+      ?.split('=')[1];
+
+    if (localeCookie) {
+      setLocale(localeCookie);
+    } else {
+      const browserLocale = navigator.language.slice(0, 2);
+      setLocale(browserLocale);
+      document.cookie = `NEXT_LOCALE=${browserLocale};`;
+      router.refresh();
+    }
+  }, [router]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,16 +54,13 @@ export default function Navigation() {
   }, []);
 
   const mainNavItems = [
-    { name: 'Send Package', path: '/form' },
-    { name: 'Browse Packages', path: '/browse-packages' },
-    { name: 'Browse Trips', path: '/browse-trips' },
-    { name: 'Become a Traveler', path: '/traveler-form' },
-    { name: 'How It Works', path: '/how-it-works' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Safety', path: '/safety' },
-    { name: 'Support', path: '/support' },
-    { name: 'Chat', path: '/chat' },
-    // { name: 'Chat', path: '/simple-chat' },
+    { name: t('sendPackage'), path: '/form' },
+    { name: t('browsePackages'), path: '/browse-packages' },
+    { name: t('browseTrips'), path: '/browse-trips' },
+    { name: t('becomeTraveler'), path: '/traveler-form' },
+    { name: t('howItWorks'), path: '/how-it-works' },
+    { name: t('blog'), path: '/blog' },
+    { name: t('chat'), path: '/chat' },
   ];
 
   const userNavItems = [
@@ -66,28 +82,15 @@ export default function Navigation() {
       icon: FiSettings,
       role: 'admin',
     },
-    {
-      name: 'Profile Settings',
-      path: '/settings',
-      icon: FiUser,
-      role: 'all',
-    },
-    {
-      name: 'Messages',
-      path: '/messages',
-      icon: FiMessageSquare,
-      role: 'all',
-    },
-    {
-      name: 'Notifications',
-      path: '/notifications',
-      icon: FiBell,
-      role: 'all',
-    },
   ];
 
-  // initialize router
-  const router = useRouter();
+  const changeLocale = (newLocale: string) => {
+    if (newLocale !== locale) {
+      document.cookie = `NEXT_LOCALE=${newLocale}; path=/;`;
+      setLocale(newLocale);
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -121,14 +124,14 @@ export default function Navigation() {
               {/* filter based on the user permissions */}
               {mainNavItems
                 .filter((item) => {
-                  if (item.name === 'Send Package') {
+                  if (item.name === t('sendPackage')) {
                     return user?.permissions === 'sender';
                   }
-                  if (item.name === 'Become a Traveler') {
+                  if (item.name === t('becomeTraveler')) {
                     return user?.permissions === 'traveler';
                   }
-                  if (item.name === 'Chat') {
-                    return user; // Only show "Chat" if the user is logged in
+                  if (item.name === t('chat')) {
+                    return user;
                   }
                   return true;
                 })
@@ -184,41 +187,37 @@ export default function Navigation() {
                         </p>
                         <p className="text-sm text-gray-400">{user.email}</p>
                         <p className="text-xs text-blue-400 mt-1">
-                          Active as: {user.permissions}
+                          {t('user.activeAs')} : {user.permissions}
                         </p>
                       </div>
 
-                      {/* Role Switching Section */}
-                      {user?.roles?.length > 1 && (
-                        <div className="px-4 py-2 border-b border-gray-700">
-                          <p className="text-xs text-gray-400 mb-2">
-                            Switch Role
+                      {/* Verify your Identity */}
+                      <div className="px-4 py-3 border-b border-gray-700">
+                        <p className="text-sm font-medium text-white">
+                          Verify Your Identity
+                        </p>
+                        <button
+                          className="mt-2 text-sm text-blue-500 hover:underline"
+                          onClick={() => router.push('/kyc-verification')}
+                        >
+                          Start KYC
+                        </button>
+                      </div>
+
+                      {/* Stripe Account Section */}
+                      {user.permissions === 'traveler' && (
+                        <div className="px-4 py-3 border-b border-gray-700">
+                          <p className="text-sm font-medium text-white">
+                            {/* Payment Setup */}
+                            {t('user.paymentSetup')}
                           </p>
-                          {user?.roles?.map((role) => (
-                            <button
-                              key={role}
-                              onClick={() => {
-                                switchRole(role);
-                                setIsUserMenuOpen(false);
-                              }}
-                              className={`flex items-center space-x-2 px-3 py-1.5 rounded-md w-full text-sm ${
-                                user.activeRole === role
-                                  ? 'bg-blue-600 text-white'
-                                  : 'text-gray-300 hover:bg-gray-700'
-                              }`}
-                            >
-                              {role === 'sender' && (
-                                <FiPackage className="w-4 h-4" />
-                              )}
-                              {role === 'traveler' && (
-                                <FiMapPin className="w-4 h-4" />
-                              )}
-                              {role === 'admin' && (
-                                <FiSettings className="w-4 h-4" />
-                              )}
-                              <span className="capitalize">{role}</span>
-                            </button>
-                          ))}
+                          <button
+                            className="mt-2 text-sm text-blue-500 hover:underline"
+                            onClick={() => router.push('/connect-stripe')}
+                          >
+                            {/* Connect Stripe Account */}
+                            {t('user.connectStripe')}
+                          </button>
                         </div>
                       )}
 
@@ -226,7 +225,8 @@ export default function Navigation() {
                       {userNavItems
                         .filter(
                           (item) =>
-                            item.role === 'all' || item.role === user.activeRole
+                            item.role === 'all' ||
+                            item.role === user.activeRole,
                         )
                         .map((item) => (
                           <Link
@@ -240,32 +240,24 @@ export default function Navigation() {
                           </Link>
                         ))}
 
-                      {/* Register as Another Role */}
-                      {!user.roles?.includes('traveler') && (
-                        <Link
-                          href="/register/traveler"
-                          className="flex items-center space-x-3 px-4 py-2.5 text-sm text-purple-400 hover:text-purple-300 hover:bg-gray-700 border-t border-gray-700"
-                          onClick={() => setIsUserMenuOpen(false)}
+                      <div className="border-t border-gray-700 mt-2 pt-2">
+                        <button
+                          onClick={() => {
+                            const dashboardPath =
+                              user.permissions === 'sender'
+                                ? '/sender/dashboard'
+                                : '/traveler/dashboard';
+                            router.push(dashboardPath);
+                          }}
+                          className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-gray-700 w-full"
                         >
-                          <FiUserPlus className="w-5 h-5" />
-                          <span>Register as Traveler</span>
-                        </Link>
-                      )}
-
-                      {/* User Dashboard */}
-                      {user.permissions === 'sender' && (
-                        <div className="border-t border-gray-700 mt-2 pt-2">
-                          <button
-                            onClick={() => {
-                              router.push('/sender/dashboard');
-                            }}
-                            className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-gray-700 w-full"
-                          >
-                            <FiUser className="w-5 h-5" />
-                            <span>Dashboard</span>
-                          </button>
-                        </div>
-                      )}
+                          <FiUser className="w-5 h-5" />
+                          <span>
+                            {/* Dashboard */}
+                            {t('user.dashboard')}
+                          </span>
+                        </button>
+                      </div>
 
                       <div className="border-t border-gray-700 mt-2 pt-2">
                         <button
@@ -276,7 +268,10 @@ export default function Navigation() {
                           className="flex items-center space-x-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-gray-700 w-full"
                         >
                           <FiLogOut className="w-5 h-5" />
-                          <span>Log Out</span>
+                          <span>
+                            {/* Log Out */}
+                            {t('user.logout')}
+                          </span>
                         </button>
                       </div>
                     </motion.div>
@@ -288,16 +283,18 @@ export default function Navigation() {
                     href="/login"
                     className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
                   >
-                    Log In
+                    {t('logIn')}
                   </Link>
                   <Link
                     href="/signup"
                     className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-full text-sm font-medium text-white transition-colors"
                   >
-                    Sign Up
+                    {t('signUp')}
                   </Link>
                 </>
               )}
+
+              <LanguageSelector locale={locale} changeLocale={changeLocale} />
             </div>
 
             {/* Mobile Menu Button */}
@@ -329,7 +326,7 @@ export default function Navigation() {
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
                       <span className="text-lg font-medium text-white">
-                        {user.name.charAt(0)}
+                        {user?.email?.charAt(0)}
                       </span>
                     </div>
                     <div>
@@ -337,6 +334,32 @@ export default function Navigation() {
                       <p className="text-sm text-gray-400">{user.email}</p>
                     </div>
                   </div>
+                  <div className="px-2 pt-3 border-t mt-3 border-gray-700">
+                    <p className="text-sm font-medium text-white">
+                      Verify Your Identity
+                    </p>
+                    <button
+                      className="mt-2 text-sm text-blue-500 hover:underline"
+                      onClick={() => router.push('/kyc-verification')}
+                    >
+                      Start KYC
+                    </button>
+                  </div>
+                  {user.permissions === 'traveler' && (
+                    <div className="px-2 py-3">
+                      <p className="text-sm font-medium text-white">
+                        {/* Payment Setup */}
+                        {t('user.paymentSetup')}
+                      </p>
+                      <button
+                        className="mt-2 text-sm text-blue-500 hover:underline"
+                        onClick={() => router.push('/connect-stripe')}
+                      >
+                        {/* Connect Stripe Account */}
+                        {t('user.connectStripe')}
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -362,7 +385,7 @@ export default function Navigation() {
                   {userNavItems
                     .filter(
                       (item) =>
-                        item.role === 'all' || item.role === user.activeRole
+                        item.role === 'all' || item.role === user.activeRole,
                     )
                     .map((item) => (
                       <Link
@@ -375,10 +398,27 @@ export default function Navigation() {
                         <span>{item.name}</span>
                       </Link>
                     ))}
-
+                  <div className="mt-2 pt-2">
+                    <button
+                      onClick={() => {
+                        const dashboardPath =
+                          user.permissions === 'sender'
+                            ? '/sender/dashboard'
+                            : '/traveler/dashboard';
+                        router.push(dashboardPath);
+                      }}
+                      className="flex items-center space-x-3 px-2 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-gray-700 w-full"
+                    >
+                      <FiUser className="w-5 h-5" />
+                      <span>
+                        {/* Dashboard */}
+                        {t('user.dashboard')}
+                      </span>
+                    </button>
+                  </div>
                   <button
-                    onClick={() => {
-                      // Handle logout
+                    onClick={async () => {
+                      await logout();
                       setIsMobileMenuOpen(false);
                     }}
                     className="flex items-center space-x-3 px-3 py-2 text-base text-red-400 hover:text-red-300 hover:bg-gray-800 rounded-md w-full mt-2"
@@ -408,6 +448,9 @@ export default function Navigation() {
                   </Link>
                 </div>
               )}
+
+              {/* LANGUAGE  */}
+              <LanguageSelector locale={locale} changeLocale={changeLocale} />
             </div>
           </motion.div>
         )}
@@ -417,3 +460,58 @@ export default function Navigation() {
     </>
   );
 }
+const LanguageSelector = ({ locale, changeLocale }) => {
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  const languages = [
+    { code: 'en', name: 'English', flagClass: 'fi fi-us' },
+    { code: 'fa', name: 'فارسی', flagClass: 'fi fi-ir' },
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsLanguageMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative inline-block" ref={menuRef}>
+      {/* Button to Toggle Dropdown */}
+      <button
+        className="appearance-none bg-black text-white py-2 px-4 pr-8 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer hover:bg-gray-900 flex items-center justify-between w-full"
+        onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+      >
+        <span className="flex items-center space-x-2">
+          <span
+            className={`${languages.find((lang) => lang.code === locale)?.flagClass} w-5 h-4 rounded-sm`}
+          ></span>
+          <span>{languages.find((lang) => lang.code === locale)?.name}</span>
+        </span>
+      </button>
+
+      {/* Dropdown Menu for All Screens */}
+      {isLanguageMenuOpen && (
+        <div className="absolute left-0 mt-2 w-full bg-black border border-gray-700 rounded-lg shadow-lg z-50 overflow-auto">
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              className="flex items-center space-x-2 w-full px-4 py-2 text-white hover:bg-gray-800"
+              onClick={() => {
+                changeLocale(lang.code);
+                setIsLanguageMenuOpen(false);
+              }}
+            >
+              <span className={`${lang.flagClass} w-5 h-4 rounded-sm`}></span>
+              <span>{lang.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

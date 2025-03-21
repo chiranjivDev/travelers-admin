@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   FiSave,
   FiGlobe,
@@ -11,7 +11,7 @@ import {
   FiUsers,
   FiToggleRight,
   FiInfo,
-} from 'react-icons/fi'
+} from 'react-icons/fi';
 
 const settingsSections = [
   {
@@ -142,35 +142,36 @@ const settingsSections = [
       },
     ],
   },
-]
+];
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState(settingsSections)
-  const [activeSection, setActiveSection] = useState('general')
+  const [settings, setSettings] = useState(settingsSections);
+  const [activeSection, setActiveSection] = useState('general');
 
-  const handleSettingChange = (sectionId: string, settingId: string, value: any) => {
-    setSettings(prevSettings =>
-      prevSettings.map(section => {
+  const handleSettingChange = (
+    sectionId: string,
+    settingId: string,
+    value: any,
+  ) => {
+    setSettings((prevSettings) =>
+      prevSettings.map((section) => {
         if (section.id === sectionId) {
           return {
             ...section,
-            settings: section.settings.map(setting => {
+            settings: section.settings.map((setting) => {
               if (setting.id === settingId) {
-                return { ...setting, value }
+                return { ...setting, value };
               }
-              return setting
+              return setting;
             }),
-          }
+          };
         }
-        return section
-      })
-    )
-  }
+        return section;
+      }),
+    );
+  };
 
-  const handleSave = () => {
-    // TODO: Implement settings save functionality
-    console.log('Saving settings:', settings)
-  }
+  const handleSave = () => {};
 
   const renderSettingInput = (setting: any, sectionId: string) => {
     switch (setting.type) {
@@ -181,15 +182,19 @@ export default function SettingsPage() {
           <input
             type={setting.type}
             value={setting.value}
-            onChange={(e) => handleSettingChange(sectionId, setting.id, e.target.value)}
+            onChange={(e) =>
+              handleSettingChange(sectionId, setting.id, e.target.value)
+            }
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
           />
-        )
+        );
       case 'select':
         return (
           <select
             value={setting.value}
-            onChange={(e) => handleSettingChange(sectionId, setting.id, e.target.value)}
+            onChange={(e) =>
+              handleSettingChange(sectionId, setting.id, e.target.value)
+            }
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-blue-500"
           >
             {setting.options.map((option: string) => (
@@ -198,12 +203,14 @@ export default function SettingsPage() {
               </option>
             ))}
           </select>
-        )
+        );
       case 'toggle':
         return (
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={() => handleSettingChange(sectionId, setting.id, !setting.value)}
+            onClick={() =>
+              handleSettingChange(sectionId, setting.id, !setting.value)
+            }
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
               setting.value ? 'bg-blue-600' : 'bg-gray-600'
             }`}
@@ -214,11 +221,11 @@ export default function SettingsPage() {
               }`}
             />
           </motion.button>
-        )
+        );
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -226,7 +233,9 @@ export default function SettingsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-white">Platform Settings</h1>
-          <p className="text-gray-400 mt-1">Manage your platform configuration</p>
+          <p className="text-gray-400 mt-1">
+            Manage your platform configuration
+          </p>
         </div>
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -242,7 +251,7 @@ export default function SettingsPage() {
       {/* Settings Navigation */}
       <div className="flex space-x-4 overflow-x-auto pb-2">
         {settings.map((section) => {
-          const Icon = section.icon
+          const Icon = section.icon;
           return (
             <motion.button
               key={section.id}
@@ -258,7 +267,7 @@ export default function SettingsPage() {
               <Icon className="w-5 h-5" />
               <span>{section.title}</span>
             </motion.button>
-          )
+          );
         })}
       </div>
 
@@ -275,7 +284,9 @@ export default function SettingsPage() {
                 >
                   <div className="flex justify-between items-center">
                     <div className="space-y-1">
-                      <label className="text-white font-medium">{setting.label}</label>
+                      <label className="text-white font-medium">
+                        {setting.label}
+                      </label>
                       <p className="text-sm text-gray-400">
                         Configure your {setting.label.toLowerCase()} preferences
                       </p>
@@ -296,5 +307,5 @@ export default function SettingsPage() {
           ))}
       </div>
     </div>
-  )
+  );
 }

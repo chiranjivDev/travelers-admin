@@ -11,7 +11,6 @@ const authSlice = createSlice({
     error: null,
   },
   reducers: {
-    // Login Actions
     loginRequest(state) {
       state.loading = true;
       state.error = null;
@@ -28,7 +27,6 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Signup Actions
     signupRequest(state) {
       state.loading = true;
       state.error = null;
@@ -43,7 +41,6 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Logout Action
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;

@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { 
-  FiUsers, 
-  FiPackage, 
-  FiDollarSign, 
+import { motion } from 'framer-motion';
+import {
+  FiUsers,
+  FiPackage,
+  FiDollarSign,
   FiAlertCircle,
   FiTruck,
-  FiMap
-} from 'react-icons/fi'
+  FiMap,
+} from 'react-icons/fi';
 import {
   LineChart,
   Line,
@@ -16,10 +16,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
-} from 'recharts'
-
-// Mock data - Replace with real data from API
+  ResponsiveContainer,
+} from 'recharts';
 const deliveryData = [
   { name: 'Jan', deliveries: 400, revenue: 2400, disputes: 24 },
   { name: 'Feb', deliveries: 300, revenue: 1398, disputes: 22 },
@@ -27,13 +25,13 @@ const deliveryData = [
   { name: 'Apr', deliveries: 278, revenue: 3908, disputes: 20 },
   { name: 'May', deliveries: 189, revenue: 4800, disputes: 15 },
   { name: 'Jun', deliveries: 239, revenue: 3800, disputes: 17 },
-]
+];
 
 const regions = [
   { name: 'North America', activeUsers: 1234, deliveries: 567, revenue: 45678 },
   { name: 'Europe', activeUsers: 2345, deliveries: 890, revenue: 78901 },
   { name: 'Asia', activeUsers: 3456, deliveries: 1234, revenue: 90123 },
-]
+];
 
 export default function AnalyticsDashboard() {
   return (
@@ -46,22 +44,22 @@ export default function AnalyticsDashboard() {
             value: '1,234',
             change: '+12.5%',
             icon: FiTruck,
-            color: 'text-blue-500'
+            color: 'text-blue-500',
           },
           {
             title: 'Total Revenue',
             value: '$45,678',
             change: '+8.2%',
             icon: FiDollarSign,
-            color: 'text-green-500'
+            color: 'text-green-500',
           },
           {
             title: 'Open Disputes',
             value: '23',
             change: '-5.1%',
             icon: FiAlertCircle,
-            color: 'text-red-500'
-          }
+            color: 'text-red-500',
+          },
         ].map((stat, index) => (
           <motion.div
             key={index}
@@ -71,10 +69,16 @@ export default function AnalyticsDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">{stat.title}</p>
-                <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
-                <p className={`text-sm mt-1 ${
-                  stat.change.startsWith('+') ? 'text-green-400' : 'text-red-400'
-                }`}>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {stat.value}
+                </p>
+                <p
+                  className={`text-sm mt-1 ${
+                    stat.change.startsWith('+')
+                      ? 'text-green-400'
+                      : 'text-red-400'
+                  }`}
+                >
                   {stat.change} from last month
                 </p>
               </div>
@@ -93,39 +97,36 @@ export default function AnalyticsDashboard() {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={deliveryData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis 
-                dataKey="name" 
+              <XAxis
+                dataKey="name"
                 stroke="#9CA3AF"
                 style={{ fontSize: '12px' }}
               />
-              <YAxis 
-                stroke="#9CA3AF"
-                style={{ fontSize: '12px' }}
-              />
+              <YAxis stroke="#9CA3AF" style={{ fontSize: '12px' }} />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#1F2937',
                   border: 'none',
                   borderRadius: '8px',
-                  color: '#fff'
+                  color: '#fff',
                 }}
               />
-              <Line 
-                type="monotone" 
-                dataKey="deliveries" 
-                stroke="#3B82F6" 
+              <Line
+                type="monotone"
+                dataKey="deliveries"
+                stroke="#3B82F6"
                 strokeWidth={2}
               />
-              <Line 
-                type="monotone" 
-                dataKey="revenue" 
-                stroke="#10B981" 
+              <Line
+                type="monotone"
+                dataKey="revenue"
+                stroke="#10B981"
                 strokeWidth={2}
               />
-              <Line 
-                type="monotone" 
-                dataKey="disputes" 
-                stroke="#EF4444" 
+              <Line
+                type="monotone"
+                dataKey="disputes"
+                stroke="#EF4444"
                 strokeWidth={2}
               />
             </LineChart>
@@ -135,10 +136,12 @@ export default function AnalyticsDashboard() {
 
       {/* Regional Performance */}
       <div className="bg-gray-800 rounded-xl p-6">
-        <h3 className="text-lg font-medium text-white mb-4">Regional Performance</h3>
+        <h3 className="text-lg font-medium text-white mb-4">
+          Regional Performance
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {regions.map((region, index) => (
-            <div 
+            <div
               key={index}
               className="bg-gray-700/50 rounded-lg p-4 space-y-3"
             >
@@ -171,5 +174,5 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,11 +1,13 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { packageCategories } from './packageCategories'
-import AddressInput from '@/components/AddressInput'
-import DeliveryMethod, { DeliveryMethodDetails } from '@/components/DeliveryMethod'
-import PackageDetails from '@/components/PackageDetails'
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { packageCategories } from './packageCategories';
+import AddressInput from '@/components/AddressInput';
+import DeliveryMethod, {
+  DeliveryMethodDetails,
+} from '@/components/DeliveryMethod';
+import PackageDetails from '@/components/PackageDetails';
 
 interface AddressDetails {
   streetAddress: string;
@@ -68,7 +70,7 @@ interface FormData {
 }
 
 export default function SendPackage() {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     category: '',
     subcategory: '',
@@ -77,23 +79,23 @@ export default function SendPackage() {
       weight: '',
       length: '',
       width: '',
-      height: ''
+      height: '',
     },
     pickupMethod: {
       type: 'station',
       stationDetails: {
         stationName: '',
         stationAddress: '',
-        preferredTime: ''
-      }
+        preferredTime: '',
+      },
     },
     deliveryMethod: {
       type: 'station',
       stationDetails: {
         stationName: '',
         stationAddress: '',
-        preferredTime: ''
-      }
+        preferredTime: '',
+      },
     },
     pickupLocation: {
       streetAddress: '',
@@ -101,7 +103,7 @@ export default function SendPackage() {
       state: '',
       postalCode: '',
       country: '',
-      instructions: ''
+      instructions: '',
     },
     deliveryLocation: {
       streetAddress: '',
@@ -109,14 +111,14 @@ export default function SendPackage() {
       state: '',
       postalCode: '',
       country: '',
-      instructions: ''
+      instructions: '',
     },
     preferredDate: '',
     specialInstructions: '',
     packageHandling: {
       requiresCarefulHandling: false,
       isFragile: false,
-      specialInstructions: ''
+      specialInstructions: '',
     },
     communicationPreferences: {
       whatsapp: false,
@@ -125,7 +127,7 @@ export default function SendPackage() {
       inApp: false,
       preferredNumber: '',
       preferredEmail: '',
-      languagePreference: ''
+      languagePreference: '',
     },
     preferredTimes: {
       morning: false,
@@ -133,7 +135,7 @@ export default function SendPackage() {
       evening: false,
       specific: '',
       flexibleDays: false,
-      preferredDays: []
+      preferredDays: [],
     },
     packagePhotos: [],
     pickupFlexibility: {
@@ -143,69 +145,105 @@ export default function SendPackage() {
       canShipToTraveler: false,
       shippingPreferences: {
         maxCost: 0,
-        preferredServices: []
-      }
-    }
-  })
+        preferredServices: [],
+      },
+    },
+  });
 
   const steps = [
     {
       id: 1,
-      title: "Package Type",
+      title: 'Package Type',
       subtitle: "Tell us what you're sending",
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+          />
         </svg>
-      )
+      ),
     },
     {
       id: 2,
-      title: "Package Pickup",
-      subtitle: "Set pickup details",
+      title: 'Package Pickup',
+      subtitle: 'Set pickup details',
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+          />
         </svg>
-      )
+      ),
     },
     {
       id: 3,
-      title: "Review",
-      subtitle: "Confirm details",
+      title: 'Review',
+      subtitle: 'Confirm details',
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
         </svg>
-      )
-    }
-  ]
+      ),
+    },
+  ];
 
   const slideVariants = {
     enter: {
       x: 1000,
-      opacity: 0
+      opacity: 0,
     },
     center: {
       zIndex: 1,
       x: 0,
-      opacity: 1
+      opacity: 1,
     },
     exit: {
       zIndex: 0,
       x: -1000,
-      opacity: 0
-    }
-  }
+      opacity: 0,
+    },
+  };
 
-  const handleNext = () => setStep(step + 1)
-  const handlePrev = () => setStep(step - 1)
+  const handleNext = () => setStep(step + 1);
+  const handlePrev = () => setStep(step - 1);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log('Form submitted:', formData)
-  }
+    e.preventDefault();
+  };
 
   const renderStep = () => {
     switch (step) {
@@ -221,18 +259,30 @@ export default function SendPackage() {
           >
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-black">What are you sending?</h2>
-                <p className="text-gray-600 mt-2">Tell us about what you're sending to help travelers understand your package better.</p>
+                <h2 className="text-2xl font-bold text-black">
+                  What are you sending?
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  Tell us about what you're sending to help travelers understand
+                  your package better.
+                </p>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">Package Category</label>
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Package Category
+                  </label>
                   <select
                     id="category"
                     className="w-full p-3 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
                     aria-label="Select package category"
                   >
                     <option value="">Select Category</option>
@@ -246,12 +296,22 @@ export default function SendPackage() {
 
                 {formData.category && (
                   <div>
-                    <label htmlFor="subcategory" className="block text-sm font-medium text-gray-700 mb-2">Package Type</label>
+                    <label
+                      htmlFor="subcategory"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      Package Type
+                    </label>
                     <select
                       id="subcategory"
                       className="w-full p-3 border rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                       value={formData.subcategory}
-                      onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          subcategory: e.target.value,
+                        })
+                      }
                       aria-label="Select package type"
                     >
                       <option value="">Select Type</option>
@@ -272,7 +332,10 @@ export default function SendPackage() {
                     setFormData({
                       ...formData,
                       selectedSize: details.selectedSize,
-                      customDimensions: details.selectedSize === 'custom' ? formData.customDimensions : undefined
+                      customDimensions:
+                        details.selectedSize === 'custom'
+                          ? formData.customDimensions
+                          : undefined,
                     });
                   }}
                 />
@@ -281,8 +344,9 @@ export default function SendPackage() {
                 <div className="mt-8">
                   <h3 className="text-lg font-semibold mb-4">Package Photos</h3>
                   <p className="text-sm text-gray-600 mb-4">
-                    Add photos of your package to help travelers better understand its appearance and condition.
-                    This also helps with package verification during pickup and delivery.
+                    Add photos of your package to help travelers better
+                    understand its appearance and condition. This also helps
+                    with package verification during pickup and delivery.
                   </p>
 
                   <div className="relative">
@@ -317,22 +381,23 @@ export default function SendPackage() {
                               multiple
                               onChange={(e) => {
                                 const files = Array.from(e.target.files || []);
-                                // Here you would typically upload these files to your server
-                                // and get back URLs to store in formData.packagePhotos
-                                console.log('Files selected:', files);
                               }}
                             />
                           </label>
                           <p className="pl-1">or drag and drop</p>
                         </div>
-                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG, GIF up to 10MB each
+                        </p>
                       </div>
                     </div>
                   </div>
 
                   {formData.packagePhotos.length > 0 && (
                     <div className="mt-6">
-                      <h4 className="text-sm font-medium text-gray-900 mb-3">Uploaded Photos</h4>
+                      <h4 className="text-sm font-medium text-gray-900 mb-3">
+                        Uploaded Photos
+                      </h4>
                       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                         {formData.packagePhotos.map((photo, index) => (
                           <div key={index} className="relative group">
@@ -346,12 +411,28 @@ export default function SendPackage() {
                                 type="button"
                                 className="absolute top-2 right-2 p-1.5 rounded-full bg-red-100 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
                                 onClick={() => {
-                                  const newPhotos = formData.packagePhotos.filter((_, i) => i !== index);
-                                  setFormData({ ...formData, packagePhotos: newPhotos });
+                                  const newPhotos =
+                                    formData.packagePhotos.filter(
+                                      (_, i) => i !== index,
+                                    );
+                                  setFormData({
+                                    ...formData,
+                                    packagePhotos: newPhotos,
+                                  });
                                 }}
                               >
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
                                 </svg>
                               </button>
                             </div>
@@ -362,12 +443,19 @@ export default function SendPackage() {
                   )}
 
                   <div className="mt-4 bg-blue-50 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-blue-900 mb-2">Photo Guidelines</h4>
+                    <h4 className="text-sm font-medium text-blue-900 mb-2">
+                      Photo Guidelines
+                    </h4>
                     <ul className="text-sm text-blue-700 space-y-1">
-                      <li>• Take clear, well-lit photos from multiple angles</li>
+                      <li>
+                        • Take clear, well-lit photos from multiple angles
+                      </li>
                       <li>• Include any fragile/handling labels if present</li>
                       <li>• Show the packaging condition clearly</li>
-                      <li>• Avoid including personal or sensitive information in photos</li>
+                      <li>
+                        • Avoid including personal or sensitive information in
+                        photos
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -388,15 +476,21 @@ export default function SendPackage() {
           >
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-black">Package Handling</h2>
-                <p className="text-gray-600 mt-2">Set your package handling preferences and requirements.</p>
+                <h2 className="text-2xl font-bold text-black">
+                  Package Handling
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  Set your package handling preferences and requirements.
+                </p>
               </div>
 
               <div className="space-y-6">
                 <DeliveryMethod
                   type="pickup"
                   value={formData.pickupMethod}
-                  onChange={(method) => setFormData({ ...formData, pickupMethod: method })}
+                  onChange={(method) =>
+                    setFormData({ ...formData, pickupMethod: method })
+                  }
                   className="w-full"
                 />
               </div>
@@ -434,15 +528,21 @@ export default function SendPackage() {
           >
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-black">Communication Preferences</h2>
-                <p className="text-gray-600 mt-2">Choose how you'd like to coordinate with the traveler.</p>
+                <h2 className="text-2xl font-bold text-black">
+                  Communication Preferences
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  Choose how you'd like to coordinate with the traveler.
+                </p>
               </div>
 
               <div className="space-y-6">
                 <DeliveryMethod
                   type="pickup"
                   value={formData.pickupMethod}
-                  onChange={(method) => setFormData({ ...formData, pickupMethod: method })}
+                  onChange={(method) =>
+                    setFormData({ ...formData, pickupMethod: method })
+                  }
                   className="w-full"
                 />
               </div>
@@ -472,7 +572,7 @@ export default function SendPackage() {
       default:
         return null;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -491,9 +591,10 @@ export default function SendPackage() {
                   <div
                     className={`
                       w-10 h-10 rounded-full flex items-center justify-center mb-2
-                      ${s.id <= step 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-200 text-gray-500'
+                      ${
+                        s.id <= step
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-200 text-gray-500'
                       }
                       ${s.id === step ? 'ring-2 ring-blue-400 ring-offset-2' : ''}
                     `}
@@ -520,9 +621,7 @@ export default function SendPackage() {
           {/* Form Content */}
           <div className="px-8 py-6">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <AnimatePresence mode="wait">
-                {renderStep()}
-              </AnimatePresence>
+              <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
 
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-6 border-t border-gray-100">
@@ -531,13 +630,15 @@ export default function SendPackage() {
                   onClick={handlePrev}
                   disabled={step === 1}
                   className={`px-6 py-2.5 rounded-lg font-medium transition-all duration-200 
-                    ${step === 1 
-                      ? 'bg-gray-50 text-gray-300 cursor-not-allowed' 
-                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'}`}
+                    ${
+                      step === 1
+                        ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                        : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                    }`}
                 >
                   Back
                 </button>
-                
+
                 {step < 3 ? (
                   <button
                     type="button"
@@ -562,5 +663,5 @@ export default function SendPackage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

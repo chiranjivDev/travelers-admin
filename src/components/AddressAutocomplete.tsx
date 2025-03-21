@@ -8,29 +8,33 @@ interface AddressAutocompleteProps {
   className?: string;
 }
 
-const libraries: ("places")[] = ["places"];
+const libraries: 'places'[] = ['places'];
 
-export default function AddressAutocomplete({ 
-  placeholder, 
-  value, 
+export default function AddressAutocomplete({
+  placeholder,
+  value,
   onChange,
-  className 
+  className,
 }: AddressAutocompleteProps) {
-  const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const [predictions, setPredictions] = useState<
+    google.maps.places.AutocompletePrediction[]
+  >([]);
   const [showPredictions, setShowPredictions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
+  const autocompleteService =
+    useRef<google.maps.places.AutocompleteService | null>(null);
   const placesService = useRef<google.maps.places.PlacesService | null>(null);
 
   useEffect(() => {
     if (window.google && !autocompleteService.current) {
-      autocompleteService.current = new google.maps.places.AutocompleteService();
+      autocompleteService.current =
+        new google.maps.places.AutocompleteService();
     }
   }, []);
 
   const handleInput = async (input: string) => {
     onChange(input);
-    
+
     if (!input || !autocompleteService.current) {
       setPredictions([]);
       return;
@@ -39,11 +43,12 @@ export default function AddressAutocomplete({
     try {
       const request = {
         input,
-        componentRestrictions: { }, // You can restrict to specific countries if needed
-        types: ['address', 'establishment', 'geocode'] // Include different types of places
+        componentRestrictions: {},
+        types: ['address', 'establishment', 'geocode'],
       };
 
-      const response = await autocompleteService.current.getPlacePredictions(request);
+      const response =
+        await autocompleteService.current.getPlacePredictions(request);
       setPredictions(response.predictions);
       setShowPredictions(true);
     } catch (error) {
@@ -52,7 +57,9 @@ export default function AddressAutocomplete({
     }
   };
 
-  const handleSelectAddress = (prediction: google.maps.places.AutocompletePrediction) => {
+  const handleSelectAddress = (
+    prediction: google.maps.places.AutocompletePrediction,
+  ) => {
     onChange(prediction.description, prediction.place_id);
     setPredictions([]);
     setShowPredictions(false);
@@ -65,7 +72,9 @@ export default function AddressAutocomplete({
         type="text"
         value={value}
         onChange={(e) => handleInput(e.target.value)}
-        onFocus={() => value && predictions.length > 0 && setShowPredictions(true)}
+        onFocus={() =>
+          value && predictions.length > 0 && setShowPredictions(true)
+        }
         placeholder={placeholder}
         className={className}
       />
@@ -77,8 +86,12 @@ export default function AddressAutocomplete({
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
               onClick={() => handleSelectAddress(prediction)}
             >
-              <div className="font-medium">{prediction.structured_formatting.main_text}</div>
-              <div className="text-sm text-gray-600">{prediction.structured_formatting.secondary_text}</div>
+              <div className="font-medium">
+                {prediction.structured_formatting.main_text}
+              </div>
+              <div className="text-sm text-gray-600">
+                {prediction.structured_formatting.secondary_text}
+              </div>
             </div>
           ))}
         </div>

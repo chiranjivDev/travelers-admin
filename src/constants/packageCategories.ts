@@ -33,13 +33,9 @@ import {
   FiShoppingCart,
   FiStar,
   FiThermometer,
-  FiUser
+  FiUser,
 } from 'react-icons/fi';
-
-// Transport Status Types
 export type TransportStatus = 'allowed' | 'restricted' | 'prohibited';
-
-// Types for the unified category system
 interface SubCategory {
   id: string;
   name: string;
@@ -90,11 +86,13 @@ interface QuickSearchItem {
     stackability?: boolean;
   };
 }
-
-// Helper type for improved search
-export type SearchableFields = 'name' | 'details' | 'searchTerms' | 'commonNames' | 'brands' | 'alternatives';
-
-// Helper functions for advanced search
+export type SearchableFields =
+  | 'name'
+  | 'details'
+  | 'searchTerms'
+  | 'commonNames'
+  | 'brands'
+  | 'alternatives';
 export const searchHelpers = {
   matchesSearchTerm: (item: QuickSearchItem, term: string): boolean => {
     const searchTerm = term.toLowerCase();
@@ -104,10 +102,10 @@ export const searchHelpers = {
       ...(item.searchTerms || []),
       ...(item.commonNames || []),
       ...(item.brands || []),
-      ...(item.alternatives || [])
-    ].some(field => field?.toLowerCase().includes(searchTerm));
+      ...(item.alternatives || []),
+    ].some((field) => field?.toLowerCase().includes(searchTerm));
   },
-  
+
   getSearchableText: (item: QuickSearchItem): string => {
     return [
       item.name,
@@ -115,13 +113,19 @@ export const searchHelpers = {
       ...(item.searchTerms || []),
       ...(item.commonNames || []),
       ...(item.brands || []),
-      ...(item.alternatives || [])
-    ].filter(Boolean).join(' ').toLowerCase();
+      ...(item.alternatives || []),
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
   },
-  
-  filterByCategory: (items: QuickSearchItem[], categoryId: string): QuickSearchItem[] => {
-    return items.filter(item => item.categoryId === categoryId);
-  }
+
+  filterByCategory: (
+    items: QuickSearchItem[],
+    categoryId: string,
+  ): QuickSearchItem[] => {
+    return items.filter((item) => item.categoryId === categoryId);
+  },
 };
 
 interface SpecialHandlingOption {
@@ -139,8 +143,6 @@ interface PackageResponsibility {
   description: string;
   details?: string[];
 }
-
-// Update icon references
 const categoryIcons = {
   electronics: FiSmartphone,
   computers: FiMonitor,
@@ -195,11 +197,10 @@ const categoryIcons = {
   labSupplies: FiActivity,
   safetyEquipment: FiShield,
   media: FiMusic,
-  beautyDevices: FiZap
+  beautyDevices: FiZap,
 };
 
 export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
-  // Electronics & Tech - Smartphones & Accessories
   {
     id: 'smartphone_iphone',
     name: 'iPhone & Premium Smartphones',
@@ -207,17 +208,18 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     subcategoryId: 'smartphones',
     icon: FiSmartphone,
     riskLevel: 'high',
-    details: 'High-end smartphones including latest iPhone models and flagship Android devices',
+    details:
+      'High-end smartphones including latest iPhone models and flagship Android devices',
     requirements: [
       'Original packaging preferred',
       'Battery safety measures',
       'Screen protection',
-      'Remove personal data'
+      'Remove personal data',
     ],
     warnings: [
       'Contains lithium batteries',
       'Fragile screen',
-      'Check carrier restrictions'
+      'Check carrier restrictions',
     ],
     searchTerms: ['mobile phone', 'cell phone', 'android', 'iOS', 'phone'],
     commonNames: ['mobile', 'cell phone', 'smartphone'],
@@ -225,8 +227,8 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     specifications: {
       dimensions: '15x7.5x0.8cm typical',
       weight: '150-250g typical',
-      material: 'Glass and metal construction'
-    }
+      material: 'Glass and metal construction',
+    },
   },
   {
     id: 'smartphone_midrange',
@@ -240,19 +242,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging preferred',
       'Battery safety measures',
       'Screen protection',
-      'Remove personal data'
+      'Remove personal data',
     ],
-    warnings: [
-      'Contains lithium batteries',
-      'Fragile screen'
-    ],
+    warnings: ['Contains lithium batteries', 'Fragile screen'],
     searchTerms: ['budget phone', 'android phone', 'mid-range phone'],
     brands: ['Samsung A series', 'Xiaomi', 'Oppo', 'Realme', 'Motorola'],
     specifications: {
       dimensions: '16x7.5x0.9cm typical',
       weight: '150-200g typical',
-      material: 'Plastic and glass construction'
-    }
+      material: 'Plastic and glass construction',
+    },
   },
   {
     id: 'phone_accessories',
@@ -261,25 +260,22 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     subcategoryId: 'smartphones',
     icon: FiTool,
     riskLevel: 'low',
-    details: 'Phone accessories including chargers, cases, and screen protectors',
+    details:
+      'Phone accessories including chargers, cases, and screen protectors',
     requirements: [
       'Original packaging preferred',
       'Bundle items securely',
-      'Protect fragile items'
+      'Protect fragile items',
     ],
-    warnings: [
-      'Verify compatibility',
-      'Check for damaged items'
-    ],
+    warnings: ['Verify compatibility', 'Check for damaged items'],
     searchTerms: ['charger', 'case', 'screen protector', 'phone accessories'],
     commonNames: ['phone extras', 'phone gear'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '50-500g typical',
-      material: 'Mixed materials'
-    }
+      material: 'Mixed materials',
+    },
   },
-  // Electronics & Tech - Computers
   {
     id: 'laptop_premium',
     name: 'Premium Laptops',
@@ -292,20 +288,20 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Shock-proof packaging',
       'Battery safety measures',
-      'Insurance recommended'
+      'Insurance recommended',
     ],
     warnings: [
       'Contains lithium batteries',
       'Fragile components',
-      'High-value item'
+      'High-value item',
     ],
     searchTerms: ['macbook', 'premium laptop', 'ultrabook'],
     brands: ['Apple', 'Dell XPS', 'HP Spectre', 'Lenovo ThinkPad'],
     specifications: {
       dimensions: '35x25x2cm typical',
       weight: '1-2kg typical',
-      material: 'Aluminum/Metal construction'
-    }
+      material: 'Aluminum/Metal construction',
+    },
   },
   {
     id: 'desktop_gaming',
@@ -319,20 +315,20 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging preferred',
       'Extra padding required',
       'Remove GPU if possible',
-      'Secure internal components'
+      'Secure internal components',
     ],
     warnings: [
       'Extremely fragile',
       'Heavy item',
-      'Professional handling recommended'
+      'Professional handling recommended',
     ],
     searchTerms: ['gaming pc', 'desktop computer', 'gaming rig'],
     brands: ['Custom Built', 'Alienware', 'ROG', 'MSI'],
     specifications: {
       dimensions: '50x25x50cm typical',
       weight: '10-20kg typical',
-      material: 'Metal and tempered glass'
-    }
+      material: 'Metal and tempered glass',
+    },
   },
   {
     id: 'computer_monitors',
@@ -346,22 +342,17 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Corner protection',
       'Fragile handling',
-      'Vertical orientation'
+      'Vertical orientation',
     ],
-    warnings: [
-      'Extremely fragile screen',
-      'Keep upright',
-      'No stacking'
-    ],
+    warnings: ['Extremely fragile screen', 'Keep upright', 'No stacking'],
     searchTerms: ['monitor', 'display', 'screen', 'LED display'],
     brands: ['Dell', 'LG', 'Samsung', 'ASUS', 'BenQ'],
     specifications: {
       dimensions: '60x40x15cm typical',
       weight: '3-8kg typical',
-      material: 'Plastic and glass construction'
-    }
+      material: 'Plastic and glass construction',
+    },
   },
-  // Electronics & Tech - Tablets
   {
     id: 'tablet_premium',
     name: 'Premium Tablets',
@@ -374,20 +365,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Screen protection mandatory',
       'Battery safety measures',
-      'Remove accounts'
+      'Remove accounts',
     ],
-    warnings: [
-      'Contains lithium battery',
-      'Fragile screen',
-      'High-value item'
-    ],
+    warnings: ['Contains lithium battery', 'Fragile screen', 'High-value item'],
     searchTerms: ['ipad pro', 'samsung tab', 'premium tablet'],
     brands: ['Apple', 'Samsung', 'Microsoft Surface'],
     specifications: {
       dimensions: '30x20x1cm typical',
       weight: '400-800g typical',
-      material: 'Metal and glass construction'
-    }
+      material: 'Metal and glass construction',
+    },
   },
   {
     id: 'tablet_accessories',
@@ -400,21 +387,17 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     requirements: [
       'Original packaging preferred',
       'Protect electronic components',
-      'Bundle items securely'
+      'Bundle items securely',
     ],
-    warnings: [
-      'Check compatibility',
-      'Some items contain batteries'
-    ],
+    warnings: ['Check compatibility', 'Some items contain batteries'],
     searchTerms: ['stylus', 'tablet keyboard', 'tablet case', 'tablet stand'],
     brands: ['Apple Pencil', 'Logitech', 'Zagg', 'OtterBox'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-500g typical',
-      material: 'Mixed materials'
-    }
+      material: 'Mixed materials',
+    },
   },
-  // Electronics & Tech - Cameras
   {
     id: 'camera_dslr',
     name: 'Professional DSLR Cameras',
@@ -422,25 +405,31 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     subcategoryId: 'cameras',
     icon: FiCamera,
     riskLevel: 'very_high',
-    details: 'Professional DSLR and mirrorless cameras with interchangeable lenses',
+    details:
+      'Professional DSLR and mirrorless cameras with interchangeable lenses',
     requirements: [
       'Original packaging required',
       'Lens protection mandatory',
       'Body cap required',
-      'Sensor protection'
+      'Sensor protection',
     ],
     warnings: [
       'Extremely sensitive equipment',
       'Contains precision optics',
-      'Professional handling required'
+      'Professional handling required',
     ],
-    searchTerms: ['dslr', 'mirrorless', 'professional camera', 'digital camera'],
+    searchTerms: [
+      'dslr',
+      'mirrorless',
+      'professional camera',
+      'digital camera',
+    ],
     brands: ['Canon', 'Nikon', 'Sony', 'Fujifilm'],
     specifications: {
       dimensions: '16x12x10cm typical',
       weight: '800-1200g typical',
-      material: 'Professional grade materials'
-    }
+      material: 'Professional grade materials',
+    },
   },
   {
     id: 'camera_lenses',
@@ -454,20 +443,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Front and rear caps mandatory',
       'Padding between items',
-      'Impact protection'
+      'Impact protection',
     ],
-    warnings: [
-      'Fragile optics',
-      'No stacking',
-      'Keep away from moisture'
-    ],
+    warnings: ['Fragile optics', 'No stacking', 'Keep away from moisture'],
     searchTerms: ['camera lens', 'telephoto', 'wide angle', 'prime lens'],
     brands: ['Canon', 'Nikon', 'Sony', 'Sigma', 'Tamron'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '200-2000g typical',
-      material: 'Metal and glass construction'
-    }
+      material: 'Metal and glass construction',
+    },
   },
   {
     id: 'camera_accessories',
@@ -476,25 +461,22 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     subcategoryId: 'cameras',
     icon: FiCamera,
     riskLevel: 'medium',
-    details: 'Photography accessories including tripods, filters, and memory cards',
+    details:
+      'Photography accessories including tripods, filters, and memory cards',
     requirements: [
       'Original packaging preferred',
       'Secure packaging',
-      'Protect delicate items'
+      'Protect delicate items',
     ],
-    warnings: [
-      'Some items fragile',
-      'Check for compatibility'
-    ],
+    warnings: ['Some items fragile', 'Check for compatibility'],
     searchTerms: ['tripod', 'camera filter', 'memory card', 'camera bag'],
     brands: ['Manfrotto', 'B+W', 'SanDisk', 'Think Tank'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-2000g typical',
-      material: 'Mixed materials'
-    }
+      material: 'Mixed materials',
+    },
   },
-  // Electronics & Tech - Audio Equipment
   {
     id: 'headphones_premium',
     name: 'Premium Headphones',
@@ -507,20 +489,20 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Cushioning protection',
       'Handle with care',
-      'Keep dry'
+      'Keep dry',
     ],
     warnings: [
       'Sensitive electronics',
       'Some contain batteries',
-      'Fragile components'
+      'Fragile components',
     ],
     searchTerms: ['headphones', 'wireless headphones', 'noise cancelling'],
     brands: ['Sony', 'Bose', 'Sennheiser', 'Apple AirPods Max'],
     specifications: {
       dimensions: '25x20x15cm typical',
       weight: '250-400g typical',
-      material: 'Premium materials'
-    }
+      material: 'Premium materials',
+    },
   },
   {
     id: 'speakers_portable',
@@ -533,20 +515,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     requirements: [
       'Original packaging preferred',
       'Battery safety measures',
-      'Impact protection'
+      'Impact protection',
     ],
-    warnings: [
-      'Contains batteries',
-      'Keep dry',
-      'Handle with care'
-    ],
+    warnings: ['Contains batteries', 'Keep dry', 'Handle with care'],
     searchTerms: ['bluetooth speaker', 'wireless speaker', 'portable audio'],
     brands: ['JBL', 'Bose', 'Sony', 'Ultimate Ears'],
     specifications: {
       dimensions: '20x10x10cm typical',
       weight: '500-1000g typical',
-      material: 'Durable materials'
-    }
+      material: 'Durable materials',
+    },
   },
   {
     id: 'audio_professional',
@@ -560,22 +538,21 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Shock-proof packaging',
       'Professional handling',
-      'Keep dry'
+      'Keep dry',
     ],
     warnings: [
       'Extremely sensitive equipment',
       'Fragile components',
-      'Professional setup required'
+      'Professional setup required',
     ],
     searchTerms: ['mixer', 'microphone', 'audio interface', 'studio equipment'],
     brands: ['Shure', 'Audio-Technica', 'Roland', 'Focusrite'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '1-5kg typical',
-      material: 'Professional grade components'
-    }
+      material: 'Professional grade components',
+    },
   },
-  // Fashion & Accessories - Shoes
   {
     id: 'luxury_shoes',
     name: 'Luxury Footwear',
@@ -588,20 +565,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original boxes required',
       'Shape protection',
       'Individual wrapping',
-      'Dust bags included'
+      'Dust bags included',
     ],
-    warnings: [
-      'Maintain shape',
-      'Protect soles',
-      'Keep pairs together'
-    ],
+    warnings: ['Maintain shape', 'Protect soles', 'Keep pairs together'],
     searchTerms: ['designer shoes', 'luxury footwear', 'high-end shoes'],
     brands: ['Christian Louboutin', 'Jimmy Choo', 'Manolo Blahnik', 'Gucci'],
     specifications: {
       dimensions: '35x25x15cm typical',
       weight: '500-1500g typical',
-      material: 'Premium leather and materials'
-    }
+      material: 'Premium leather and materials',
+    },
   },
   {
     id: 'sneakers_collectible',
@@ -615,22 +588,21 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original box mandatory',
       'Authentication cards',
       'Protect from compression',
-      'Temperature control'
+      'Temperature control',
     ],
-    warnings: [
-      'High-value items',
-      'Keep dry',
-      'Avoid direct sunlight'
+    warnings: ['High-value items', 'Keep dry', 'Avoid direct sunlight'],
+    searchTerms: [
+      'limited edition sneakers',
+      'rare sneakers',
+      'collectible shoes',
     ],
-    searchTerms: ['limited edition sneakers', 'rare sneakers', 'collectible shoes'],
     brands: ['Nike', 'Adidas', 'Jordan', 'Yeezy'],
     specifications: {
       dimensions: '35x25x15cm typical',
       weight: '700-1200g typical',
-      material: 'Various premium materials'
-    }
+      material: 'Various premium materials',
+    },
   },
-  // Medical & Health - Medical Supplies
   {
     id: 'medical_equipment_pro',
     name: 'Professional Medical Equipment',
@@ -643,20 +615,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Sterile packaging',
       'Temperature monitoring',
       'Calibration certificates',
-      'Special handling'
+      'Special handling',
     ],
-    warnings: [
-      'Sensitive equipment',
-      'Maintain sterility',
-      'Handle with care'
-    ],
+    warnings: ['Sensitive equipment', 'Maintain sterility', 'Handle with care'],
     searchTerms: ['medical equipment', 'diagnostic tools', 'medical devices'],
     brands: ['Philips', 'GE Healthcare', 'Siemens', 'Medtronic'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '1-50kg typical',
-      material: 'Medical grade materials'
-    }
+      material: 'Medical grade materials',
+    },
   },
   {
     id: 'medical_supplies_basic',
@@ -670,22 +638,22 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Sealed packaging',
       'Clean environment',
       'Temperature control',
-      'Track expiry dates'
+      'Track expiry dates',
     ],
-    warnings: [
-      'Keep sterile',
-      'Check expiration',
-      'Handle with care'
+    warnings: ['Keep sterile', 'Check expiration', 'Handle with care'],
+    searchTerms: [
+      'first aid',
+      'medical supplies',
+      'bandages',
+      'medical equipment',
     ],
-    searchTerms: ['first aid', 'medical supplies', 'bandages', 'medical equipment'],
     brands: ['3M', 'Johnson & Johnson', 'BD', 'McKesson'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-5000g typical',
-      material: 'Medical grade materials'
-    }
+      material: 'Medical grade materials',
+    },
   },
-  // Medical & Health - Medications
   {
     id: 'prescription_meds',
     name: 'Prescription Medications',
@@ -698,19 +666,19 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging only',
       'Temperature monitoring',
       'Prescription documentation',
-      'Secure transport'
+      'Secure transport',
     ],
     warnings: [
       'Temperature sensitive',
       'Controlled substances',
-      'Special permits required'
+      'Special permits required',
     ],
     searchTerms: ['prescription drugs', 'medication', 'pharmaceuticals'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '50-500g typical',
-      material: 'Pharmaceutical grade packaging'
-    }
+      material: 'Pharmaceutical grade packaging',
+    },
   },
   {
     id: 'medical_devices_portable',
@@ -724,22 +692,21 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging required',
       'Battery safety',
       'Calibration maintained',
-      'Clean environment'
+      'Clean environment',
     ],
     warnings: [
       'Contains batteries',
       'Sensitive electronics',
-      'Handle with care'
+      'Handle with care',
     ],
     searchTerms: ['medical device', 'health monitor', 'portable medical'],
     brands: ['Philips', 'Omron', 'ResMed', 'Medtronic'],
     specifications: {
       dimensions: '20x15x10cm typical',
       weight: '200-1000g typical',
-      material: 'Medical grade materials'
-    }
+      material: 'Medical grade materials',
+    },
   },
-  // Food & Beverages - Perishable
   {
     id: 'fresh_produce',
     name: 'Fresh Produce',
@@ -752,19 +719,19 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Temperature-controlled transport',
       'Quick delivery timeline',
       'Proper ventilation',
-      'Clean handling'
+      'Clean handling',
     ],
     warnings: [
       'Highly perishable',
       'Temperature sensitive',
-      'Handle with care'
+      'Handle with care',
     ],
     searchTerms: ['fresh food', 'produce', 'fruits', 'vegetables'],
     specifications: {
       dimensions: 'Various sizes',
       weight: 'Various weights',
-      material: 'Organic produce'
-    }
+      material: 'Organic produce',
+    },
   },
   {
     id: 'dairy_products',
@@ -778,19 +745,15 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Constant refrigeration',
       'Temperature monitoring',
       'Sealed packaging',
-      'Quick delivery'
+      'Quick delivery',
     ],
-    warnings: [
-      'Highly perishable',
-      'Temperature critical',
-      'Handle with care'
-    ],
+    warnings: ['Highly perishable', 'Temperature critical', 'Handle with care'],
     searchTerms: ['dairy', 'milk products', 'fresh dairy'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-5000g typical',
-      material: 'Food grade packaging'
-    }
+      material: 'Food grade packaging',
+    },
   },
   {
     id: 'frozen_foods',
@@ -804,21 +767,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Maintain freezing temperature',
       'Insulated packaging',
       'Temperature monitoring',
-      'Quick delivery'
+      'Quick delivery',
     ],
-    warnings: [
-      'Keep frozen',
-      'Temperature critical',
-      'Time sensitive'
-    ],
+    warnings: ['Keep frozen', 'Temperature critical', 'Time sensitive'],
     searchTerms: ['frozen food', 'frozen goods', 'freezer items'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '500-5000g typical',
-      material: 'Freezer-safe packaging'
-    }
+      material: 'Freezer-safe packaging',
+    },
   },
-  // Food & Beverages - Non-Perishable
   {
     id: 'packaged_foods',
     name: 'Packaged Foods',
@@ -831,19 +789,15 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging intact',
       'Keep dry',
       'Check expiration dates',
-      'Handle with care'
+      'Handle with care',
     ],
-    warnings: [
-      'Check for damage',
-      'Verify seals',
-      'Stack carefully'
-    ],
+    warnings: ['Check for damage', 'Verify seals', 'Stack carefully'],
     searchTerms: ['canned food', 'packaged food', 'dry goods'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-5000g typical',
-      material: 'Food grade packaging'
-    }
+      material: 'Food grade packaging',
+    },
   },
   {
     id: 'specialty_foods',
@@ -857,21 +811,20 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging',
       'Temperature stable',
       'Careful handling',
-      'Track expiry dates'
+      'Track expiry dates',
     ],
     warnings: [
       'Some items fragile',
       'Check packaging integrity',
-      'Handle with care'
+      'Handle with care',
     ],
     searchTerms: ['gourmet food', 'specialty items', 'premium food'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-2000g typical',
-      material: 'Premium packaging'
-    }
+      material: 'Premium packaging',
+    },
   },
-  // Books & Media - Books
   {
     id: 'books_hardcover',
     name: 'Hardcover Books',
@@ -884,19 +837,15 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Rigid packaging',
       'Corner protection',
       'Keep dry',
-      'Handle with care'
+      'Handle with care',
     ],
-    warnings: [
-      'Protect corners',
-      'Avoid bending',
-      'Stack carefully'
-    ],
+    warnings: ['Protect corners', 'Avoid bending', 'Stack carefully'],
     searchTerms: ['hardcover books', 'collectors editions', 'premium books'],
     specifications: {
       dimensions: '30x25x5cm typical',
       weight: '500-2000g typical',
-      material: 'Paper and binding'
-    }
+      material: 'Paper and binding',
+    },
   },
   {
     id: 'books_rare',
@@ -910,19 +859,15 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Custom packaging',
       'Climate control',
       'Insurance required',
-      'Professional handling'
+      'Professional handling',
     ],
-    warnings: [
-      'Extremely valuable',
-      'Handle with care',
-      'Climate sensitive'
-    ],
+    warnings: ['Extremely valuable', 'Handle with care', 'Climate sensitive'],
     searchTerms: ['rare books', 'antique books', 'collectible books'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '200-3000g typical',
-      material: 'Various historical materials'
-    }
+      material: 'Various historical materials',
+    },
   },
   {
     id: 'vinyl_records',
@@ -935,10 +880,9 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     requirements: [
       'Original packaging',
       'Protective sleeves',
-      'Handle with care'
-    ]
+      'Handle with care',
+    ],
   },
-  // Sports & Fitness - Exercise Equipment
   {
     id: 'fitness_equipment',
     name: 'Professional Fitness Equipment',
@@ -951,20 +895,20 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Secure packaging',
       'Assembly instructions',
       'Parts protection',
-      'Heavy item handling'
+      'Heavy item handling',
     ],
     warnings: [
       'Heavy items',
       'Multiple parts',
-      'Professional assembly may be required'
+      'Professional assembly may be required',
     ],
     searchTerms: ['gym equipment', 'fitness gear', 'exercise machine'],
     brands: ['Life Fitness', 'Precor', 'Technogym', 'Bowflex'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '20-200kg typical',
-      material: 'Steel and rubber construction'
-    }
+      material: 'Steel and rubber construction',
+    },
   },
   {
     id: 'weights_dumbbells',
@@ -978,22 +922,21 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Reinforced packaging',
       'Weight distribution',
       'Handle with care',
-      'Heavy item warning'
+      'Heavy item warning',
     ],
     warnings: [
       'Extremely heavy',
       'Handle with care',
-      'Use proper lifting techniques'
+      'Use proper lifting techniques',
     ],
     searchTerms: ['weights', 'dumbbells', 'weight plates', 'free weights'],
     brands: ['Rogue Fitness', 'York', 'Eleiko', 'CAP Barbell'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '2-50kg per piece',
-      material: 'Cast iron or rubber-coated'
-    }
+      material: 'Cast iron or rubber-coated',
+    },
   },
-  // Sports & Fitness - Sports Gear
   {
     id: 'golf_equipment',
     name: 'Golf Equipment',
@@ -1006,22 +949,17 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Club protection',
       'Shaft protection',
       'Head covers required',
-      'Secure fastening'
+      'Secure fastening',
     ],
-    warnings: [
-      'Fragile shafts',
-      'Protect club heads',
-      'Handle with care'
-    ],
+    warnings: ['Fragile shafts', 'Protect club heads', 'Handle with care'],
     searchTerms: ['golf clubs', 'golf equipment', 'golf gear'],
     brands: ['Titleist', 'Callaway', 'TaylorMade', 'Ping'],
     specifications: {
       dimensions: '130x30x30cm typical',
       weight: '10-15kg typical',
-      material: 'Various premium materials'
-    }
+      material: 'Various premium materials',
+    },
   },
-  // Art & Craft Supplies - Painting
   {
     id: 'art_canvas',
     name: 'Professional Art Canvas',
@@ -1034,20 +972,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Flat storage',
       'Moisture protection',
       'Corner protection',
-      'No bending'
+      'No bending',
     ],
-    warnings: [
-      'Keep flat',
-      'Avoid moisture',
-      'Handle with care'
-    ],
+    warnings: ['Keep flat', 'Avoid moisture', 'Handle with care'],
     searchTerms: ['canvas', 'painting surface', 'art supplies'],
     brands: ['Fredrix', 'Winsor & Newton', 'Masterpiece', 'Arteza'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100-2000g typical',
-      material: 'Premium canvas materials'
-    }
+      material: 'Premium canvas materials',
+    },
   },
   {
     id: 'art_paints',
@@ -1061,22 +995,21 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Temperature control',
       'Upright storage',
       'Seal check',
-      'Careful handling'
+      'Careful handling',
     ],
     warnings: [
       'Temperature sensitive',
       'Contains pigments',
-      'May require hazmat'
+      'May require hazmat',
     ],
     searchTerms: ['paint', 'art supplies', 'professional paint'],
     brands: ['Winsor & Newton', 'Golden', 'Liquitex', 'Daniel Smith'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '50-5000g typical',
-      material: 'Professional grade pigments'
-    }
+      material: 'Professional grade pigments',
+    },
   },
-  // Art & Craft Supplies - Tools
   {
     id: 'art_brushes',
     name: 'Professional Art Brushes',
@@ -1089,22 +1022,17 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Shape protection',
       'Individual wrapping',
       'Bristle protection',
-      'Keep dry'
+      'Keep dry',
     ],
-    warnings: [
-      'Delicate bristles',
-      'Maintain shape',
-      'Handle with care'
-    ],
+    warnings: ['Delicate bristles', 'Maintain shape', 'Handle with care'],
     searchTerms: ['art brushes', 'paint brushes', 'artist tools'],
     brands: ['Winsor & Newton', 'Da Vinci', 'Raphael', 'Escoda'],
     specifications: {
       dimensions: '15-40cm typical',
       weight: '10-100g typical',
-      material: 'Natural and synthetic bristles'
-    }
+      material: 'Natural and synthetic bristles',
+    },
   },
-  // Musical Instruments - String Instruments
   {
     id: 'guitars',
     name: 'Guitars',
@@ -1117,20 +1045,20 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Hard case required',
       'Climate control',
       'Humidity monitoring',
-      'Professional handling'
+      'Professional handling',
     ],
     warnings: [
       'Extremely fragile',
       'Temperature sensitive',
-      'Handle with care'
+      'Handle with care',
     ],
     searchTerms: ['guitar', 'acoustic guitar', 'string instrument'],
     brands: ['Martin', 'Taylor', 'Gibson', 'Yamaha'],
     specifications: {
       dimensions: '110x40x15cm typical',
       weight: '2-4kg typical',
-      material: 'Wood and strings'
-    }
+      material: 'Wood and strings',
+    },
   },
   {
     id: 'violin_professional',
@@ -1144,22 +1072,17 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Professional case required',
       'Climate control',
       'Humidity monitoring',
-      'Insurance required'
+      'Insurance required',
     ],
-    warnings: [
-      'Extremely valuable',
-      'Very fragile',
-      'Climate sensitive'
-    ],
+    warnings: ['Extremely valuable', 'Very fragile', 'Climate sensitive'],
     searchTerms: ['violin', 'string instrument', 'classical instrument'],
     brands: ['Stradivari', 'Guarneri', 'Modern Makers'],
     specifications: {
       dimensions: '60x25x15cm typical',
       weight: '300-500g typical',
-      material: 'Fine woods and strings'
-    }
+      material: 'Fine woods and strings',
+    },
   },
-  // Musical Instruments - Percussion
   {
     id: 'drums_professional',
     name: 'Professional Drums',
@@ -1167,9 +1090,8 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
     subcategoryId: 'percussion',
     icon: FiMusic,
     riskLevel: 'high',
-    details: 'Professional drum kits and percussion sets'
+    details: 'Professional drum kits and percussion sets',
   },
-  // Automotive - Car Parts
   {
     id: 'car_engine_parts',
     name: 'Engine Components',
@@ -1182,20 +1104,16 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Original packaging',
       'Oil-proof wrapping',
       'Part number verification',
-      'Careful handling'
+      'Careful handling',
     ],
-    warnings: [
-      'Heavy items',
-      'May contain oil',
-      'Precise handling required'
-    ],
+    warnings: ['Heavy items', 'May contain oil', 'Precise handling required'],
     searchTerms: ['engine parts', 'car parts', 'auto parts'],
     brands: ['Bosch', 'Denso', 'ACDelco', 'Genuine OEM'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '1-50kg typical',
-      material: 'Metal and composite materials'
-    }
+      material: 'Metal and composite materials',
+    },
   },
   {
     id: 'car_electronics',
@@ -1209,21 +1127,21 @@ export const QUICK_SEARCH_ITEMS: QuickSearchItem[] = [
       'Anti-static packaging',
       'Moisture protection',
       'Original packaging',
-      'Careful handling'
+      'Careful handling',
     ],
     warnings: [
       'Static sensitive',
       'Fragile components',
-      'Verify compatibility'
+      'Verify compatibility',
     ],
     searchTerms: ['car electronics', 'auto electronics', 'vehicle components'],
     brands: ['Bosch', 'Continental', 'Delphi', 'Denso'],
     specifications: {
       dimensions: 'Various sizes',
       weight: '100g-5kg typical',
-      material: 'Electronic components'
-    }
-  }
+      material: 'Electronic components',
+    },
+  },
 ];
 
 export const PACKAGE_CATEGORIES: Category[] = [
@@ -1236,8 +1154,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-blue-600/10',
       iconBg: 'bg-blue-600/20',
-      borderColor: 'border-blue-500/30'
-    }
+      borderColor: 'border-blue-500/30',
+    },
   },
   {
     id: 'smart_home',
@@ -1248,8 +1166,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-green-600/10',
       iconBg: 'bg-green-600/20',
-      borderColor: 'border-green-500/30'
-    }
+      borderColor: 'border-green-500/30',
+    },
   },
   {
     id: 'fashion',
@@ -1260,8 +1178,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-purple-600/10',
       iconBg: 'bg-purple-600/20',
-      borderColor: 'border-purple-500/30'
-    }
+      borderColor: 'border-purple-500/30',
+    },
   },
   {
     id: 'medical',
@@ -1272,8 +1190,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-red-600/10',
       iconBg: 'bg-red-600/20',
-      borderColor: 'border-red-500/30'
-    }
+      borderColor: 'border-red-500/30',
+    },
   },
   {
     id: 'food_beverages',
@@ -1284,8 +1202,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-yellow-600/10',
       iconBg: 'bg-yellow-600/20',
-      borderColor: 'border-yellow-500/30'
-    }
+      borderColor: 'border-yellow-500/30',
+    },
   },
   {
     id: 'books_media',
@@ -1296,8 +1214,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-indigo-600/10',
       iconBg: 'bg-indigo-600/20',
-      borderColor: 'border-indigo-500/30'
-    }
+      borderColor: 'border-indigo-500/30',
+    },
   },
   {
     id: 'sports_fitness',
@@ -1308,8 +1226,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-emerald-600/10',
       iconBg: 'bg-emerald-600/20',
-      borderColor: 'border-emerald-500/30'
-    }
+      borderColor: 'border-emerald-500/30',
+    },
   },
   {
     id: 'art_supplies',
@@ -1320,8 +1238,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-pink-600/10',
       iconBg: 'bg-pink-600/20',
-      borderColor: 'border-pink-500/30'
-    }
+      borderColor: 'border-pink-500/30',
+    },
   },
   {
     id: 'musical',
@@ -1332,8 +1250,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-violet-600/10',
       iconBg: 'bg-violet-600/20',
-      borderColor: 'border-violet-500/30'
-    }
+      borderColor: 'border-violet-500/30',
+    },
   },
   {
     id: 'automotive',
@@ -1344,8 +1262,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-slate-600/10',
       iconBg: 'bg-slate-600/20',
-      borderColor: 'border-slate-500/30'
-    }
+      borderColor: 'border-slate-500/30',
+    },
   },
   {
     id: 'home_garden',
@@ -1356,8 +1274,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-teal-600/10',
       iconBg: 'bg-teal-600/20',
-      borderColor: 'border-teal-500/30'
-    }
+      borderColor: 'border-teal-500/30',
+    },
   },
   {
     id: 'baby_kids',
@@ -1368,8 +1286,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-sky-600/10',
       iconBg: 'bg-sky-600/20',
-      borderColor: 'border-sky-500/30'
-    }
+      borderColor: 'border-sky-500/30',
+    },
   },
   {
     id: 'pet_supplies',
@@ -1380,8 +1298,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-amber-600/10',
       iconBg: 'bg-amber-600/20',
-      borderColor: 'border-amber-500/30'
-    }
+      borderColor: 'border-amber-500/30',
+    },
   },
   {
     id: 'office_supplies',
@@ -1392,8 +1310,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-gray-600/10',
       iconBg: 'bg-gray-600/20',
-      borderColor: 'border-gray-500/30'
-    }
+      borderColor: 'border-gray-500/30',
+    },
   },
   {
     id: 'tools_hardware',
@@ -1404,8 +1322,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-zinc-600/10',
       iconBg: 'bg-zinc-600/20',
-      borderColor: 'border-zinc-500/30'
-    }
+      borderColor: 'border-zinc-500/30',
+    },
   },
   {
     id: 'beauty_care',
@@ -1416,8 +1334,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-rose-600/10',
       iconBg: 'bg-rose-600/20',
-      borderColor: 'border-rose-500/30'
-    }
+      borderColor: 'border-rose-500/30',
+    },
   },
   {
     id: 'jewelry',
@@ -1428,8 +1346,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-orange-600/10',
       iconBg: 'bg-orange-600/20',
-      borderColor: 'border-orange-500/30'
-    }
+      borderColor: 'border-orange-500/30',
+    },
   },
   {
     id: 'industrial',
@@ -1440,8 +1358,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-neutral-600/10',
       iconBg: 'bg-neutral-600/20',
-      borderColor: 'border-neutral-500/30'
-    }
+      borderColor: 'border-neutral-500/30',
+    },
   },
   {
     id: 'outdoor',
@@ -1452,8 +1370,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-lime-600/10',
       iconBg: 'bg-lime-600/20',
-      borderColor: 'border-lime-500/30'
-    }
+      borderColor: 'border-lime-500/30',
+    },
   },
   {
     id: 'living_room',
@@ -1464,8 +1382,8 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-fuchsia-600/10',
       iconBg: 'bg-fuchsia-600/20',
-      borderColor: 'border-fuchsia-500/30'
-    }
+      borderColor: 'border-fuchsia-500/30',
+    },
   },
   {
     id: 'antique',
@@ -1476,9 +1394,9 @@ export const PACKAGE_CATEGORIES: Category[] = [
     displayStyle: {
       bgColor: 'bg-stone-600/10',
       iconBg: 'bg-stone-600/20',
-      borderColor: 'border-stone-500/30'
-    }
-  }
+      borderColor: 'border-stone-500/30',
+    },
+  },
 ];
 
 export const SPECIAL_HANDLING_OPTIONS = [
@@ -1486,26 +1404,26 @@ export const SPECIAL_HANDLING_OPTIONS = [
     id: 'fragile',
     name: 'Fragile Handling',
     icon: FiAlertTriangle,
-    description: 'Extra care for delicate items'
+    description: 'Extra care for delicate items',
   },
   {
     id: 'temperature',
     name: 'Temperature Control',
     icon: FiThermometer,
-    description: 'Climate-controlled transport'
+    description: 'Climate-controlled transport',
   },
   {
     id: 'waterproof',
     name: 'Waterproof Protection',
     icon: FiDroplet,
-    description: 'Protection from moisture'
+    description: 'Protection from moisture',
   },
   {
     id: 'upright',
     name: 'Keep Upright',
     icon: FiArrowUp,
-    description: 'Maintain vertical orientation'
-  }
+    description: 'Maintain vertical orientation',
+  },
 ];
 
 export const PACKAGE_RESPONSIBILITIES = [
@@ -1513,24 +1431,24 @@ export const PACKAGE_RESPONSIBILITIES = [
     id: 'insurance',
     name: 'Package Insurance',
     icon: FiShield,
-    description: 'Coverage for loss or damage'
+    description: 'Coverage for loss or damage',
   },
   {
     id: 'tracking',
     name: 'Real-time Tracking',
     icon: FiMap,
-    description: 'Live location updates'
+    description: 'Live location updates',
   },
   {
     id: 'signature',
     name: 'Signature Required',
     icon: FiEdit,
-    description: 'Proof of delivery'
+    description: 'Proof of delivery',
   },
   {
     id: 'photo',
     name: 'Photo Documentation',
     icon: FiCamera,
-    description: 'Visual condition record'
-  }
+    description: 'Visual condition record',
+  },
 ];

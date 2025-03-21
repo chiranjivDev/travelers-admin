@@ -1,0 +1,849 @@
+{
+  "Navbar": {
+    "browsePackages": "Browse Packages",
+    "browseTrips": "Browse Trips",
+    "howItWorks": "How It Works",
+    "blog": "Blog",
+    "safety": "Safety",
+    "support": "Support",
+    "logIn": "Log In",
+    "signUp": "Sign Up",
+    "sendPackage": "Send Package",
+    "becomeTraveler": "Become a Traveler",
+    "chat": "Chat",
+    "user": {
+      "activeAs": "Active as",
+      "paymentSetup": "Payment Setup",
+      "connectStripe": "Connect Stripe Account",
+      "profileSettings": "Profile Settings",
+      "messages": "Messages",
+      "notifications": "Notifications",
+      "dashboard": "Dashboard",
+      "logout": "Log Out"
+    }
+  },
+  "HomePage": {
+    "title": "Connect, Travel & Deliver",
+    "description": "Join our community of travelers and senders. Save money on shipping while helping others earn from their travels.",
+    "buttons": {
+      "sendPackage": "Send a Package",
+      "becomeTraveler": "Become a Traveler",
+      "login": "Login"
+    },
+    "trustIndicators": {
+      "activeUsers": {
+        "count": "10K+",
+        "label": "Active Users"
+      },
+      "deliveries": {
+        "count": "15K+",
+        "label": "Deliveries"
+      },
+      "countries": {
+        "count": "50+",
+        "label": "Countries"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "description": "A simple and secure way to connect package senders with travelers",
+      "steps": [
+        {
+          "title": "List Your Journey or Package",
+          "description": "Share your travel plans as a traveler or list your package details as a sender.",
+          "icon": "✈️"
+        },
+        {
+          "title": "Connect & Agree",
+          "description": "Match with the perfect delivery partner and agree on terms through our secure platform.",
+          "icon": "🤝"
+        },
+        {
+          "title": "Track & Deliver",
+          "description": "Track your package in real-time and complete the delivery with our secure payment system.",
+          "icon": "📦"
+        }
+      ]
+    },
+    "ctaSection": {
+      "title": "Ready to Get Started?",
+      "description": "Join thousands of users who are already saving money and earning through our platform.",
+      "buttons": {
+        "sendPackage": "Send Your First Package",
+        "browseTrips": "Browse Available Trips"
+      }
+    },
+    "benefitsSection": {
+      "title": "Why Choose DeliveryConnect?",
+      "description": "Experience the future of package delivery with our innovative platform.",
+      "benefits": [
+        {
+          "title": "Cost-Effective",
+          "description": "Save up to 70% on shipping costs compared to traditional services.",
+          "icon": "💰"
+        },
+        {
+          "title": "Secure & Safe",
+          "description": "Verified users, secure payments, and package insurance for peace of mind.",
+          "icon": "🔒"
+        },
+        {
+          "title": "Eco-Friendly",
+          "description": "Reduce carbon footprint by utilizing existing travel routes.",
+          "icon": "🌱"
+        },
+        {
+          "title": "Global Network",
+          "description": "Access to travelers worldwide for international deliveries.",
+          "icon": "🌍"
+        },
+        {
+          "title": "Real-Time Tracking",
+          "description": "Track your package's journey with live updates and notifications.",
+          "icon": "📱"
+        },
+        {
+          "title": "24/7 Support",
+          "description": "Dedicated customer support team ready to assist you anytime.",
+          "icon": "🎯"
+        }
+      ]
+    }
+  },
+  "LoginPage": {
+    "title": "Sign in to your account",
+    "subtitle": "Or",
+    "signupLink": "Create a new account",
+    "signInButton": "Sign in"
+  },
+  "SignupPage": {
+    "title": "Create your account",
+    "subtitle": "Or",
+    "loginLink": "Sign in to your account",
+    "signupButton": "Create Account"
+  },
+  "SenderForm": {
+    "progressHeaders": {
+      "packageDetails": "Package Details",
+      "packageDetailsSubtitle": "Tell us about the package you're sending",
+      "packagePickup": "Package Pickup",
+      "packagePickupSubtitle": "Set the pickup details for the package",
+      "deliveryDetails": "Delivery Details",
+      "deliveryDetailsSubtitle": "Set the delivery details for your package",
+      "communicationPreference": "Communication Preference",
+      "communicationPreferenceSubtitle": "Tell us how you prefer to be contacted",
+      "reviewAndSubmit": "Review and Submit",
+      "reviewAndSubmitSubtitle": "Confirm all details and submit",
+      "travelerPackage": "Traveler Package",
+      "travelerPackageSubtitle": "Select your traveler package and place the order"
+    },
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "loading": "Loading...",
+      "createPackage": "Create Package"
+    },
+    "steps": {
+      "step1": {
+        "title": "Step 1: Package Details",
+        "fields": {
+          "name": "Name",
+          "category": "Category",
+          "subcategory": "Subcategory",
+          "description": "Description",
+          "price": "Price",
+          "dimensions": "Dimensions",
+          "length": "Length",
+          "width": "Width",
+          "height": "Height",
+          "weight": "Weight",
+          "specialInstructions": "Special Instructions",
+          "requiresCarefulHandling": "Requires Careful Handling",
+          "fragileItem": "Fragile Item?",
+          "isInsured": "Is Insured?",
+          "priority": "Priority"
+        },
+        "packagePhotos": {
+          "title": "Package Photos",
+          "description": "Add photos of your package to help travelers better understand its appearance and condition. This also helps with package verification during pickup and delivery.",
+          "photoGuidelines": {
+            "title": "Photo Guidelines",
+            "tips": [
+              "Take clear, well-lit photos from multiple angles",
+              "Include any fragile/handling labels if present",
+              "Show the packaging condition clearly",
+              "Avoid including personal or sensitive information in photos"
+            ]
+          }
+        }
+      },
+      "step2": {
+        "title": "Step 2: Package Pickup Details",
+        "fields": {
+          "originStreet": "Origin Street",
+          "originPostal": "Origin Postal Code",
+          "originCity": "Origin City",
+          "pickupDate": "Pickup Date",
+          "preferredTime": "Preferred Time"
+        }
+      },
+      "step3": {
+        "title": "Step 3: Delivery Address",
+        "fields": {
+          "deliveryStreet": "Street",
+          "deliveryPostal": "Postal Code",
+          "deliveryCity": "City",
+          "deliveryDate": "Delivery Date",
+          "preferredDeliveryTime": "Preferred Delivery Time"
+        }
+      },
+      "step4": {
+        "title": "Step 4: Communication Preference",
+        "fields": {
+          "phoneNumber": "Phone Number",
+          "communicationPreference": "Communication Preference",
+          "options": {
+            "whatsapp": "WhatsApp",
+            "email": "Email",
+            "phone": "Phone"
+          }
+        }
+      },
+      "step5": {
+        "title": "Step 5: Review & Submit",
+        "generalInformation": "General Information",
+        "name": "Name",
+        "price": "Price",
+        "description": "Description",
+        "dimensions": "Dimensions",
+        "length": "Length",
+        "width": "Width",
+        "height": "Height",
+        "origin": "Origin",
+        "street": "Street",
+        "postal": "Postal",
+        "city": "City",
+        "destination": "Destination",
+        "additionalInformation": "Additional Information",
+        "pickupDate": "Pickup Date",
+        "preferredTime": "Preferred Time",
+        "deliveryDate": "Delivery Date",
+        "preferredDeliveryTime": "Preferred Delivery Time",
+        "phone": "Phone",
+        "communication": "Communication",
+        "requiresCarefulHandling": "Requires Careful Handling",
+        "isFragile": "Is Fragile",
+        "insurance": "Insurance",
+        "priority": "Priority",
+        "specialInstructions": "Special Instructions",
+        "yes": "Yes",
+        "no": "No",
+        "na": "N/A"
+      }
+    }
+  },
+  "travellerForm": {
+    "progressHeaders": {
+      "travelRoute": "What is your travel route?",
+      "transportDetails": "Transport Details",
+      "communication": "Communication",
+      "pricing": "Pricing",
+      "reviewOffer": "Review your offer"
+    },
+    "buttons": {
+      "continueToTransport": "Continue to Transport Details",
+      "continueToCommunication": "Continue to Communication",
+      "continueToPricing": "Continue to Pricing",
+      "continueToReview": "Continue to Review",
+      "submitOffer": "Submit Offer",
+      "continue": "Continue",
+      "back": "Back"
+    },
+    "steps": {
+      "step1": {
+        "title": "Trip Details",
+        "fields": {
+          "departure": "Departure Location Details",
+          "arrival": "Arrival Location Details",
+          "street": "Street",
+          "city": "City",
+          "state": "State",
+          "country": "Country",
+          "postalCode": "Postal Code",
+          "travelSchedule": {
+            "title": "Travel Schedule",
+            "departure": "Departure",
+            "arrival": "Arrival"
+          },
+          "packageReception": {
+            "title": "Package Reception Details",
+            "receptionMethod": {
+              "title": "Reception Method",
+              "departurePoint": {
+                "name": "At Departure Point",
+                "description": "Meet at the airport/station on travel day"
+              },
+              "advanceHome": {
+                "name": "Advance Home Delivery",
+                "description": "Receive at your address before travel date"
+              },
+              "meetingPoint": {
+                "name": "Convenient Meeting Point",
+                "description": "Arrange a mutual meeting location"
+              }
+            },
+            "advanceNoticeRequired": "Advance Notice Required",
+            "oneDayNotice": "1 day notice",
+            "twoDaysNotice": "2 days notice",
+            "threeDaysNotice": "3 days notice",
+            "flexibleNotice": "Flexible (coordinate with sender)",
+            "availableReceptionTimes": "Available Reception Times",
+            "weekdays": "Weekdays",
+            "weekends": "Weekends",
+            "morning": "Morning (6 AM - 12 PM)",
+            "afternoon": "Afternoon (12 PM - 6 PM)",
+            "evening": "Evening (6 PM - 10 PM)"
+          }
+        }
+      },
+      "step2": {
+        "title": "Package Preferences",
+        "fields": {
+          "weightCapacity": {
+            "title": "Maximum Weight Capacity",
+            "options": {
+              "upTo5kg": "Up to 5 kg",
+              "upTo10kg": "Up to 10 kg",
+              "upTo20kg": "Up to 20 kg",
+              "upTo50kg": "Up to 50 kg",
+              "upTo100kg": "Up to 100 kg"
+            }
+          },
+          "specialHandling": {
+            "title": "Special Handling Services",
+            "description": "Additional services you can provide",
+            "secureHandling": {
+              "name": "Secure & Careful Handling",
+              "description": "Extra care and security for valuable or delicate items"
+            },
+            "expressDelivery": {
+              "name": "Express Delivery",
+              "description": "Quick delivery upon arrival at destination"
+            }
+          },
+          "quickPreference": {
+            "title": "Quick Preference Selection",
+            "description": "Choose your package handling preferences",
+            "openToAll": {
+              "label": "Open to All Items",
+              "description": "Accept all allowed items within weight limit",
+              "details": {
+                "flexibility": "Maximum flexibility",
+                "opportunities": "More delivery opportunities",
+                "earningPotential": "Higher earning potential"
+              }
+            },
+            "basicItems": {
+              "label": "Basic Items Only",
+              "description": "Low-risk items only",
+              "details": "Safe and simple items for easy transport"
+            }
+          },
+          "travelerResponsibilities": {
+            "title": "Traveler Responsibilities",
+            "description": "As a traveler, you must understand and acknowledge your responsibilities regarding restricted items.",
+            "verifyContents": "I will verify the contents of packages before accepting them",
+            "noRestrictedItems": "I will not transport any restricted or prohibited items",
+            "reportSuspicious": "I will report any suspicious packages or contents",
+            "legalUnderstanding": "I understand my legal responsibilities as a traveler",
+            "acknowledge": "Please acknowledge all responsibilities to continue",
+            "viewGuide": "View complete restricted items guide"
+          }
+        }
+      },
+      "step3": {
+        "title": "Communication Preferences",
+        "contactMethods": {
+          "label": "Contact Methods",
+          "email": "Email",
+          "phone": "Phone",
+          "chat": "Chat"
+        },
+        "contactDetails": {
+          "label": "Contact Details",
+          "travelPackageName": {
+            "label": "Travel Package Name",
+            "placeholder": "Enter your travel package name"
+          },
+          "emailAddress": {
+            "label": "Email Address",
+            "placeholder": "Enter your email"
+          },
+          "phoneNumber": {
+            "label": "Phone Number",
+            "placeholder": "Enter your phone number"
+          }
+        },
+        "availability": {
+          "label": "Availability",
+          "morning": "Morning",
+          "afternoon": "Afternoon",
+          "evening": "Evening"
+        }
+      },
+      "step4": {
+        "title": "Price Calculator",
+        "baseRate": {
+          "label": "Base Rate"
+        },
+        "packageDetails": {
+          "label": "Package Details",
+          "packageType": {
+            "label": "Package Type"
+          },
+          "weight": {
+            "label": "Weight (kg)"
+          }
+        },
+        "distanceUrgency": {
+          "label": "Distance & Urgency",
+          "distance": {
+            "label": "Distance (km)"
+          },
+          "urgentDelivery": "Urgent Delivery (+20%)"
+        },
+        "totalPrice": "Total Price"
+      },
+      "step5": {
+        "title": "Review Your Travel Offer",
+        "tripDetails": {
+          "title": "Trip Details",
+          "from": "From",
+          "to": "To",
+          "travelDate": "Travel Date"
+        },
+        "transportDetails": "Transport Details",
+        "maximumWeight": "Maximum Weight",
+        "packageHandling": "Package Handling",
+        "collectionOptions": "Collection Options",
+        "offerSecureHandling": "Offer Secure Handling",
+        "offerExpressDelivery": "Offer Express Delivery",
+        "acceptBasicItemsOnly": "Accept Basic Items Only",
+        "acceptAllItems": "Accept All Items",
+        "pricing": "Pricing",
+        "baseRate": "Base Rate",
+        "standardDeliveryFee": "Standard delivery fee",
+        "perKgRate": "Per Kg Rate",
+        "perKgRateDescription": "Additional cost per kilogram",
+        "urgentDelivery": "Urgent Delivery",
+        "urgentDeliveryDescription": "Express delivery service"
+      }
+    }
+  },
+  "Blog": {
+    "title": "DeliveryConnect Blog",
+    "description": "Tips, guides, and updates to help you make the most of peer-to-peer delivery",
+    "stayUpdated": "Stay Updated",
+    "newsletterDescription": "Subscribe to our newsletter for the latest delivery tips, traveler stories, and platform updates.",
+    "enterYourEmail": "Enter your email",
+    "subscribe": "Subscribe",
+    "posts": {
+      "allPosts": "All Posts",
+      "travelerTips": "Traveler Tips",
+      "senderTips": "Sender Tips",
+      "safety": "Safety",
+      "platformUpdates": "Platform Updates",
+      "successStories": "Success Stories"
+    }
+  },
+  "HowItWorks": {
+    "howItWorks": "How It Works",
+    "howItWorksDescription": "Connect with travelers, send your packages, and save money. It's that simple!",
+    "platformStatistics": "Platform Statistics",
+    "platformStatisticsDescription": "See how our platform is making a difference",
+    "faq": "Frequently Asked Questions",
+    "faqDescription": "Find answers to the most common questions about our platform",
+    "steps": {
+      "connect": "Connect",
+      "connectDescription": "Connect with travelers heading to your destination",
+      "package": "Package",
+      "packageDescription": "Prepare your package and arrange pickup details",
+      "track": "Track",
+      "trackDescription": "Track your package throughout its journey",
+      "save": "Save",
+      "saveDescription": "Save money while helping travelers earn rewards"
+    },
+    "categories": {
+      "general": "General",
+      "securitySafety": "Security & Safety",
+      "shippingDelivery": "Shipping & Delivery",
+      "paymentsRewards": "Payments & Rewards",
+      "supportCommunication": "Support & Communication",
+      "processTimeline": "Process & Timeline"
+    },
+    "successfulDeliveries": "Successful Deliveries",
+    "activeTravelers": "Active Travelers",
+    "averageSavings": "Average Savings",
+    "faqs": {
+      "general": {
+        "q1": "How does the platform work for travelers and senders?",
+        "a1": "Our platform connects travelers with extra luggage space to senders who need an affordable, fast, and efficient way to send their items. Senders post item requests, and travelers can accept these requests if they have the capacity to carry them. Both parties benefit — travelers earn rewards, and senders save on delivery fees.",
+        "q2": "Is the platform a licensed and certified service?",
+        "a2": "Yes, we operate as a licensed and certified platform, ensuring compliance with legal and regulatory standards. Our certifications include a Trade License and Certificate of Formation, providing transparency, reliability, and user trust.",
+        "q3": "What are the key benefits of using this platform?",
+        "a3": "Our platform offers several advantages: affordable shipping compared to traditional methods, extra income for travelers utilizing unused luggage space, eco-friendly shared shipping system, and flexibility in routes, timings, and delivery preferences.",
+        "q4": "Can I send items both internationally and intercity?",
+        "a4": "Yes, you can send items both intercity and internationally. Our platform connects travelers moving between cities or countries, offering senders a variety of delivery routes for faster and more flexible shipping options.",
+        "q5": "How do I create an account on the platform?",
+        "a5": "Creating an account is simple: download the app or visit the website, sign up using your email or social login, and complete the account setup, which includes verification steps."
+      },
+      "security": {
+        "q1": "How is the safety and security of items ensured during transit?",
+        "a1": "We prioritize item security through user verification, ratings & reviews system, and optional insurance for package protection. Both parties rate each other after delivery, encouraging responsible behavior.",
+        "q2": "How does the platform verify the identity of users?",
+        "a2": "To build trust and safety, we require user verification during the account setup process. This includes verifying personal information such as name, email, and, in some cases, government-issued identification.",
+        "q3": "What happens if an item is lost, stolen, or damaged?",
+        "a3": "If an item is lost, stolen, or damaged during delivery, users should file a claim through the platform. Depending on the circumstances, optional insurance (if purchased) may cover these incidents. Claims are reviewed and resolved based on the platform's claim policies.",
+        "q4": "How do you handle disputes between users?",
+        "a4": "We have a dedicated dispute resolution team that handles conflicts between users. The team reviews evidence from both parties and works to find fair solutions based on our platform policies.",
+        "q5": "What security measures are in place for payments?",
+        "a5": "We use industry-standard encryption and secure payment processing systems. All financial transactions are protected, and we never store sensitive payment information."
+      },
+      "shipping": {
+        "q1": "What types of items can be sent through the platform?",
+        "a1": "The platform allows shipment of personal belongings, documents, electronics, gadgets, clothing, and accessories. However, restricted or prohibited items (such as hazardous materials, illegal goods, or flammable items) are not allowed.",
+        "q2": "Are there any size or weight limits for items?",
+        "a2": "Yes, item size and weight limits depend on the available space provided by the traveler. Travelers specify how much space they have, and senders can choose a traveler that matches their package size and weight needs.",
+        "q3": "Can I track my package during delivery?",
+        "a3": "Yes, senders can track the status of their items in real-time. Our system provides updates on the traveler's progress, offering peace of mind and transparency throughout the entire shipping process.",
+        "q4": "How do I arrange pickup and delivery?",
+        "a4": "You can coordinate directly with the traveler through our platform's messaging system to arrange convenient pickup and delivery locations and times.",
+        "q5": "What should I do if my delivery is delayed?",
+        "a5": "Contact your traveler through the platform's messaging system. If you can't reach them, our support team is available 24/7 to help resolve any delivery issues."
+      },
+      "payment": {
+        "q1": "How do payments work on the platform?",
+        "a1": "Payments are processed securely through our internal payment system. Senders pay directly via the platform, and all payments are encrypted to ensure user privacy and data protection.",
+        "q2": "What payment methods are accepted?",
+        "a2": "We accept various payment methods including credit/debit cards, digital wallets, and bank transfers. All payments are processed securely through our platform.",
+        "q3": "How does the rewards system work?",
+        "a3": "Travelers earn rewards for successful deliveries. These rewards can be converted to platform credits or cash. The more deliveries completed, the higher the rewards.",
+        "q4": "Can I earn bonuses through referrals?",
+        "a4": "Yes, users can participate in our referral program. When you invite friends or family who complete their first transaction, both you and the referred user receive bonus rewards.",
+        "q5": "What happens to my payment if delivery fails?",
+        "a5": "If a delivery cannot be completed, we have a refund policy in place. The amount refunded depends on the circumstances and timing of the cancellation."
+      },
+      "support": {
+        "q1": "How can I contact customer support?",
+        "a1": "Our customer support team is available 24/7 through multiple channels including live chat, email, and phone. You can also find answers to common questions in our help center.",
+        "q2": "What if I need to cancel my booking?",
+        "a2": "You can cancel your booking through the platform. The refund amount will depend on how close to the delivery date you cancel and our cancellation policy.",
+        "q3": "How can I report inappropriate behavior?",
+        "a3": "Use the report function in the app or contact our support team immediately. We take all reports seriously and investigate thoroughly."
+      },
+      "process": {
+        "q1": "How long does the delivery process usually take?",
+        "a1": "Delivery times vary depending on the route and traveler's schedule. You can see estimated delivery times when browsing available travelers.",
+        "q2": "What happens after I book a traveler?",
+        "a2": "After booking, you'll receive confirmation and can begin coordinating with the traveler through our messaging system.",
+        "q3": "Can I schedule deliveries in advance?",
+        "a3": "Yes, you can book travelers weeks or months in advance, depending on their posted travel schedules."
+      }
+    }
+  },
+  "BrowsePackages": {
+    "title": "Find Packages That Need Delivery",
+    "description": "Connect with senders and earn money by delivering packages along your travel route",
+    "noPackagesFound": "No packages found",
+    "noPackagesFoundDescription": "Try adjusting your filters or search terms",
+    "found": "Found",
+    "packagesMatchingCriteria": "Packages matching your criteria",
+    "myPackages": "My Packages",
+    "card": {
+      "reviews": "Reviews",
+      "from": "From",
+      "to": "To",
+      "deliveryDate": "Delivery Date",
+      "packageDetails": "Package Details",
+      "packageDescription": "Package Description",
+      "insured": "Insured",
+      "priority": "Priority",
+      "specialInstructions": "Special Instructions",
+      "chatWithSender": "Chat with Sender",
+      "viewDetails": "View Details",
+      "totalPrice": "Total Price",
+      "close": "Close",
+      "price": "Price",
+      "features": "Features",
+      "packageSize": "Package Size",
+      "weight": "Weight",
+      "category": "Category",
+      "senderInformation": "Sender Information",
+      "routeInformation": "Route Information",
+      "descriptionAndInstructions": "Description & Instructions",
+      "insuranceCoverage": "Insurance Coverage",
+      "priorityDelivery": "Priority Delivery",
+      "description": "Description"
+    }
+  },
+  "BrowseTips": {
+    "title": "Browse Trips",
+    "noTripsFound": "No trips found matching your criteria",
+    "tripsAvailable": "Trips available",
+    "clearAllFilters": "Clear all filters"
+  },
+  "TravelerDashboard": {
+    "title": "Traveler Dashboard",
+    "description": "Manage your trips and deliveries",
+    "orders": {
+      "noOrdersAssigned": "No orders have been assigned yet. Please check back later.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "associatedOrders": "Associated Orders",
+      "orderId": "Order ID",
+      "pickupAddress": "Pickup Address",
+      "deliveryAddress": "Delivery Address",
+      "status": "Status",
+      "payment": "Payment",
+      "actions": "Actions",
+      "markAsDelivered": "Mark as Delivered",
+      "enterOtp": "Enter OTP"
+    }
+  },
+  "SenderDashboard": {
+    "title": "Sender Dashboard",
+    "description": "Track and manage your packages",
+    "orders": {
+      "title": "Created Orders",
+      "orderId": "Order ID",
+      "pickupAddress": "Pickup Address",
+      "deliveryAddress": "Delivery Address",
+      "pickupDate": "Pickup Date",
+      "deliveryDate": "Delivery Date",
+      "status": "Status",
+      "payment": "Payment",
+      "noOrders": "No orders yet."
+    }
+  },
+  "Footer": {
+    "company": {
+      "title": "Company",
+      "aboutUs": "About Us",
+      "howItWorks": "How It Works",
+      "safety": "Safety",
+      "careers": "Careers",
+      "press": "Press"
+    },
+    "services": {
+      "title": "Services",
+      "sendPackage": "Send Package",
+      "browseTrips": "Browse Trips",
+      "becomeTraveler": "Become a Traveler",
+      "businessSolutions": "Business Solutions"
+    },
+    "support": {
+      "title": "Support",
+      "helpCenter": "Help Center",
+      "contactUs": "Contact Us",
+      "faqs": "FAQs",
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy"
+    },
+    "connect": {
+      "title": "Connect",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn"
+    },
+    "allRightsReserved": "All rights reserved."
+  },
+  "Sidebar": {
+    "trips": "My Trips",
+    "orders": "My Orders",
+    "myPackages": "My Packages",
+    "findTravelers": "Find Travelers",
+    "paymentHistory": "Payment History"
+  },
+  "Chat": {
+    "title": "Messages",
+    "selectConversation": "Select a conversation to start chatting"
+  },
+  "AboutUs": {
+    "title": "Reimagining Global",
+    "description": "Connecting travelers and senders to create a more efficient, sustainable future of delivery through peer-to-peer connections.",
+    "delivery": "Delivery",
+    "stats": {
+      "users": {
+        "label": "50K+ Users",
+        "sublabel": "Active Community"
+      },
+      "countries": {
+        "label": "100+ Countries",
+        "sublabel": "Global Network"
+      },
+      "deliveries": {
+        "label": "1M+ Deliveries",
+        "sublabel": "Successfully Completed"
+      },
+      "rating": {
+        "label": "95% Satisfaction",
+        "sublabel": "User Rating"
+      }
+    },
+    "cta": {
+      "title": "Ready to Transform Delivery?",
+      "description": "Join thousands of travelers and senders already revolutionizing the way items move around the world.",
+      "travel": "Start Traveling",
+      "send": "Send a Package"
+    },
+    "successStories": {
+      "title": "Success Stories",
+      "subtitle": "Real experiences from our community members",
+      "stories": [
+        {
+          "quote": "I've been able to offset my travel costs while helping others. It's a win-win!",
+          "author": "Sarah K.",
+          "role": "Frequent Traveler"
+        },
+        {
+          "quote": "Found an affordable way to send packages internationally. The community is amazing!",
+          "author": "David M.",
+          "role": "Business Owner"
+        }
+      ]
+    },
+    "howItWorks": {
+      "title": "How Peer-to-Peer Delivery Works",
+      "subtitle": "A revolutionary approach to shipping that connects people and creates opportunities",
+      "connect": "Connect",
+      "connectDescription": "Travelers post their trips and available space, while senders list their delivery needs.",
+      "match": "Match",
+      "matchDescription": "Our smart algorithm matches senders with travelers heading to the same destination.",
+      "deliver": "Deliver",
+      "deliverDescription": "Secure handoff and delivery confirmation through our trusted platform."
+    },
+    "benefits": {
+      "title": "Why Choose Peer-to-Peer Delivery?",
+      "subtitle": "Discover the advantages of our community-driven delivery network",
+      "costEffective": "Cost-Effective",
+      "costEffectiveDescription": "Save up to 60% compared to traditional shipping methods",
+      "ecoFriendly": "Eco-Friendly",
+      "ecoFriendlyDescription": "Reduce carbon footprint by utilizing existing travel routes",
+      "secureSafe": "Secure & Safe",
+      "secureSafeDescription": "Full insurance coverage and verified user profiles",
+      "globalReach": "Global Reach",
+      "globalReachDescription": "Access to international routes and destinations",
+      "communityDriven": "Community Driven",
+      "communityDrivenDescription": "Build connections while helping others",
+      "flexibleDelivery": "Flexible Delivery",
+      "flexibleDeliveryDescription": "Customizable pickup and delivery options"
+    }
+  },
+  "Faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about our platform",
+    "categories": {
+      "general": "General",
+      "security": "Security & Safety",
+      "shipping": "Shipping & Delivery",
+      "payment": "Payments & Rewards",
+      "support": "Support & Communication",
+      "process": "Process & Timeline"
+    },
+    "faqs": {
+      "general": {
+        "q1": "How does the platform work for travelers and senders?",
+        "a1": "Our platform connects travelers with extra luggage space to senders who need an affordable, fast, and efficient way to send their items. Senders post item requests, and travelers can accept these requests if they have the capacity to carry them. Both parties benefit — travelers earn rewards, and senders save on delivery fees.",
+        "q2": "Is the platform a licensed and certified service?",
+        "a2": "Yes, we operate as a licensed and certified platform, ensuring compliance with legal and regulatory standards. Our certifications include a Trade License and Certificate of Formation, providing transparency, reliability, and user trust.",
+        "q3": "What are the key benefits of using this platform?",
+        "a3": "Our platform offers several advantages: affordable shipping compared to traditional methods, extra income for travelers utilizing unused luggage space, eco-friendly shared shipping system, and flexibility in routes, timings, and delivery preferences.",
+        "q4": "Can I send items both internationally and intercity?",
+        "a4": "Yes, you can send items both intercity and internationally. Our platform connects travelers moving between cities or countries, offering senders a variety of delivery routes for faster and more flexible shipping options.",
+        "q5": "How do I create an account on the platform?",
+        "a5": "Creating an account is simple: download the app or visit the website, sign up using your email or social login, and complete the account setup, which includes verification steps."
+      },
+      "security": {
+        "q1": "How is the safety and security of items ensured during transit?",
+        "a1": "We prioritize item security through user verification, ratings & reviews system, and optional insurance for package protection. Both parties rate each other after delivery, encouraging responsible behavior.",
+        "q2": "How does the platform verify the identity of users?",
+        "a2": "To build trust and safety, we require user verification during the account setup process. This includes verifying personal information such as name, email, and, in some cases, government-issued identification.",
+        "q3": "What happens if an item is lost, stolen, or damaged?",
+        "a3": "If an item is lost, stolen, or damaged during delivery, users should file a claim through the platform. Depending on the circumstances, optional insurance (if purchased) may cover these incidents. Claims are reviewed and resolved based on the platform's claim policies.",
+        "q4": "How do you handle disputes between users?",
+        "a4": "We have a dedicated dispute resolution team that handles conflicts between users. The team reviews evidence from both parties and works to find fair solutions based on our platform policies.",
+        "q5": "What security measures are in place for payments?",
+        "a5": "We use industry-standard encryption and secure payment processing systems. All financial transactions are protected, and we never store sensitive payment information."
+      },
+      "shipping": {
+        "q1": "What types of items can be sent through the platform?",
+        "a1": "The platform allows shipment of personal belongings, documents, electronics, gadgets, clothing, and accessories. However, restricted or prohibited items (such as hazardous materials, illegal goods, or flammable items) are not allowed.",
+        "q2": "Are there any size or weight limits for items?",
+        "a2": "Yes, item size and weight limits depend on the available space provided by the traveler. Travelers specify how much space they have, and senders can choose a traveler that matches their package size and weight needs.",
+        "q3": "Can I track my package during delivery?",
+        "a3": "Yes, senders can track the status of their items in real-time. Our system provides updates on the traveler's progress, offering peace of mind and transparency throughout the entire shipping process.",
+        "q4": "How do I arrange pickup and delivery?",
+        "a4": "You can coordinate directly with the traveler through our platform's messaging system to arrange convenient pickup and delivery locations and times.",
+        "q5": "What should I do if my delivery is delayed?",
+        "a5": "Contact your traveler through the platform's messaging system. If you can't reach them, our support team is available 24/7 to help resolve any delivery issues."
+      },
+      "payment": {
+        "q1": "How do payments work on the platform?",
+        "a1": "Payments are processed securely through our internal payment system. Senders pay directly via the platform, and all payments are encrypted to ensure user privacy and data protection.",
+        "q2": "What payment methods are accepted?",
+        "a2": "We accept various payment methods including credit/debit cards, digital wallets, and bank transfers. All payments are processed securely through our platform.",
+        "q3": "How does the rewards system work?",
+        "a3": "Travelers earn rewards for successful deliveries. These rewards can be converted to platform credits or cash. The more deliveries completed, the higher the rewards.",
+        "q4": "Can I earn bonuses through referrals?",
+        "a4": "Yes, users can participate in our referral program. When you invite friends or family who complete their first transaction, both you and the referred user receive bonus rewards.",
+        "q5": "What happens to my payment if delivery fails?",
+        "a5": "If a delivery cannot be completed, we have a refund policy in place. The amount refunded depends on the circumstances and timing of the cancellation."
+      },
+      "support": {
+        "q1": "How can I contact customer support?",
+        "a1": "Our customer support team is available 24/7 through multiple channels including live chat, email, and phone. You can also find answers to common questions in our help center.",
+        "q2": "What if I need to cancel my booking?",
+        "a2": "You can cancel your booking through the platform. The refund amount will depend on how close to the delivery date you cancel and our cancellation policy.",
+        "q3": "How can I report inappropriate behavior?",
+        "a3": "Use the report function in the app or contact our support team immediately. We take all reports seriously and investigate thoroughly."
+      },
+      "process": {
+        "q1": "How long does the delivery process usually take?",
+        "a1": "Delivery times vary depending on the route and traveler's schedule. You can see estimated delivery times when browsing available travelers.",
+        "q2": "What happens after I book a traveler?",
+        "a2": "After booking, you'll receive confirmation and can begin coordinating with the traveler through our messaging system.",
+        "q3": "Can I schedule deliveries in advance?",
+        "a3": "Yes, you can book travelers weeks or months in advance, depending on their posted travel schedules."
+      }
+    }
+  },
+  "Feedback": {
+    "title": "Leave a review for ",
+    "subtitle": "We value your opinion and would love to hear from you",
+    "rateYourExperience": "How would you rate your experience",
+    "tellUsYourExperience": "Tell us more about your experience",
+    "experiencePlaceholder": "Write about your experience..",
+    "submitButton": "Submit",
+    "mayBeLater": "May Be Later"
+  },
+  "EditFeedback": {
+    "title": "Update your review ",
+    "subtitle": "Make changes to your feedback effortlessly.",
+    "rateYourExperience": "How would you rate your experience",
+    "tellUsYourExperience": "Tell us more about your experience",
+    "experiencePlaceholder": "Write about your experience..",
+    "submitButton": "Submit"
+  },
+  "TravelerProfile": {
+    "reviews": "reviews",
+    "reviewButton": "Leave a Review",
+    "messageButton": "Message",
+    "tripsCompleted": "trips completed",
+    "responseTime": "Response Time",
+    "successRate": "Success Rate",
+    "completedTrips": "Completed Trips",
+    "memberSince": "Member Since",
+    "activeTrips": "Active Trips"
+  }
+}

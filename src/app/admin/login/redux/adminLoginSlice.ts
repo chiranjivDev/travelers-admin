@@ -20,10 +20,6 @@ const adminLoginSlice = createSlice({
       const { access_token, refresh_token } = action.payload;
       state.token = access_token;
       state.refreshToken = refresh_token;
-      // if (access_token && refresh_token) {
-      //   localStorage.setItem("authToken", access_token);
-      //   localStorage.setItem("refreshToken", refresh_token);
-      // }
     },
     loginFailure: (state, action) => {
       state.isLoading = false;

@@ -24,19 +24,17 @@ export const getLocation = (): Promise<Coordinates> => {
       },
       (error: GeolocationError) => {
         reject(error);
-      }
+      },
     );
   });
 };
-
-// Haversine formula to calculate distance between two points
 export const calculateDistance = (
   lat1: number,
   lon1: number,
   lat2: number,
-  lon2: number
+  lon2: number,
 ): number => {
-  const R = 6371; // Earth's radius in kilometers
+  const R = 6371;
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
   const a =
@@ -52,17 +50,15 @@ export const calculateDistance = (
 const toRad = (value: number): number => {
   return (value * Math.PI) / 180;
 };
-
-// Geocoding function to convert address to coordinates
 export const geocodeAddress = async (address: string): Promise<Coordinates> => {
   try {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        address
-      )}`
+        address,
+      )}`,
     );
     const data = await response.json();
-    
+
     if (data && data[0]) {
       return {
         latitude: parseFloat(data[0].lat),
@@ -74,11 +70,11 @@ export const geocodeAddress = async (address: string): Promise<Coordinates> => {
     throw new Error('Failed to geocode address');
   }
 };
-
-// Cache geocoded addresses
 const geocodeCache = new Map<string, Coordinates>();
 
-export const getCachedGeocode = async (address: string): Promise<Coordinates> => {
+export const getCachedGeocode = async (
+  address: string,
+): Promise<Coordinates> => {
   if (geocodeCache.has(address)) {
     return geocodeCache.get(address)!;
   }

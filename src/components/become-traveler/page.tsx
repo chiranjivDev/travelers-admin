@@ -1,94 +1,91 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import TripDetailsForm from '@/components/TravelerForms/TripDetailsForm'
-import TransportDetailsForm from '@/components/TravelerForms/TransportDetailsForm'
-import CommunicationPricingForm from '@/components/TravelerForms/CommunicationPricingForm'
-import ReviewOffer from '@/components/TravelerForms/ReviewOffer'
-import PackagePreferencesForm from '@/components/TravelerForms/PackagePreferencesForm'
-import { TravelerFormData } from '@/components/TravelerForms/types'
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import TripDetailsForm from '@/components/TravelerForms/TripDetailsForm';
+import TransportDetailsForm from '@/components/TravelerForms/TransportDetailsForm';
+import CommunicationPricingForm from '@/components/TravelerForms/CommunicationPricingForm';
+import ReviewOffer from '@/components/TravelerForms/ReviewOffer';
+import PackagePreferencesForm from '@/components/TravelerForms/PackagePreferencesForm';
+import { TravelerFormData } from '@/components/TravelerForms/types';
 
 export default function BecomeTraveler() {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<TravelerFormData>({
     transportCapacity: {
-      maxWeight: ''
+      maxWeight: '',
     },
     packagePreferences: {
       acceptedItems: [],
-      flexibilityLevel: 'all'
+      flexibilityLevel: 'all',
     },
-    handlingPreferences: {}
-  })
+    handlingPreferences: {},
+  });
 
   const slideVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      opacity: 0,
     }),
     center: {
       zIndex: 1,
       x: 0,
-      opacity: 1
+      opacity: 1,
     },
     exit: (direction: number) => ({
       zIndex: 0,
       x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
-  }
+      opacity: 0,
+    }),
+  };
 
-  const handleNext = () => setStep(prev => Math.min(prev + 1, 5))
-  const handleBack = () => setStep(prev => Math.max(prev - 1, 1))
-  const handleSubmit = async () => {
-    // TODO: Implement submission logic
-    console.log('Submitting form data:', formData)
-  }
+  const handleNext = () => setStep((prev) => Math.min(prev + 1, 5));
+  const handleBack = () => setStep((prev) => Math.max(prev - 1, 1));
+  const handleSubmit = async () => {};
 
   const updateFormData = (data: Partial<TravelerFormData>) => {
-    setFormData(prev => ({ ...prev, ...data }))
-  }
+    setFormData((prev) => ({ ...prev, ...data }));
+  };
 
   const getButtonText = (currentStep: number) => {
     switch (currentStep) {
       case 1:
-        return 'Continue to Package Details'
+        return 'Continue to Package Details';
       case 2:
-        return 'Continue to Transport Details'
+        return 'Continue to Transport Details';
       case 3:
-        return 'Continue to Communication & Pricing'
+        return 'Continue to Communication & Pricing';
       case 4:
-        return 'Continue to Review'
+        return 'Continue to Review';
       case 5:
-        return 'Submit Offer'
+        return 'Submit Offer';
       default:
-        return 'Continue'
+        return 'Continue';
     }
-  }
+  };
 
   const steps = [
-    { 
-      icon: '📍', 
-      title: 'What is your travel route?'
+    {
+      icon: '📍',
+      title: 'What is your travel route?',
     },
-    { 
-      icon: '📦', 
-      title: 'Package Preferences'
+    {
+      icon: '📦',
+      title: 'Package Preferences',
     },
-    { 
-      icon: '✈️', 
-      title: 'Transport Details'
+    {
+      icon: '✈️',
+      title: 'Transport Details',
     },
-    { 
-      icon: '💬', 
-      title: 'Communication & Pricing'
+    {
+      icon: '💬',
+      title: 'Communication & Pricing',
     },
     {
       icon: '✓',
-      title: 'Review your offer'
-    }
-  ]
+      title: 'Review your offer',
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#0f172a] py-24">
@@ -107,11 +104,12 @@ export default function BecomeTraveler() {
                   <div
                     className={`
                       w-12 h-12 mx-auto rounded-full flex items-center justify-center
-                      ${step > index + 1 
-                        ? 'bg-green-500 text-white' 
-                        : step === index + 1 
-                          ? 'bg-blue-600 text-white' 
-                          : 'bg-gray-200/10 text-gray-500'
+                      ${
+                        step > index + 1
+                          ? 'bg-green-500 text-white'
+                          : step === index + 1
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-200/10 text-gray-500'
                       }
                       mb-2 text-xl
                     `}
@@ -130,7 +128,7 @@ export default function BecomeTraveler() {
                           step > index + 1 ? 'bg-green-500' : 'bg-gray-700'
                         } rounded transition-all duration-300`}
                         style={{
-                          width: step > index + 1 ? '100%' : '0%'
+                          width: step > index + 1 ? '100%' : '0%',
                         }}
                       />
                     </div>
@@ -143,7 +141,7 @@ export default function BecomeTraveler() {
 
         {/* Form Content */}
         <div className="bg-white rounded-xl shadow-xl p-6 md:p-8">
-          <AnimatePresence mode='wait'>
+          <AnimatePresence mode="wait">
             <motion.div
               key={step}
               custom={step}
@@ -152,8 +150,8 @@ export default function BecomeTraveler() {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                x: { type: 'spring', stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
               }}
             >
               {step === 1 && (
@@ -216,5 +214,5 @@ export default function BecomeTraveler() {
         </div>
       </div>
     </div>
-  )
+  );
 }

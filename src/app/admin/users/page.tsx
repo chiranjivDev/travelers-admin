@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   FiSearch,
   FiFilter,
@@ -15,57 +15,54 @@ import {
   FiEye,
   FiLock,
   FiUnlock,
-} from "react-icons/fi";
-import Modal from "@/components/admin/Modal";
-import UserForm from "@/components/admin/UserForm";
-import ConfirmDialog from "@/components/admin/ConfirmDialog";
-import { useDispatch, useSelector } from "react-redux";
+} from 'react-icons/fi';
+import Modal from '@/components/admin/Modal';
+import UserForm from '@/components/admin/UserForm';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   DELETE_USER,
   GET_ALL_USERS,
   UPDATE_USER_STATUS,
-} from "./redux/userAction";
-
-// Mock user data - Replace with real data from your backend
+} from './redux/userAction';
 const mockUsers = [
   {
     id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    role: "traveler",
-    status: "active",
+    name: 'John Doe',
+    email: 'john@example.com',
+    role: 'traveler',
+    status: 'active',
     verified: true,
-    joinDate: "2023-12-01",
-    lastActive: "2024-01-15",
+    joinDate: '2023-12-01',
+    lastActive: '2024-01-15',
     completedDeliveries: 12,
     rating: 4.8,
     totalEarnings: 1250.5,
   },
   {
     id: 2,
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "sender",
-    status: "pending",
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    role: 'sender',
+    status: 'pending',
     verified: false,
-    joinDate: "2023-12-15",
-    lastActive: "2024-01-14",
+    joinDate: '2023-12-15',
+    lastActive: '2024-01-14',
     completedDeliveries: 3,
     rating: 4.5,
     totalEarnings: 450.75,
   },
-  // Add more mock users...
 ];
 
-type UserStatus = "active" | "suspended" | "pending" | "inactive";
-type UserRole = "traveler" | "sender" | "both";
-type ModalType = "create" | "edit" | "view" | null;
-type ActionType = "delete" | "suspend" | "verify" | null;
+type UserStatus = 'active' | 'suspended' | 'pending' | 'inactive';
+type UserRole = 'traveler' | 'sender' | 'both';
+type ModalType = 'create' | 'edit' | 'view' | null;
+type ActionType = 'delete' | 'suspend' | 'verify' | null;
 
 export default function UsersPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<UserStatus | "all">("all");
-  const [roleFilter, setRoleFilter] = useState<UserRole | "all">("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<UserStatus | 'all'>('all');
+  const [roleFilter, setRoleFilter] = useState<UserRole | 'all'>('all');
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [modalType, setModalType] = useState<ModalType>(null);
   const [actionType, setActionType] = useState<ActionType>(null);
@@ -83,8 +80,8 @@ export default function UsersPage() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
-      statusFilter === "all" || user.status === statusFilter;
-    const matchesRole = roleFilter === "all" || user.permissions === roleFilter;
+      statusFilter === 'all' || user.status === statusFilter;
+    const matchesRole = roleFilter === 'all' || user.permissions === roleFilter;
 
     return matchesSearch && matchesStatus && matchesRole;
   });
@@ -100,7 +97,6 @@ export default function UsersPage() {
   };
 
   const handleUserSubmit = (userData: any) => {
-    // TODO: Implement user creation/update
     const { id, status } = userData;
     const payload = {
       id: id,
@@ -123,24 +119,22 @@ export default function UsersPage() {
       payload: { userId: selectedUser.id },
     });
 
-    // TODO: Implement user actions
-    console.log(`Confirming ${actionType} for user:`, selectedUser);
     setActionType(null);
     setSelectedUser(null);
   };
 
   const getActionMessage = () => {
-    if (!selectedUser || !actionType) return "";
+    if (!selectedUser || !actionType) return '';
 
     switch (actionType) {
-      case "delete":
+      case 'delete':
         return `Are you sure you want to delete the user "${selectedUser.name}"? This action cannot be undone.`;
-      case "suspend":
-        return `Are you sure you want to ${selectedUser.status === "suspended" ? "unsuspend" : "suspend"} the user "${selectedUser.name}"?`;
-      case "verify":
-        return `Are you sure you want to ${selectedUser.is_email_verified ? "unverify" : "verify"} the user "${selectedUser.name}"?`;
+      case 'suspend':
+        return `Are you sure you want to ${selectedUser.status === 'suspended' ? 'unsuspend' : 'suspend'} the user "${selectedUser.name}"?`;
+      case 'verify':
+        return `Are you sure you want to ${selectedUser.is_email_verified ? 'unverify' : 'verify'} the user "${selectedUser.name}"?`;
       default:
-        return "";
+        return '';
     }
   };
 
@@ -156,7 +150,7 @@ export default function UsersPage() {
         </div>
 
         <motion.button
-          onClick={() => handleModal("create")}
+          onClick={() => handleModal('create')}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-medium 
@@ -170,18 +164,18 @@ export default function UsersPage() {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {[
-          { label: "Total Users", value: Users.length },
+          { label: 'Total Users', value: Users.length },
           {
-            label: "Active Users",
-            value: Users.filter((u) => u.status === "active").length,
+            label: 'Active Users',
+            value: Users.filter((u) => u.status === 'active').length,
           },
           {
-            label: "Pending Verification",
+            label: 'Pending Verification',
             value: Users.filter((u) => !u.is_email_verified).length,
           },
           {
-            label: "Suspended Users",
-            value: Users.filter((u) => u.status === "suspended").length,
+            label: 'Suspended Users',
+            value: Users.filter((u) => u.status === 'suspended').length,
           },
         ].map((stat, index) => (
           <motion.div
@@ -217,7 +211,7 @@ export default function UsersPage() {
           <select
             value={statusFilter}
             onChange={(e) =>
-              setStatusFilter(e.target.value as UserStatus | "all")
+              setStatusFilter(e.target.value as UserStatus | 'all')
             }
             className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg
               text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 
@@ -236,7 +230,7 @@ export default function UsersPage() {
           <FiFilter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value as UserRole | "all")}
+            onChange={(e) => setRoleFilter(e.target.value as UserRole | 'all')}
             className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg
               text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 
               focus:ring-blue-500 focus:border-blue-500"
@@ -310,11 +304,11 @@ export default function UsersPage() {
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                       ${
-                        user.status === "active"
-                          ? "bg-green-900/50 text-green-400"
-                          : user.status === "suspended"
-                            ? "bg-red-900/50 text-red-400"
-                            : "bg-yellow-900/50 text-yellow-400"
+                        user.status === 'active'
+                          ? 'bg-green-900/50 text-green-400'
+                          : user.status === 'suspended'
+                            ? 'bg-red-900/50 text-red-400'
+                            : 'bg-yellow-900/50 text-yellow-400'
                       }`}
                     >
                       {user.status}
@@ -332,14 +326,14 @@ export default function UsersPage() {
                       {user.completedDeliveries} deliveries
                     </div>
                     <div className="text-sm text-gray-400">
-                      Last active:{" "}
+                      Last active:{' '}
                       {new Date(user.lastActive).toLocaleDateString()}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-3">
                       <motion.button
-                        onClick={() => handleModal("view", user)}
+                        onClick={() => handleModal('view', user)}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="text-gray-400 hover:text-white transition-colors"
@@ -347,7 +341,7 @@ export default function UsersPage() {
                         <FiEye className="w-5 h-5" />
                       </motion.button>
                       <motion.button
-                        onClick={() => handleModal("edit", user)}
+                        onClick={() => handleModal('edit', user)}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         className="text-gray-400 hover:text-white transition-colors"
@@ -403,9 +397,9 @@ export default function UsersPage() {
 
       {/* Create/Edit User Modal */}
       <Modal
-        isOpen={modalType === "create" || modalType === "edit"}
+        isOpen={modalType === 'create' || modalType === 'edit'}
         onClose={() => setModalType(null)}
-        title={`${modalType === "create" ? "Create" : "Edit"} User`}
+        title={`${modalType === 'create' ? 'Create' : 'Edit'} User`}
       >
         <UserForm
           user={selectedUser}
@@ -415,7 +409,7 @@ export default function UsersPage() {
       </Modal>
 
       {/* View User Modal */}
-      {modalType === "view" && selectedUser && (
+      {modalType === 'view' && selectedUser && (
         <Modal
           isOpen={true}
           onClose={() => setModalType(null)}
@@ -474,7 +468,7 @@ export default function UsersPage() {
               <div>
                 <p className="text-sm text-gray-400">Verification</p>
                 <p className="text-white">
-                  {selectedUser.is_email_verified ? "Verified" : "Not Verified"}
+                  {selectedUser.is_email_verified ? 'Verified' : 'Not Verified'}
                 </p>
               </div>
             </div>
@@ -489,8 +483,8 @@ export default function UsersPage() {
         onConfirm={handleConfirmAction}
         title={`Confirm ${actionType?.charAt(0).toUpperCase()}${actionType?.slice(1)}`}
         message={getActionMessage()}
-        confirmText={actionType === "delete" ? "Delete" : "Confirm"}
-        type={actionType === "delete" ? "danger" : "warning"}
+        confirmText={actionType === 'delete' ? 'Delete' : 'Confirm'}
+        type={actionType === 'delete' ? 'danger' : 'warning'}
       />
     </div>
   );

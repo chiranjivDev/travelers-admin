@@ -8,14 +8,12 @@ const orderSlice = createSlice({
     createOrderSuccess: false,
     createOrderError: null,
 
-    // Orders
     orders: [],
     fetchOrdersLoading: false,
     fetchOrdersSuccess: false,
     fetchOrdersError: null,
   },
   reducers: {
-    // Create Order Actions
     createOrderRequest(state) {
       state.createOrderLoading = true;
       state.createOrderSuccess = false;
@@ -32,7 +30,6 @@ const orderSlice = createSlice({
       state.createOrderError = action.payload;
     },
 
-    // Fetch All Orders Actions
     fetchOrdersRequest(state) {
       state.fetchOrdersLoading = true;
       state.fetchOrdersSuccess = false;
@@ -49,9 +46,9 @@ const orderSlice = createSlice({
       state.fetchOrdersError = action.payload;
     },
 
-    // Clear state
     clearOrdersState(state) {
       state.createOrderSuccess = false;
+      state.order = null;
     },
   },
 });

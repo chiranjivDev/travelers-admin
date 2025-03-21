@@ -15,8 +15,7 @@ import {
 } from 'react-icons/fi'
 
 interface UserDetailsModalProps {
-  user: any // Replace with proper user type
-  isOpen: boolean
+  user: any    isOpen: boolean
   onClose: () => void
 }
 

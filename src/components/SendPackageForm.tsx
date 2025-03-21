@@ -17,14 +17,18 @@ interface FormData {
   specialInstructions: string;
 }
 
-const FormSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const FormSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div className="rounded-lg border border-gray-200 overflow-hidden">
     <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
       <h3 className="font-medium text-gray-900">{title}</h3>
     </div>
-    <div className="p-4 bg-white space-y-4">
-      {children}
-    </div>
+    <div className="p-4 bg-white space-y-4">{children}</div>
   </div>
 );
 
@@ -38,24 +42,24 @@ const SendPackageForm = () => {
     pickupLocation: '',
     deliveryLocation: '',
     preferredDate: '',
-    specialInstructions: ''
+    specialInstructions: '',
   });
 
   const slideVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      opacity: 0,
     }),
     center: {
       zIndex: 1,
       x: 0,
-      opacity: 1
+      opacity: 1,
     },
     exit: (direction: number) => ({
       zIndex: 0,
       x: direction < 0 ? 1000 : -1000,
-      opacity: 0
-    })
+      opacity: 0,
+    }),
   };
 
   const handleNext = () => setStep(step + 1);
@@ -63,8 +67,6 @@ const SendPackageForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
   };
 
   const renderStep = () => {
@@ -89,7 +91,9 @@ const SendPackageForm = () => {
                     className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                       focus:ring-blue-500 transition-all duration-200 text-gray-900"
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
                   >
                     <option value="">Select a category</option>
                     {packageCategories.map((category) => (
@@ -109,7 +113,12 @@ const SendPackageForm = () => {
                       className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                         focus:ring-blue-500 transition-all duration-200 text-gray-900"
                       value={formData.subcategory}
-                      onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          subcategory: e.target.value,
+                        })
+                      }
                     >
                       <option value="">Select a subcategory</option>
                       {packageCategories
@@ -139,7 +148,9 @@ const SendPackageForm = () => {
                       className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                         focus:ring-blue-500 transition-all duration-200 pr-12 text-gray-900"
                       value={formData.weight}
-                      onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, weight: e.target.value })
+                      }
                       placeholder="0.0"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -160,10 +171,15 @@ const SendPackageForm = () => {
                         className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                           focus:ring-blue-500 transition-all duration-200 pr-12 text-gray-900"
                         value={formData.dimensions.length}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          dimensions: { ...formData.dimensions, length: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            dimensions: {
+                              ...formData.dimensions,
+                              length: e.target.value,
+                            },
+                          })
+                        }
                         placeholder="0"
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -177,10 +193,15 @@ const SendPackageForm = () => {
                         className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                           focus:ring-blue-500 transition-all duration-200 pr-12 text-gray-900"
                         value={formData.dimensions.width}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          dimensions: { ...formData.dimensions, width: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            dimensions: {
+                              ...formData.dimensions,
+                              width: e.target.value,
+                            },
+                          })
+                        }
                         placeholder="0"
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -194,10 +215,15 @@ const SendPackageForm = () => {
                         className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                           focus:ring-blue-500 transition-all duration-200 pr-12 text-gray-900"
                         value={formData.dimensions.height}
-                        onChange={(e) => setFormData({
-                          ...formData,
-                          dimensions: { ...formData.dimensions, height: e.target.value }
-                        })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            dimensions: {
+                              ...formData.dimensions,
+                              height: e.target.value,
+                            },
+                          })
+                        }
                         placeholder="0"
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -205,7 +231,9 @@ const SendPackageForm = () => {
                       </div>
                     </div>
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">Length × Width × Height</p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Length × Width × Height
+                  </p>
                 </div>
               </div>
             </FormSection>
@@ -233,7 +261,12 @@ const SendPackageForm = () => {
                     className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                       focus:ring-blue-500 transition-all duration-200 text-gray-900"
                     value={formData.pickupLocation}
-                    onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        pickupLocation: e.target.value,
+                      })
+                    }
                     placeholder="Enter pickup location"
                   />
                 </div>
@@ -247,7 +280,12 @@ const SendPackageForm = () => {
                     className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                       focus:ring-blue-500 transition-all duration-200 text-gray-900"
                     value={formData.deliveryLocation}
-                    onChange={(e) => setFormData({ ...formData, deliveryLocation: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        deliveryLocation: e.target.value,
+                      })
+                    }
                     placeholder="Enter delivery location"
                   />
                 </div>
@@ -261,7 +299,12 @@ const SendPackageForm = () => {
                     className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                       focus:ring-blue-500 transition-all duration-200 text-gray-900"
                     value={formData.preferredDate}
-                    onChange={(e) => setFormData({ ...formData, preferredDate: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        preferredDate: e.target.value,
+                      })
+                    }
                   />
                 </div>
 
@@ -273,7 +316,12 @@ const SendPackageForm = () => {
                     className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 
                       focus:ring-blue-500 transition-all duration-200 text-gray-900"
                     value={formData.specialInstructions}
-                    onChange={(e) => setFormData({ ...formData, specialInstructions: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        specialInstructions: e.target.value,
+                      })
+                    }
                     placeholder="Enter special instructions"
                   />
                 </div>
@@ -296,28 +344,53 @@ const SendPackageForm = () => {
               <div className="grid gap-6">
                 <div className="space-y-1.5">
                   <p>
-                    <span className="text-gray-700 font-medium">Package Category:</span> {formData.category}
+                    <span className="text-gray-700 font-medium">
+                      Package Category:
+                    </span>{' '}
+                    {formData.category}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Subcategory:</span> {formData.subcategory}
+                    <span className="text-gray-700 font-medium">
+                      Subcategory:
+                    </span>{' '}
+                    {formData.subcategory}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Weight (kg):</span> {formData.weight}
+                    <span className="text-gray-700 font-medium">
+                      Weight (kg):
+                    </span>{' '}
+                    {formData.weight}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Dimensions (cm):</span> {formData.dimensions.length} x {formData.dimensions.width} x {formData.dimensions.height}
+                    <span className="text-gray-700 font-medium">
+                      Dimensions (cm):
+                    </span>{' '}
+                    {formData.dimensions.length} x {formData.dimensions.width} x{' '}
+                    {formData.dimensions.height}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Pickup Location:</span> {formData.pickupLocation}
+                    <span className="text-gray-700 font-medium">
+                      Pickup Location:
+                    </span>{' '}
+                    {formData.pickupLocation}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Delivery Location:</span> {formData.deliveryLocation}
+                    <span className="text-gray-700 font-medium">
+                      Delivery Location:
+                    </span>{' '}
+                    {formData.deliveryLocation}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Preferred Date:</span> {formData.preferredDate}
+                    <span className="text-gray-700 font-medium">
+                      Preferred Date:
+                    </span>{' '}
+                    {formData.preferredDate}
                   </p>
                   <p>
-                    <span className="text-gray-700 font-medium">Special Instructions:</span> {formData.specialInstructions}
+                    <span className="text-gray-700 font-medium">
+                      Special Instructions:
+                    </span>{' '}
+                    {formData.specialInstructions}
                   </p>
                 </div>
               </div>

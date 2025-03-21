@@ -7,38 +7,49 @@ const tripsSlice = createSlice({
     loading: false,
     error: null,
 
-    // Add trip
     addTripLoading: false,
     addTripSuccess: false,
     addTripError: null,
 
-    // Fetch single package
     singlePackage: null,
     singlePackageLoading: false,
     singlePackageError: null,
 
-    // Fetch traveler details
     traveler: null,
     travelerLoading: false,
     travelerError: null,
+
+    travelerPackages: [],
+    fetchTravelerPackagesLoading: false,
+    fetchTravelerPackagesError: null,
   },
   reducers: {
-    // Fetch Trips Actions
     fetchTripsRequest(state) {
       state.loading = true;
       state.error = null;
     },
     fetchTripsSuccess(state, action) {
-      console.log('trips from slice', action);
-      state.loading = false;
       state.trips = action.payload;
+      state.loading = false;
     },
     fetchTripsFailure(state, action) {
-      state.loading = false;
       state.error = action.payload;
+      state.loading = false;
     },
 
-    // Actions for adding a trip
+    fetchTravelerPackagesRequest(state) {
+      state.fetchTravelerPackagesLoading = true;
+      state.fetchTravelerPackagesError = null;
+    },
+    fetchTravelerPackagesSuccess(state, action) {
+      state.fetchTravelerPackagesLoading = false;
+      state.travelerPackages = action.payload;
+    },
+    fetchTravelerPackagesFailure(state, action) {
+      state.fetchTravelerPackagesLoading = false;
+      state.fetchTravelerPackagesError = action.payload;
+    },
+
     addTripRequest(state) {
       state.addTripLoading = true;
       state.addTripSuccess = false;
@@ -54,7 +65,6 @@ const tripsSlice = createSlice({
       state.addTripError = action.payload;
     },
 
-    // Fetch single package actions
     fetchSinglePackageRequest(state) {
       state.singlePackageLoading = true;
       state.singlePackageError = null;
@@ -68,7 +78,6 @@ const tripsSlice = createSlice({
       state.singlePackageError = action.payload;
     },
 
-    // Fetch Traveler Details Actions
     fetchTravelerDetailsRequest(state) {
       state.travelerLoading = true;
       state.travelerError = null;
@@ -82,7 +91,6 @@ const tripsSlice = createSlice({
       state.travelerError = action.payload;
     },
 
-    // Clear state
     clearTripsState(state) {
       state.addTripSuccess = false;
     },
@@ -105,6 +113,10 @@ export const {
   fetchTravelerDetailsRequest,
   fetchTravelerDetailsSuccess,
   fetchTravelerDetailsFailure,
+
+  fetchTravelerPackagesRequest,
+  fetchTravelerPackagesSuccess,
+  fetchTravelerPackagesFailure,
 
   clearTripsState,
 } = tripsSlice.actions;

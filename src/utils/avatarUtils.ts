@@ -1,4 +1,4 @@
-export type AvatarStyle = 
+export type AvatarStyle =
   | 'adventurer'
   | 'adventurer-neutral'
   | 'avataaars'
@@ -23,19 +23,19 @@ export type AvatarStyle =
   | 'pixel-art'
   | 'pixel-art-neutral'
   | 'shapes'
-  | 'thumbs'
+  | 'thumbs';
 
 interface AvatarOptions {
-  style?: AvatarStyle
-  seed?: string
-  backgroundColor?: string
-  radius?: number
-  size?: number
-  flip?: boolean
-  rotate?: number
-  scale?: number
-  translateX?: number
-  translateY?: number
+  style?: AvatarStyle;
+  seed?: string;
+  backgroundColor?: string;
+  radius?: number;
+  size?: number;
+  flip?: boolean;
+  rotate?: number;
+  scale?: number;
+  translateX?: number;
+  translateY?: number;
 }
 
 const defaultOptions: Partial<AvatarOptions> = {
@@ -48,10 +48,13 @@ const defaultOptions: Partial<AvatarOptions> = {
   scale: 100,
   translateX: 0,
   translateY: 0,
-}
+};
 
-export function generateAvatarUrl(seed: string, options: Partial<AvatarOptions> = {}): string {
-  const finalOptions = { ...defaultOptions, ...options }
+export function generateAvatarUrl(
+  seed: string,
+  options: Partial<AvatarOptions> = {},
+): string {
+  const finalOptions = { ...defaultOptions, ...options };
   const {
     style,
     backgroundColor,
@@ -62,7 +65,7 @@ export function generateAvatarUrl(seed: string, options: Partial<AvatarOptions> 
     scale,
     translateX,
     translateY,
-  } = finalOptions
+  } = finalOptions;
 
   const params = new URLSearchParams({
     seed,
@@ -74,18 +77,21 @@ export function generateAvatarUrl(seed: string, options: Partial<AvatarOptions> 
     scale: scale!.toString(),
     translateX: translateX!.toString(),
     translateY: translateY!.toString(),
-  })
+  });
 
-  return `https://api.dicebear.com/7.x/${style}/svg?${params.toString()}`
+  return `https://api.dicebear.com/7.x/${style}/svg?${params.toString()}`;
 }
 
 export function generateGravatarUrl(email: string, size: number = 200): string {
-  const hash = email.trim().toLowerCase()
-  return `https://gravatar.com/avatar/${hash}?s=${size}&d=404`
+  const hash = email.trim().toLowerCase();
+  return `https://gravatar.com/avatar/${hash}?s=${size}&d=404`;
 }
 
-export function generateVercelAvatarUrl(name: string, size: number = 200): string {
-  return `https://avatar.vercel.sh/${encodeURIComponent(name)}?size=${size}`
+export function generateVercelAvatarUrl(
+  name: string,
+  size: number = 200,
+): string {
+  return `https://avatar.vercel.sh/${encodeURIComponent(name)}?size=${size}`;
 }
 
 export function generateRandomAvatarUrl(seed: string): string {
@@ -97,39 +103,36 @@ export function generateRandomAvatarUrl(seed: string): string {
     'fun-emoji',
     'miniavs',
     'pixel-art',
-  ]
-  
-  const randomStyle = styles[Math.floor(Math.random() * styles.length)]
-  const randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`
-  
+  ];
+
+  const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+  const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+
   return generateAvatarUrl(seed, {
     style: randomStyle,
     backgroundColor: randomColor,
     radius: 50,
-  })
+  });
 }
 
 export async function getOptimalAvatarUrl(
   email: string,
   name: string,
-  preferredStyle?: AvatarStyle
+  preferredStyle?: AvatarStyle,
 ): Promise<string> {
-  // Try Gravatar first
-  const gravatarUrl = generateGravatarUrl(email)
+  const gravatarUrl = generateGravatarUrl(email);
   try {
-    const response = await fetch(gravatarUrl)
+    const response = await fetch(gravatarUrl);
     if (response.ok) {
-      return gravatarUrl
+      return gravatarUrl;
     }
   } catch (error) {
-    console.warn('Gravatar fetch failed:', error)
+    console.warn('Gravatar fetch failed:', error);
   }
 
-  // If Gravatar fails, use DiceBear with preferred style or random
   if (preferredStyle) {
-    return generateAvatarUrl(name, { style: preferredStyle })
+    return generateAvatarUrl(name, { style: preferredStyle });
   }
 
-  // As a last resort, use Vercel's avatar service
-  return generateVercelAvatarUrl(name)
+  return generateVercelAvatarUrl(name);
 }

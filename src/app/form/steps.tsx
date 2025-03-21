@@ -106,7 +106,6 @@ export const senderMultistep = [
     ),
   },
 
-  // New step for selecting most suitable traveler package and place an order
   {
     id: 6,
     title: 'Traveler Package',

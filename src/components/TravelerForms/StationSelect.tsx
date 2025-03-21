@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
@@ -32,9 +32,9 @@ interface StationDetails {
 
 const STATIONS: Record<string, StationDetails[]> = {
   'Germany - Major International Airports': [
-    { 
-      id: 'fra', 
-      name: 'Frankfurt Airport (FRA)', 
+    {
+      id: 'fra',
+      name: 'Frankfurt Airport (FRA)',
       city: 'Frankfurt',
       description: 'The busiest airport in Germany',
       address: {
@@ -45,14 +45,14 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 50.0379,
-          lng: 8.5622
-        }
+          lng: 8.5622,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2']
+      terminals: ['Terminal 1', 'Terminal 2'],
     },
-    { 
-      id: 'muc', 
-      name: 'Munich Airport (MUC)', 
+    {
+      id: 'muc',
+      name: 'Munich Airport (MUC)',
       city: 'Munich',
       description: 'The second largest airport in Germany',
       address: {
@@ -63,16 +63,17 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 48.3537,
-          lng: 11.7750
-        }
+          lng: 11.775,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2', 'Satellite Terminal']
+      terminals: ['Terminal 1', 'Terminal 2', 'Satellite Terminal'],
     },
-    { 
-      id: 'ber', 
-      name: 'Berlin Brandenburg Airport (BER)', 
+    {
+      id: 'ber',
+      name: 'Berlin Brandenburg Airport (BER)',
       city: 'Berlin',
-      description: 'Main international airport serving Berlin, replaced Tegel and Schönefeld airports',
+      description:
+        'Main international airport serving Berlin, replaced Tegel and Schönefeld airports',
       address: {
         street: 'Willy-Brandt-Platz',
         postalCode: '12529',
@@ -81,14 +82,14 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 52.3667,
-          lng: 13.5033
-        }
+          lng: 13.5033,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2']
+      terminals: ['Terminal 1', 'Terminal 2'],
     },
-    { 
-      id: 'dus', 
-      name: 'Düsseldorf Airport (DUS)', 
+    {
+      id: 'dus',
+      name: 'Düsseldorf Airport (DUS)',
       city: 'Düsseldorf',
       description: 'Major airport serving the Rhine-Ruhr metropolitan region',
       address: {
@@ -99,10 +100,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 51.2875,
-          lng: 6.7667
-        }
+          lng: 6.7667,
+        },
       },
-      terminals: ['Terminal A', 'Terminal B', 'Terminal C']
+      terminals: ['Terminal A', 'Terminal B', 'Terminal C'],
     },
     {
       id: 'ham',
@@ -117,16 +118,17 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 53.6304,
-          lng: 10.0067
-        }
+          lng: 10.0067,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2']
+      terminals: ['Terminal 1', 'Terminal 2'],
     },
     {
       id: 'str',
       name: 'Stuttgart Airport (STR)',
       city: 'Stuttgart',
-      description: 'International airport serving Stuttgart and the surrounding region',
+      description:
+        'International airport serving Stuttgart and the surrounding region',
       address: {
         street: 'Flughafenstraße 32',
         postalCode: '70629',
@@ -135,10 +137,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 48.6899,
-          lng: 9.2220
-        }
+          lng: 9.222,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2', 'Terminal 3', 'Terminal 4']
+      terminals: ['Terminal 1', 'Terminal 2', 'Terminal 3', 'Terminal 4'],
     },
     {
       id: 'cgn',
@@ -153,16 +155,17 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 50.8659,
-          lng: 7.1427
-        }
+          lng: 7.1427,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2']
+      terminals: ['Terminal 1', 'Terminal 2'],
     },
     {
       id: 'haj',
       name: 'Hanover Airport (HAJ)',
       city: 'Hanover',
-      description: 'International airport serving the city of Hanover in Lower Saxony',
+      description:
+        'International airport serving the city of Hanover in Lower Saxony',
       address: {
         street: 'Flughafenstraße 4',
         postalCode: '30855',
@@ -171,16 +174,17 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 52.4611,
-          lng: 9.6850
-        }
+          lng: 9.685,
+        },
       },
-      terminals: ['Terminal A', 'Terminal B', 'Terminal C']
+      terminals: ['Terminal A', 'Terminal B', 'Terminal C'],
     },
     {
       id: 'nue',
       name: 'Nuremberg Airport (NUE)',
       city: 'Nuremberg',
-      description: 'International airport serving the city of Nuremberg in Bavaria',
+      description:
+        'International airport serving the city of Nuremberg in Bavaria',
       address: {
         street: 'Flughafenstraße 100',
         postalCode: '90411',
@@ -189,11 +193,11 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 49.4987,
-          lng: 11.0780
-        }
+          lng: 11.078,
+        },
       },
-      terminals: ['Terminal 1']
-    }
+      terminals: ['Terminal 1'],
+    },
   ],
   'Germany - Regional Airports': [
     {
@@ -209,10 +213,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 53.0475,
-          lng: 8.7873
-        }
+          lng: 8.7873,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'lej',
@@ -227,10 +231,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 51.4239,
-          lng: 12.2167
-        }
+          lng: 12.2167,
+        },
       },
-      terminals: ['Terminal A', 'Terminal B']
+      terminals: ['Terminal A', 'Terminal B'],
     },
     {
       id: 'dtm',
@@ -244,11 +248,11 @@ const STATIONS: Record<string, StationDetails[]> = {
         state: 'North Rhine-Westphalia',
         country: 'Germany',
         coordinates: {
-          lat: 51.5180,
-          lng: 7.6122
-        }
+          lat: 51.518,
+          lng: 7.6122,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'fmo',
@@ -263,10 +267,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 52.1346,
-          lng: 7.6848
-        }
+          lng: 7.6848,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'fkb',
@@ -281,10 +285,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 48.7794,
-          lng: 8.0805
-        }
+          lng: 8.0805,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'nrn',
@@ -299,16 +303,16 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Germany',
         coordinates: {
           lat: 51.6024,
-          lng: 6.1422
-        }
+          lng: 6.1422,
+        },
       },
-      terminals: ['Main Terminal']
-    }
+      terminals: ['Main Terminal'],
+    },
   ],
   'Iran - Major International Airports': [
-    { 
-      id: 'ika', 
-      name: 'Tehran Imam Khomeini International Airport (IKA)', 
+    {
+      id: 'ika',
+      name: 'Tehran Imam Khomeini International Airport (IKA)',
       city: 'Tehran',
       description: 'Main international gateway in Tehran',
       address: {
@@ -319,16 +323,17 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 35.4161,
-          lng: 51.1522
-        }
+          lng: 51.1522,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2', 'Terminal 3']
+      terminals: ['Terminal 1', 'Terminal 2', 'Terminal 3'],
     },
-    { 
-      id: 'thr', 
-      name: 'Tehran Mehrabad International Airport (THR)', 
+    {
+      id: 'thr',
+      name: 'Tehran Mehrabad International Airport (THR)',
       city: 'Tehran',
-      description: 'Primarily for domestic flights, with some regional international flights',
+      description:
+        'Primarily for domestic flights, with some regional international flights',
       address: {
         street: 'Azadi Street',
         postalCode: '1387833411',
@@ -337,14 +342,14 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 35.6892,
-          lng: 51.3134
-        }
+          lng: 51.3134,
+        },
       },
-      terminals: ['Terminal 1', 'Terminal 2', 'Terminal 4', 'Terminal 6']
+      terminals: ['Terminal 1', 'Terminal 2', 'Terminal 4', 'Terminal 6'],
     },
-    { 
-      id: 'mhd', 
-      name: 'Mashhad International Airport (MHD)', 
+    {
+      id: 'mhd',
+      name: 'Mashhad International Airport (MHD)',
       city: 'Mashhad',
       description: 'Major pilgrimage and tourism hub',
       address: {
@@ -355,10 +360,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 36.2352,
-          lng: 59.6408
-        }
+          lng: 59.6408,
+        },
       },
-      terminals: ['International Terminal', 'Domestic Terminal']
+      terminals: ['International Terminal', 'Domestic Terminal'],
     },
     {
       id: 'syz',
@@ -373,16 +378,17 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 29.5392,
-          lng: 52.5898
-        }
+          lng: 52.5898,
+        },
       },
-      terminals: ['International Terminal', 'Domestic Terminal']
+      terminals: ['International Terminal', 'Domestic Terminal'],
     },
     {
       id: 'ifn',
       name: 'Isfahan International Airport (IFN)',
       city: 'Isfahan',
-      description: 'Located in Isfahan, connecting historical and cultural hubs',
+      description:
+        'Located in Isfahan, connecting historical and cultural hubs',
       address: {
         street: 'Airport Blvd',
         postalCode: '8159184111',
@@ -391,10 +397,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 32.7505,
-          lng: 51.8616
-        }
+          lng: 51.8616,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'tbz',
@@ -409,10 +415,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 38.1339,
-          lng: 46.2350
-        }
+          lng: 46.235,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'kih',
@@ -427,10 +433,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 26.5261,
-          lng: 53.9802
-        }
+          lng: 53.9802,
+        },
       },
-      terminals: ['International Terminal', 'Domestic Terminal']
+      terminals: ['International Terminal', 'Domestic Terminal'],
     },
     {
       id: 'gsm',
@@ -445,10 +451,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 26.7545,
-          lng: 55.9024
-        }
+          lng: 55.9024,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'awz',
@@ -463,10 +469,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 31.3374,
-          lng: 48.7621
-        }
+          lng: 48.7621,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'bnd',
@@ -481,11 +487,11 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 27.2183,
-          lng: 56.3778
-        }
+          lng: 56.3778,
+        },
       },
-      terminals: ['Main Terminal']
-    }
+      terminals: ['Main Terminal'],
+    },
   ],
   'Iran - Regional Airports': [
     {
@@ -500,11 +506,11 @@ const STATIONS: Record<string, StationDetails[]> = {
         state: 'West Azerbaijan Province',
         country: 'Iran',
         coordinates: {
-          lat: 37.6680,
-          lng: 45.0687
-        }
+          lat: 37.668,
+          lng: 45.0687,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'ras',
@@ -519,10 +525,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 37.3253,
-          lng: 49.6187
-        }
+          lng: 49.6187,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'ksh',
@@ -537,10 +543,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 34.3459,
-          lng: 47.1581
-        }
+          lng: 47.1581,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'zah',
@@ -555,10 +561,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 29.4754,
-          lng: 60.9062
-        }
+          lng: 60.9062,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'azd',
@@ -573,10 +579,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 31.9048,
-          lng: 54.2765
-        }
+          lng: 54.2765,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'ajk',
@@ -591,10 +597,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 34.1381,
-          lng: 49.8472
-        }
+          lng: 49.8472,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'buz',
@@ -609,10 +615,10 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 28.9448,
-          lng: 50.8346
-        }
+          lng: 50.8346,
+        },
       },
-      terminals: ['Main Terminal']
+      terminals: ['Main Terminal'],
     },
     {
       id: 'abd',
@@ -627,12 +633,12 @@ const STATIONS: Record<string, StationDetails[]> = {
         country: 'Iran',
         coordinates: {
           lat: 30.3711,
-          lng: 48.2283
-        }
+          lng: 48.2283,
+        },
       },
-      terminals: ['Main Terminal']
-    }
-  ]
+      terminals: ['Main Terminal'],
+    },
+  ],
 };
 
 const StationSelect: React.FC<StationSelectProps> = ({
@@ -640,16 +646,18 @@ const StationSelect: React.FC<StationSelectProps> = ({
   onChange,
   className = '',
   id,
-  placeholder = 'Select airport'
+  placeholder = 'Select airport',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -660,17 +668,24 @@ const StationSelect: React.FC<StationSelectProps> = ({
 
   const filteredAirports = useMemo(() => {
     return Object.entries(STATIONS).flatMap(([country, stations]) =>
-      stations.filter(station =>
-        station.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        station.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        station.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        station.address.street.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      stations.filter(
+        (station) =>
+          station.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          station.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          station.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          station.address.street
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()),
+      ),
     );
   }, [searchTerm]);
 
-  const selectedAirport = filteredAirports.find(airport => airport.id === value);
+  const selectedAirport = filteredAirports.find(
+    (airport) => airport.id === value,
+  );
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -683,10 +698,14 @@ const StationSelect: React.FC<StationSelectProps> = ({
       >
         <div className="flex items-center justify-between">
           <span className={selectedAirport ? 'text-white' : 'text-gray-400'}>
-            {selectedAirport ? `${selectedAirport.name} (${selectedAirport.id})` : placeholder}
+            {selectedAirport
+              ? `${selectedAirport.name} (${selectedAirport.id})`
+              : placeholder}
           </span>
-          <FiChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-200
-            ${isOpen ? 'transform rotate-180' : ''}`} />
+          <FiChevronDown
+            className={`w-5 h-5 text-gray-400 transition-transform duration-200
+            ${isOpen ? 'transform rotate-180' : ''}`}
+          />
         </div>
       </button>
 
@@ -703,8 +722,10 @@ const StationSelect: React.FC<StationSelectProps> = ({
                   text-white placeholder:text-gray-400 focus:border-blue-500 
                   focus:ring-2 focus:ring-blue-500/20"
               />
-              <FiSearch className="absolute left-2.5 top-1/2 transform -translate-y-1/2 
-                text-gray-400 w-4 h-4" />
+              <FiSearch
+                className="absolute left-2.5 top-1/2 transform -translate-y-1/2 
+                text-gray-400 w-4 h-4"
+              />
             </div>
 
             <div className="max-h-60 overflow-y-auto">
@@ -739,4 +760,4 @@ const StationSelect: React.FC<StationSelectProps> = ({
   );
 };
 
-export default StationSelect; 
+export default StationSelect;

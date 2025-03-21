@@ -1,15 +1,30 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import { useSimpleChat } from '@/contexts/SimpleChatContext'
-import { FiSend, FiPackage, FiMapPin, FiPaperclip, FiInfo, FiUser } from 'react-icons/fi'
-import PackageDetails from './PackageDetails'
-import NegotiationPanel from './NegotiationPanel'
-import { NotificationProvider, useNotifications } from './NotificationSystem'
-import UserSelector from './UserSelector'
+import { useEffect, useRef, useState } from 'react';
+import { useSimpleChat } from '@/contexts/SimpleChatContext';
+import {
+  FiSend,
+  FiPackage,
+  FiMapPin,
+  FiPaperclip,
+  FiInfo,
+  FiUser,
+} from 'react-icons/fi';
+import PackageDetails from './PackageDetails';
+import NegotiationPanel from './NegotiationPanel';
+import { NotificationProvider, useNotifications } from './NotificationSystem';
+import UserSelector from './UserSelector';
 
-function ChatMessage({ message, isOwn, currentUser }: { message: Message; isOwn: boolean; currentUser: User | null }) {
-  const messageClass = isOwn ? 'ml-auto bg-blue-600' : 'mr-auto bg-gray-700'
+function ChatMessage({
+  message,
+  isOwn,
+  currentUser,
+}: {
+  message: Message;
+  isOwn: boolean;
+  currentUser: User | null;
+}) {
+  const messageClass = isOwn ? 'ml-auto bg-blue-600' : 'mr-auto bg-gray-700';
 
   if (message.type === 'package') {
     return (
@@ -28,7 +43,7 @@ function ChatMessage({ message, isOwn, currentUser }: { message: Message; isOwn:
           </div>
         )}
       </div>
-    )
+    );
   }
 
   return (
@@ -36,7 +51,9 @@ function ChatMessage({ message, isOwn, currentUser }: { message: Message; isOwn:
       <div className={`rounded-xl px-4 py-2 ${messageClass}`}>
         <div className="text-white">{message.content}</div>
       </div>
-      <div className={`text-xs text-gray-400 mt-1 ${isOwn ? 'text-right' : 'text-left'}`}>
+      <div
+        className={`text-xs text-gray-400 mt-1 ${isOwn ? 'text-right' : 'text-left'}`}
+      >
         {new Date(message.timestamp).toLocaleTimeString()}
         {isOwn && (
           <span className="ml-2">
@@ -47,7 +64,7 @@ function ChatMessage({ message, isOwn, currentUser }: { message: Message; isOwn:
         )}
       </div>
     </div>
-  )
+  );
 }
 
 export default function SimpleChat() {
@@ -59,76 +76,76 @@ export default function SimpleChat() {
     sendMessage,
     setUserTyping,
     markMessageAsRead,
-    setCurrentUser
-  } = useSimpleChat()
+    setCurrentUser,
+  } = useSimpleChat();
 
-  const [input, setInput] = useState('')
-  const [showPackageDetails, setShowPackageDetails] = useState(false)
-  const [showNegotiation, setShowNegotiation] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const { addNotification } = useNotifications()
+  const [input, setInput] = useState('');
+  const [showPackageDetails, setShowPackageDetails] = useState(false);
+  const [showNegotiation, setShowNegotiation] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { addNotification } = useNotifications();
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     if (currentUser && inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [currentUser])
+  }, [currentUser]);
 
   useEffect(() => {
     if (currentUser) {
-      messages.forEach(message => {
+      messages.forEach((message) => {
         if (message.senderId !== currentUser.id && message.status !== 'read') {
-          markMessageAsRead(message.id)
+          markMessageAsRead(message.id);
         }
-      })
+      });
     }
-  }, [currentUser, messages, markMessageAsRead])
+  }, [currentUser, messages, markMessageAsRead]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim()) return
+    e.preventDefault();
+    if (!input.trim()) return;
 
-    sendMessage(input.trim())
-    setInput('')
-    inputRef.current?.focus()
-  }
+    sendMessage(input.trim());
+    setInput('');
+    inputRef.current?.focus();
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value)
-    setUserTyping(true)
+    setInput(e.target.value);
+    setUserTyping(true);
 
     const timeoutId = setTimeout(() => {
-      setUserTyping(false)
-    }, 1000)
+      setUserTyping(false);
+    }, 1000);
 
-    return () => clearTimeout(timeoutId)
-  }
+    return () => clearTimeout(timeoutId);
+  };
 
   const handleUserSelect = (user: User) => {
-    setCurrentUser(user)
+    setCurrentUser(user);
     addNotification({
       type: 'alert',
       title: 'Welcome!',
       message: `You've joined as ${user.role === 'sender' ? 'a Sender' : 'a Traveler'}`,
-      action: () => console.log('View profile')
-    })
-  }
+      action: () => {},
+    });
+  };
 
   if (!currentUser) {
-    return <UserSelector onSelect={handleUserSelect} />
+    return <UserSelector onSelect={handleUserSelect} />;
   }
 
   if (!otherUser) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
@@ -153,14 +170,14 @@ export default function SimpleChat() {
         </div>
         <div className="flex items-center space-x-4">
           <button
-            onClick={() => setShowPackageDetails(prev => !prev)}
+            onClick={() => setShowPackageDetails((prev) => !prev)}
             className="text-gray-400 hover:text-white transition-colors"
             title="View Package Details"
           >
             <FiPackage className="w-6 h-6" />
           </button>
           <button
-            onClick={() => setShowNegotiation(prev => !prev)}
+            onClick={() => setShowNegotiation((prev) => !prev)}
             className="text-gray-400 hover:text-white transition-colors"
             title="View Profile"
           >
@@ -172,18 +189,14 @@ export default function SimpleChat() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {showPackageDetails && activePackage && (
-          <PackageDetails
-            onClose={() => setShowPackageDetails(false)}
-          />
-        )}
-        
-        {showNegotiation && (
-          <NegotiationPanel
-            onClose={() => setShowNegotiation(false)}
-          />
+          <PackageDetails onClose={() => setShowPackageDetails(false)} />
         )}
 
-        {messages.map(message => (
+        {showNegotiation && (
+          <NegotiationPanel onClose={() => setShowNegotiation(false)} />
+        )}
+
+        {messages.map((message) => (
           <ChatMessage
             key={message.id}
             message={message}
@@ -195,7 +208,10 @@ export default function SimpleChat() {
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSubmit} className="bg-gray-800 p-4 border-t border-gray-700">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-800 p-4 border-t border-gray-700"
+      >
         <div className="flex items-center space-x-2">
           <button
             type="button"
@@ -237,5 +253,5 @@ export default function SimpleChat() {
         </div>
       </form>
     </div>
-  )
+  );
 }

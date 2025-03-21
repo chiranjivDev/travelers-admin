@@ -1,6 +1,4 @@
 'use client';
-// Created for temprary use only, create order will have a separate UI and the api call will be moved to that file
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {
@@ -15,7 +13,7 @@ const CreateOrder = () => {
   const { senderPackages } = useSelector((state) => state.packages);
   const { trips } = useSelector((state) => state.trips);
   const { orders, fetchOrdersLoading, createOrderSuccess } = useSelector(
-    (state) => state.order
+    (state) => state.order,
   );
 
   const [selectedSenderPackage, setSelectedSenderPackage] = useState('');
@@ -41,7 +39,6 @@ const CreateOrder = () => {
     }
   }, [createOrderSuccess]);
 
-  // handle create order
   const handleCreateOrder = () => {
     if (!selectedTrip || !selectedSenderPackage) {
       alert('Please select both a sender package and a trip.');

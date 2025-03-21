@@ -5,42 +5,51 @@ const packagesSlice = createSlice({
   initialState: {
     packages: [],
     categories: [],
-    loading: false,
+    loading: true,
     error: null,
 
-    // Fetch sender-specific packages
     senderPackages: [],
     fetchSenderPackagesLoading: false,
     fetchSenderPackagesError: null,
 
-    // send package
     sendPackageLoading: false,
     sendPackageSuccess: false,
     sendPackageError: null,
     sendPackageResponse: null,
 
-    // Fetch category actions
     fetchCategoriesLoading: false,
     fetchCategoriesSuccess: false,
     fetchCategoriesError: null,
+
+    package: null,
   },
   reducers: {
-    // Fetch Packages Actions
     fetchPackagesRequest(state) {
       state.loading = true;
       state.error = null;
     },
     fetchPackagesSuccess(state, action) {
-      console.log('packages from slice', action);
-      state.loading = false;
       state.packages = action.payload;
+      state.loading = false;
     },
     fetchPackagesFailure(state, action) {
+      state.error = action.payload;
+      state.loading = false;
+    },
+
+    fetchPackageByIdRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchPackageByIdSuccess(state, action) {
+      state.loading = false;
+      state.package = action.payload;
+    },
+    fetchPackageByIdFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
 
-    // Actions for sending a package
     sendPackageRequest(state) {
       state.sendPackageLoading = true;
       state.sendPackageSuccess = false;
@@ -48,7 +57,6 @@ const packagesSlice = createSlice({
       state.sendPackageResponse = null;
     },
     sendPackageSuccess(state, action) {
-      console.log('package response', action);
       state.sendPackageLoading = false;
       state.sendPackageSuccess = true;
       state.sendPackageResponse = action.payload;
@@ -59,7 +67,6 @@ const packagesSlice = createSlice({
       state.sendPackageError = action.payload;
     },
 
-    // Fetch Categories Actions
     fetchCategoriesRequest(state) {
       state.fetchCategoriesLoading = true;
       state.fetchCategoriesError = null;
@@ -73,7 +80,6 @@ const packagesSlice = createSlice({
       state.fetchCategoriesError = action.payload;
     },
 
-    // Fetch Sender-specific Packages Actions
     fetchSenderPackagesRequest(state) {
       state.fetchSenderPackagesLoading = true;
       state.fetchSenderPackagesError = null;
@@ -87,7 +93,6 @@ const packagesSlice = createSlice({
       state.fetchSenderPackagesError = action.payload;
     },
 
-    // Clear state
     clearPackagesState(state) {
       state.sendPackageSuccess = false;
     },
@@ -112,6 +117,10 @@ export const {
   fetchSenderPackagesFailure,
 
   clearPackagesState,
+
+  fetchPackageByIdRequest,
+  fetchPackageByIdSuccess,
+  fetchPackageByIdFailure,
 } = packagesSlice.actions;
 
 export default packagesSlice.reducer;

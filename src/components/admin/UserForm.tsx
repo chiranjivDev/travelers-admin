@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { FiSave, FiX } from "react-icons/fi";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { FiSave, FiX } from 'react-icons/fi';
 
 interface UserFormProps {
   user?: {
@@ -19,12 +19,12 @@ interface UserFormProps {
 export default function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
   const [formData, setFormData] = useState({
     id: user?.id,
-    name: user?.name || "",
-    email: user?.email || "",
-    role: user?.role || "sender",
-    status: user?.status || "active",
-    password: "",
-    confirmPassword: "",
+    name: user?.name || '',
+    email: user?.email || '',
+    role: user?.role || 'sender',
+    status: user?.status || 'active',
+    password: '',
+    confirmPassword: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -32,13 +32,12 @@ export default function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name) newErrors.name = "Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.name) newErrors.name = 'Name is required';
+    if (!formData.email) newErrors.email = 'Email is required';
     if (!user?.id) {
-      // Only validate password for new users
-      if (!formData.password) newErrors.password = "Password is required";
+      if (!formData.password) newErrors.password = 'Password is required';
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = "Passwords do not match";
+        newErrors.confirmPassword = 'Passwords do not match';
       }
     }
 
@@ -182,7 +181,7 @@ export default function UserForm({ user, onSubmit, onCancel }: UserFormProps) {
             flex items-center space-x-2"
         >
           <FiSave className="w-5 h-5" />
-          <span>{user?.id ? "Update" : "Create"} User</span>
+          <span>{user?.id ? 'Update' : 'Create'} User</span>
         </motion.button>
       </div>
     </form>

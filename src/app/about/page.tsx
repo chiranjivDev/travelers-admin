@@ -1,17 +1,30 @@
-'use client'
+'use client';
 
-import React from 'react'
-import { motion } from 'framer-motion'
-import { FiPackage, FiGlobe, FiUsers, FiTruck, FiShield, FiStar, FiArrowRight, FiCheck, FiDollarSign, FiHeart } from 'react-icons/fi'
-import Image from 'next/image'
+import React from 'react';
+import { motion } from 'framer-motion';
+import {
+  FiPackage,
+  FiGlobe,
+  FiUsers,
+  FiTruck,
+  FiShield,
+  FiStar,
+  FiArrowRight,
+  FiCheck,
+  FiDollarSign,
+  FiHeart,
+} from 'react-icons/fi';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8 }
-}
+  transition: { duration: 0.8 },
+};
 
 const AboutPage = () => {
+  const t = useTranslations('AboutUs');
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
       {/* Hero Section */}
@@ -28,13 +41,13 @@ const AboutPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 to-purple-500/30 mix-blend-multiply" />
           <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 animate-pulse" />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <motion.div className="text-center" {...fadeInUp}>
             <motion.div
               initial={{ scale: 0.8, rotate: -180 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 1, type: "spring" }}
+              transition={{ duration: 1, type: 'spring' }}
               className="mb-8"
             >
               <div className="inline-block p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
@@ -42,20 +55,38 @@ const AboutPage = () => {
               </div>
             </motion.div>
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
-              Reimagining Global
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text"> Delivery</span>
+              {t('title')}
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
+                {' '}
+                {t('delivery')}
+              </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12">
-              Connecting travelers and senders to create a more efficient,
-              sustainable future of delivery through peer-to-peer connections
+              {t('description')}
             </p>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {[
-                { icon: <FiUsers />, label: '50K+ Users', sublabel: 'Active Community' },
-                { icon: <FiGlobe />, label: '100+ Countries', sublabel: 'Global Network' },
-                { icon: <FiTruck />, label: '1M+ Deliveries', sublabel: 'Successfully Completed' },
-                { icon: <FiStar />, label: '95% Satisfaction', sublabel: 'User Rating' },
+                {
+                  icon: <FiUsers />,
+                  label: t('stats.users.label'),
+                  sublabel: t('stats.users.sublabel'),
+                },
+                {
+                  icon: <FiGlobe />,
+                  label: t('stats.countries.label'),
+                  sublabel: t('stats.countries.sublabel'),
+                },
+                {
+                  icon: <FiTruck />,
+                  label: t('stats.deliveries.label'),
+                  sublabel: t('stats.deliveries.sublabel'),
+                },
+                {
+                  icon: <FiStar />,
+                  label: t('stats.rating.label'),
+                  sublabel: t('stats.rating.sublabel'),
+                },
               ].map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -65,7 +96,9 @@ const AboutPage = () => {
                   className="p-6 rounded-xl bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
                 >
                   <div className="text-3xl text-blue-400 mb-3">{stat.icon}</div>
-                  <div className="text-white font-medium mb-1">{stat.label}</div>
+                  <div className="text-white font-medium mb-1">
+                    {stat.label}
+                  </div>
                   <div className="text-sm text-gray-400">{stat.sublabel}</div>
                 </motion.div>
               ))}
@@ -93,9 +126,11 @@ const AboutPage = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">How Peer-to-Peer Delivery Works</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              {t('howItWorks.title')}
+            </h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              A revolutionary approach to shipping that connects people and creates opportunities
+              {t('howItWorks.subtitle')}
             </p>
           </motion.div>
 
@@ -103,25 +138,25 @@ const AboutPage = () => {
             {[
               {
                 step: '01',
-                title: 'Connect',
-                description: 'Travelers post their trips and available space, while senders list their delivery needs',
+                title: t('howItWorks.connect'),
+                description: t('howItWorks.connectDescription'),
                 icon: <FiUsers />,
-                color: 'from-blue-500 to-cyan-500'
+                color: 'from-blue-500 to-cyan-500',
               },
               {
                 step: '02',
-                title: 'Match',
-                description: 'Our smart algorithm matches senders with travelers heading to the same destination',
+                title: t('howItWorks.match'),
+                description: t('howItWorks.matchDescription'),
                 icon: <FiCheck />,
-                color: 'from-purple-500 to-pink-500'
+                color: 'from-purple-500 to-pink-500',
               },
               {
                 step: '03',
-                title: 'Deliver',
-                description: 'Secure handoff and delivery confirmation through our trusted platform',
+                title: t('howItWorks.deliver'),
+                description: t('howItWorks.deliverDescription'),
                 icon: <FiTruck />,
-                color: 'from-orange-500 to-red-500'
-              }
+                color: 'from-orange-500 to-red-500',
+              },
             ].map((step, index) => (
               <motion.div
                 key={step.title}
@@ -133,11 +168,15 @@ const AboutPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
                 <div className="relative rounded-xl bg-gray-900/60 backdrop-blur-xl p-8 border border-white/10">
                   <div className="flex items-start space-x-4">
-                    <div className={`text-sm font-bold px-3 py-1 rounded-full bg-gradient-to-r ${step.color} text-white`}>
+                    <div
+                      className={`text-sm font-bold px-3 py-1 rounded-full bg-gradient-to-r ${step.color} text-white`}
+                    >
                       {step.step}
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-white mb-4">{step.title}</h3>
+                      <h3 className="text-xl font-semibold text-white mb-4">
+                        {step.title}
+                      </h3>
                       <p className="text-gray-400 mb-6">{step.description}</p>
                       <div className="text-3xl text-blue-400">{step.icon}</div>
                     </div>
@@ -168,9 +207,11 @@ const AboutPage = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Peer-to-Peer Delivery?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              {t('benefits.title')}
+            </h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              Discover the advantages of our community-driven delivery network
+              {t('benefits.subtitle')}
             </p>
           </motion.div>
 
@@ -178,34 +219,34 @@ const AboutPage = () => {
             {[
               {
                 icon: <FiDollarSign />,
-                title: 'Cost-Effective',
-                description: 'Save up to 60% compared to traditional shipping methods'
+                title: t('benefits.costEffective'),
+                description: t('benefits.costEffectiveDescription'),
               },
               {
                 icon: <FiHeart />,
-                title: 'Eco-Friendly',
-                description: 'Reduce carbon footprint by utilizing existing travel routes'
+                title: t('benefits.ecoFriendly'),
+                description: t('benefits.ecoFriendlyDescription'),
               },
               {
                 icon: <FiShield />,
-                title: 'Secure & Safe',
-                description: 'Full insurance coverage and verified user profiles'
+                title: t('benefits.secureSafe'),
+                description: t('benefits.secureSafeDescription'),
               },
               {
                 icon: <FiGlobe />,
-                title: 'Global Reach',
-                description: 'Access to international routes and destinations'
+                title: t('benefits.globalReach'),
+                description: t('benefits.globalReachDescription'),
               },
               {
                 icon: <FiUsers />,
-                title: 'Community Driven',
-                description: 'Build connections while helping others'
+                title: t('benefits.communityDriven'),
+                description: t('benefits.communityDrivenDescription'),
               },
               {
                 icon: <FiTruck />,
-                title: 'Flexible Delivery',
-                description: 'Customizable pickup and delivery options'
-              }
+                title: t('benefits.flexibleDelivery'),
+                description: t('benefits.flexibleDeliveryDescription'),
+              },
             ].map((benefit, index) => (
               <motion.div
                 key={benefit.title}
@@ -215,8 +256,12 @@ const AboutPage = () => {
                 className="group relative p-px rounded-xl bg-gradient-to-b from-blue-500/20 to-purple-500/20"
               >
                 <div className="relative rounded-xl bg-gray-900/60 backdrop-blur-xl p-8 h-full">
-                  <div className="text-3xl text-blue-400 mb-4">{benefit.icon}</div>
-                  <h3 className="text-xl font-semibold text-white mb-3">{benefit.title}</h3>
+                  <div className="text-3xl text-blue-400 mb-4">
+                    {benefit.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    {benefit.title}
+                  </h3>
                   <p className="text-gray-400">{benefit.description}</p>
                 </div>
               </motion.div>
@@ -244,26 +289,30 @@ const AboutPage = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Success Stories</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              {t('successStories.title')}
+            </h2>
             <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-              Real experiences from our community members
+              {t('successStories.subtitle')}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                quote: "I've been able to offset my travel costs while helping others. It's a win-win!",
-                author: "Sarah K.",
-                role: "Frequent Traveler",
-                image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"
+                quote: t('successStories.stories.0.quote'),
+                author: t('successStories.stories.0.author'),
+                role: t('successStories.stories.0.role'),
+                image:
+                  'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
               },
               {
-                quote: "Found an affordable way to send packages internationally. The community is amazing!",
-                author: "David M.",
-                role: "Business Owner",
-                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80"
-              }
+                quote: t('successStories.stories.1.quote'),
+                author: t('successStories.stories.1.author'),
+                role: t('successStories.stories.1.role'),
+                image:
+                  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80',
+              },
             ].map((story, index) => (
               <motion.div
                 key={story.author}
@@ -283,9 +332,13 @@ const AboutPage = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-purple-900/90" />
                 </div>
                 <div className="relative p-8">
-                  <p className="text-xl text-white mb-6 italic">"{story.quote}"</p>
+                  <p className="text-xl text-white mb-6 italic">
+                    "{story.quote}"
+                  </p>
                   <div>
-                    <p className="text-lg font-semibold text-white">{story.author}</p>
+                    <p className="text-lg font-semibold text-white">
+                      {story.author}
+                    </p>
                     <p className="text-blue-400">{story.role}</p>
                   </div>
                 </div>
@@ -317,11 +370,10 @@ const AboutPage = () => {
               className="text-center"
             >
               <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                Ready to Transform Delivery?
+                {t('cta.title')}
               </h2>
               <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-12">
-                Join thousands of travelers and senders already revolutionizing 
-                the way items move around the world.
+                {t('cta.description')}
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <motion.button
@@ -329,14 +381,14 @@ const AboutPage = () => {
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-medium hover:from-blue-600 hover:to-purple-600 transition-all duration-200"
                 >
-                  Start Traveling
+                  {t('cta.travel')}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-8 py-3 rounded-full bg-white/10 text-white font-medium hover:bg-white/20 transition-all duration-200"
                 >
-                  Send a Package
+                  {t('cta.send')}
                 </motion.button>
               </div>
             </motion.div>
@@ -344,7 +396,7 @@ const AboutPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AboutPage
+export default AboutPage;

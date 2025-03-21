@@ -3,13 +3,17 @@ interface PackagePhotoUploadProps {
   onPhotosChange: (photos: string[]) => void;
 }
 
-export default function PackagePhotoUpload({ photos, onPhotosChange }: PackagePhotoUploadProps) {
+export default function PackagePhotoUpload({
+  photos,
+  onPhotosChange,
+}: PackagePhotoUploadProps) {
   return (
     <div className="mt-8">
       <h3 className="text-lg font-semibold mb-4">Package Photos</h3>
       <p className="text-sm text-gray-600 mb-4">
-        Add photos of your package to help travelers better understand its appearance and condition.
-        This also helps with package verification during pickup and delivery.
+        Add photos of your package to help travelers better understand its
+        appearance and condition. This also helps with package verification
+        during pickup and delivery.
       </p>
 
       <div className="relative">
@@ -44,22 +48,23 @@ export default function PackagePhotoUpload({ photos, onPhotosChange }: PackagePh
                   multiple
                   onChange={(e) => {
                     const files = Array.from(e.target.files || []);
-                    // Here you would typically upload these files to your server
-                    // and get back URLs to store in the photos array
-                    console.log('Files selected:', files);
                   }}
                 />
               </label>
               <p className="pl-1">or drag and drop</p>
             </div>
-            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB each</p>
+            <p className="text-xs text-gray-500">
+              PNG, JPG, GIF up to 10MB each
+            </p>
           </div>
         </div>
       </div>
 
       {photos.length > 0 && (
         <div className="mt-6">
-          <h4 className="text-sm font-medium text-gray-900 mb-3">Uploaded Photos</h4>
+          <h4 className="text-sm font-medium text-gray-900 mb-3">
+            Uploaded Photos
+          </h4>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {photos.map((photo, index) => (
               <div key={index} className="relative group">
@@ -78,8 +83,18 @@ export default function PackagePhotoUpload({ photos, onPhotosChange }: PackagePh
                       onPhotosChange(newPhotos);
                     }}
                   >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -90,7 +105,9 @@ export default function PackagePhotoUpload({ photos, onPhotosChange }: PackagePh
       )}
 
       <div className="mt-4 bg-blue-50 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-blue-900 mb-2">Photo Guidelines</h4>
+        <h4 className="text-sm font-medium text-blue-900 mb-2">
+          Photo Guidelines
+        </h4>
         <ul className="text-sm text-blue-700 space-y-1">
           <li>• Take clear, well-lit photos from multiple angles</li>
           <li>• Include any fragile/handling labels if present</li>
@@ -100,4 +117,4 @@ export default function PackagePhotoUpload({ photos, onPhotosChange }: PackagePh
       </div>
     </div>
   );
-} 
+}

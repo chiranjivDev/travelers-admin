@@ -1,54 +1,57 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { FiSearch, FiCalendar, FiTag, FiArrowRight } from 'react-icons/fi'
-
-// Sample blog data (replace with actual data from your CMS)
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { FiSearch, FiCalendar, FiTag, FiArrowRight } from 'react-icons/fi';
+import { useTranslations } from 'next-intl';
 const blogPosts = [
   {
     id: 1,
     title: 'How to Make the Most of Your Travel Deliveries',
-    excerpt: 'Learn the best practices for maximizing your earnings and efficiency when delivering packages during your travels.',
+    excerpt:
+      'Learn the best practices for maximizing your earnings and efficiency when delivering packages during your travels.',
     category: 'Traveler Tips',
     date: '2024-01-15',
     image: '/package-bg.jpg',
-    slug: 'maximize-travel-deliveries'
+    slug: 'maximize-travel-deliveries',
   },
   {
     id: 2,
     title: 'Safety Guidelines for International Package Delivery',
-    excerpt: 'Essential safety tips and guidelines to ensure secure and compliant international package delivery.',
+    excerpt:
+      'Essential safety tips and guidelines to ensure secure and compliant international package delivery.',
     category: 'Safety',
     date: '2024-01-10',
     image: '/traveler-bg.jpg',
-    slug: 'safety-guidelines'
+    slug: 'safety-guidelines',
   },
   {
     id: 3,
     title: 'Understanding Package Size and Weight Restrictions',
-    excerpt: 'A comprehensive guide to package restrictions and how to properly measure your items.',
+    excerpt:
+      'A comprehensive guide to package restrictions and how to properly measure your items.',
     category: 'Sender Tips',
     date: '2024-01-05',
     image: '/hero-bg.jpg',
-    slug: 'size-weight-restrictions'
+    slug: 'size-weight-restrictions',
   },
-]
-
-const categories = [
-  'All Posts',
-  'Traveler Tips',
-  'Sender Tips',
-  'Safety',
-  'Platform Updates',
-  'Success Stories'
-]
+];
 
 export default function BlogPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All Posts')
-  const [searchQuery, setSearchQuery] = useState('')
+  const t = useTranslations('Blog');
+  const [selectedCategory, setSelectedCategory] = useState(t('posts.allPosts'));
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const categories = [
+    t('posts.allPosts'),
+    t('posts.travelerTips'),
+    t('posts.senderTips'),
+    t('posts.safety'),
+    t('posts.platformUpdates'),
+    t('posts.successStories'),
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
@@ -65,7 +68,7 @@ export default function BlogPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0f172a]/95 to-[#1e293b]/95" />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -74,10 +77,13 @@ export default function BlogPage() {
             className="text-center"
           >
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              DeliveryConnect Blog
+              {/* DeliveryConnect Blog */}
+              {t('title')}
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-12">
-              Tips, guides, and updates to help you make the most of peer-to-peer delivery
+              {/* Tips, guides, and updates to help you make the most of
+              peer-to-peer delivery */}
+              {t('description')}
             </p>
 
             {/* Search Bar */}
@@ -143,7 +149,7 @@ export default function BlogPage() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
-                  
+
                   <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
                     <div className="flex items-center">
                       <FiCalendar className="mr-2" />
@@ -154,15 +160,13 @@ export default function BlogPage() {
                       {post.category}
                     </div>
                   </div>
-                  
+
                   <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors">
                     {post.title}
                   </h3>
-                  
-                  <p className="text-gray-400 mb-4">
-                    {post.excerpt}
-                  </p>
-                  
+
+                  <p className="text-gray-400 mb-4">{post.excerpt}</p>
+
                   <div className="flex items-center text-blue-400 group-hover:text-blue-300 transition-colors">
                     Read More
                     <FiArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" />
@@ -188,7 +192,7 @@ export default function BlogPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-purple-900/90" />
             </div>
-            
+
             <div className="relative py-16 px-8 text-center">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -196,16 +200,19 @@ export default function BlogPage() {
                 transition={{ duration: 0.8 }}
               >
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                  Stay Updated
+                  {/* Stay Updated */}
+                  {t('stayUpdated')}
                 </h2>
                 <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                  Subscribe to our newsletter for the latest delivery tips, traveler stories, and platform updates.
+                  {/* Subscribe to our newsletter for the latest delivery tips,
+                  traveler stories, and platform updates. */}
+                  {t('newsletterDescription')}
                 </p>
                 <div className="max-w-md mx-auto">
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 flex-col sm:flex-row">
                     <input
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={t('enterYourEmail')}
                       className="flex-1 px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                     <motion.button
@@ -213,7 +220,8 @@ export default function BlogPage() {
                       whileTap={{ scale: 0.95 }}
                       className="px-8 py-3 rounded-full bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors"
                     >
-                      Subscribe
+                      {/* Subscribe */}
+                      {t('subscribe')}
                     </motion.button>
                   </div>
                 </div>
@@ -223,5 +231,5 @@ export default function BlogPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

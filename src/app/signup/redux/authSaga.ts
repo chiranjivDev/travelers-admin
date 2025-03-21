@@ -10,8 +10,6 @@ import {
 import { axiosInstance } from '@/services/httpServices';
 import { API_URL } from '@/services/webConstants';
 import { toast } from 'react-toastify';
-
-// Signup Saga
 export function* signupSaga(action) {
   try {
     yield put(signupRequest());
@@ -19,7 +17,7 @@ export function* signupSaga(action) {
     const response = yield call(
       axiosInstance.post,
       API_URL.REGISTER,
-      action.payload
+      action.payload,
     );
 
     yield put(signupSuccess(response.data));
@@ -29,18 +27,14 @@ export function* signupSaga(action) {
     toast.error(error.response?.data?.message || error.message);
   }
 }
-
-// Login Saga
 export function* loginSaga(action) {
-  console.log('inside login saga', action);
   try {
     yield put(loginRequest());
     const response = yield call(
       axiosInstance.post,
       API_URL.LOGIN,
-      action.payload
+      action.payload,
     );
-    console.log('login response', response.data);
     yield put(
       loginSuccess({
         user: {
@@ -50,7 +44,7 @@ export function* loginSaga(action) {
         },
         token: response.data.access_token,
         refresh_token: response.data.refresh_token,
-      })
+      }),
     );
     toast.success('Login successful!');
   } catch (error) {

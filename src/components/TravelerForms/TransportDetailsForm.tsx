@@ -48,8 +48,6 @@ import RestrictedItemsCheck from '../RestrictedItems/RestrictedItemsCheck';
 import Link from 'next/link';
 import { Select } from '@/components/ui/Select';
 import { IconType } from 'react-icons';
-
-// Types
 type TransportStatus = 'allowed' | 'restricted' | 'prohibited';
 
 interface TransportDetailsFormProps {
@@ -503,8 +501,6 @@ interface HandlingPreferences {
   acceptsValuable: boolean;
   acceptsUrgent: boolean;
 }
-
-// Add categories enum for better organization
 enum ItemCategory {
   ELECTRONICS = 'Electronics',
   PERSONAL = 'Personal Items',
@@ -514,8 +510,6 @@ enum ItemCategory {
   VALUABLES = 'Valuables',
   SPORTS = 'Sports Equipment',
 }
-
-// Add severity type and helper functions
 type Severity = 'high' | 'medium' | 'low';
 
 const getSeverityColor = (severity: Severity) => {
@@ -543,8 +537,6 @@ const getSeverityIcon = (severity: Severity) => {
       return '❔';
   }
 };
-
-// Update the interface for items
 interface QuickSearchItem {
   id: string;
   name: string;
@@ -581,8 +573,6 @@ const IconComponent: React.FC<{ icon: IconType; className?: string }> = ({
 }) => {
   return <Icon className={className} />;
 };
-
-// Create the options for the dropdown
 const CATEGORY_OPTIONS = PACKAGE_CATEGORIES.map((category) => ({
   value: category.id,
   label: category.name,
@@ -606,10 +596,8 @@ const getIconComponent = (iconName: string) => {
 
 export default function TransportDetailsForm({
   formData,
-  // onUpdateFormData,
   onUpdate: onUpdateFormData,
 }: TransportDetailsFormProps) {
-  // Search and filtering state
   const [selectedCategory, setSelectedCategory] = useState<
     (typeof PACKAGE_CATEGORIES)[0] | undefined
   >();
@@ -618,7 +606,6 @@ export default function TransportDetailsForm({
   const [filteredItems, setFilteredItems] = useState(QUICK_SEARCH_ITEMS);
   const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
 
-  // Form UI state
   const [isPreferencesExpanded, setIsPreferencesExpanded] = useState(false);
   const [showWeightDropdown, setShowWeightDropdown] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
@@ -626,12 +613,10 @@ export default function TransportDetailsForm({
     TransportStatus | 'all'
   >('all');
 
-  // Package preferences state
   const [isOpenToAll, setIsOpenToAll] = useState(false);
   const [isSelectiveItems, setIsSelectiveItems] = useState(false);
   const [isBasicOnly, setIsBasicOnly] = useState(false);
 
-  // Responsibilities state
   const [responsibilities, setResponsibilities] = useState({
     verifyContents: false,
     noRestrictedItems: false,
@@ -639,12 +624,10 @@ export default function TransportDetailsForm({
     legalResponsibilities: false,
   });
 
-  // Check if all responsibilities are checked
   const allResponsibilitiesChecked = Object.values(responsibilities).every(
-    (value) => value
+    (value) => value,
   );
 
-  // Handle responsibility changes
   const handleResponsibilityChange = (key: keyof typeof responsibilities) => {
     setResponsibilities((prev) => ({
       ...prev,
@@ -652,71 +635,63 @@ export default function TransportDetailsForm({
     }));
   };
 
-  // Enhanced filtering logic
   const filterItems = (
     items: typeof QUICK_SEARCH_ITEMS,
     term: string,
-    category?: (typeof PACKAGE_CATEGORIES)[0]
+    category?: (typeof PACKAGE_CATEGORIES)[0],
   ): typeof QUICK_SEARCH_ITEMS => {
     let results = [...items];
 
-    // Filter by category if selected
     if (category) {
       results = results.filter((item) => {
         const itemCategory = item.categoryId.toLowerCase().trim();
         const categoryId = category.id.toLowerCase().trim();
 
-        // Direct category match
         if (itemCategory === categoryId) return true;
 
-        // Subcategory match
         if (category.subcategories) {
           return category.subcategories.some(
-            (sub) => item.subcategoryId === sub.id
+            (sub) => item.subcategoryId === sub.id,
           );
         }
         return false;
       });
     }
 
-    // Filter by search term
     if (term) {
       const searchTermLower = term.toLowerCase().trim();
       results = results.filter((item) => {
-        // Basic fields
         if (item.name.toLowerCase().includes(searchTermLower)) return true;
         if (item.details.toLowerCase().includes(searchTermLower)) return true;
 
-        // Additional fields
         if (
           item.searchTerms?.some((term) =>
-            term.toLowerCase().includes(searchTermLower)
+            term.toLowerCase().includes(searchTermLower),
           )
         )
           return true;
         if (
           item.commonNames?.some((name) =>
-            name.toLowerCase().includes(searchTermLower)
+            name.toLowerCase().includes(searchTermLower),
           )
         )
           return true;
         if (
           item.brands?.some((brand) =>
-            brand.toLowerCase().includes(searchTermLower)
+            brand.toLowerCase().includes(searchTermLower),
           )
         )
           return true;
 
-        // Requirements and warnings
         if (
           item.requirements.some((req) =>
-            req.toLowerCase().includes(searchTermLower)
+            req.toLowerCase().includes(searchTermLower),
           )
         )
           return true;
         if (
           item.warnings?.some((warning) =>
-            warning.toLowerCase().includes(searchTermLower)
+            warning.toLowerCase().includes(searchTermLower),
           )
         )
           return true;
@@ -728,32 +703,28 @@ export default function TransportDetailsForm({
     return results;
   };
 
-  // Update filtered items when search term or category changes
   useEffect(() => {
     if (!isQuickSearchOpen) {
-      // When quick search is closed, filter by selected category only
       if (selectedCategory) {
         const newFilteredItems = QUICK_SEARCH_ITEMS.filter(
-          (item) => item.categoryId === selectedCategory.id
+          (item) => item.categoryId === selectedCategory.id,
         );
         setFilteredItems(newFilteredItems);
       } else {
         setFilteredItems([]);
       }
     } else {
-      // When quick search is open, use the complex filtering logic
       const category = PACKAGE_CATEGORIES.find((cat) => cat.id === searchQuery);
       setSelectedCategory(category);
       const newFilteredItems = filterItems(
         QUICK_SEARCH_ITEMS,
         searchTerm,
-        category
+        category,
       );
       setFilteredItems(newFilteredItems);
     }
   }, [searchTerm, searchQuery, selectedCategory, isQuickSearchOpen]);
 
-  // Event handlers
   const handleCategorySelect = (categoryId: string) => {
     setSearchQuery(categoryId);
   };
@@ -789,13 +760,12 @@ export default function TransportDetailsForm({
     setExpandedCategory(expandedCategory === categoryId ? null : categoryId);
   };
 
-  // Helper functions
   const renderItemDetails = (item: (typeof QUICK_SEARCH_ITEMS)[0]) => {
     const category = PACKAGE_CATEGORIES.find(
-      (cat) => cat.id === item.categoryId
+      (cat) => cat.id === item.categoryId,
     );
     const subcategory = category?.subcategories?.find(
-      (sub) => sub.id === item.subcategoryId
+      (sub) => sub.id === item.subcategoryId,
     );
 
     return (
@@ -833,7 +803,7 @@ export default function TransportDetailsForm({
     const basicItems = PACKAGE_TYPES.flatMap((category) =>
       category.items
         .filter((item) => item.riskLevel === 'low')
-        .map((item) => item.id)
+        .map((item) => item.id),
     );
 
     if (onUpdateFormData) {
@@ -943,7 +913,7 @@ export default function TransportDetailsForm({
                     setIsSelectiveItems(false);
                     setIsBasicOnly(false);
                     const allItems = PACKAGE_TYPES.flatMap((category) =>
-                      category.items.map((item) => item.id)
+                      category.items.map((item) => item.id),
                     );
                     onUpdateFormData({
                       packagePreferences: {
@@ -1175,7 +1145,7 @@ export default function TransportDetailsForm({
                         setExpandedCategory(
                           expandedCategory === category.category
                             ? null
-                            : category.category
+                            : category.category,
                         )
                       }
                       className="w-full p-4 bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-xl border border-gray-700 hover:from-gray-800 hover:to-gray-700 transition-all duration-300 backdrop-blur-sm shadow-xl group mb-2"
@@ -1216,7 +1186,7 @@ export default function TransportDetailsForm({
                                 type="checkbox"
                                 checked={
                                   formData.packagePreferences?.acceptedItems?.includes(
-                                    item.id
+                                    item.id,
                                   ) || false
                                 }
                                 onChange={(e) => {
@@ -1229,7 +1199,7 @@ export default function TransportDetailsForm({
                                       acceptedItems: e.target.checked
                                         ? [...currentItems, item.id]
                                         : currentItems.filter(
-                                            (id: string) => id !== item.id
+                                            (id: string) => id !== item.id,
                                           ),
                                     },
                                   });

@@ -1,20 +1,18 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { 
-  FiPackage, 
-  FiClock, 
-  FiCheck, 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  FiPackage,
+  FiClock,
+  FiCheck,
   FiDollarSign,
   FiEye,
   FiEdit2,
   FiTrash2,
-  FiMapPin
-} from 'react-icons/fi'
-import Modal from '../admin/Modal'
-
-// Mock data
+  FiMapPin,
+} from 'react-icons/fi';
+import Modal from '../admin/Modal';
 const mockPackages = [
   {
     id: 1,
@@ -22,7 +20,7 @@ const mockPackages = [
     status: 'pending',
     origin: 'New York, USA',
     destination: 'London, UK',
-    price: 150.00,
+    price: 150.0,
     weight: 2.5,
     dimensions: '30x20x15',
     created: '2024-01-15',
@@ -30,7 +28,7 @@ const mockPackages = [
     traveler: null,
     description: 'Electronics and accessories',
     insurance: true,
-    priority: 'standard'
+    priority: 'standard',
   },
   {
     id: 2,
@@ -38,7 +36,7 @@ const mockPackages = [
     status: 'in-transit',
     origin: 'Paris, France',
     destination: 'Berlin, Germany',
-    price: 80.00,
+    price: 80.0,
     weight: 1.5,
     dimensions: '20x15x10',
     created: '2024-01-16',
@@ -46,36 +44,37 @@ const mockPackages = [
     traveler: {
       name: 'Alice Smith',
       rating: 4.8,
-      trips: 45
+      trips: 45,
     },
     description: 'Documents and small items',
     insurance: false,
-    priority: 'express'
+    priority: 'express',
   },
-  // Add more mock packages...
-]
+];
 
-type PackageStatus = 'pending' | 'in-transit' | 'delivered' | 'cancelled'
+type PackageStatus = 'pending' | 'in-transit' | 'delivered' | 'cancelled';
 
 export default function PackageManagement() {
-  const [statusFilter, setStatusFilter] = useState<PackageStatus | 'all'>('all')
-  const [selectedPackage, setSelectedPackage] = useState<any>(null)
-  const [showDetails, setShowDetails] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<PackageStatus | 'all'>(
+    'all',
+  );
+  const [selectedPackage, setSelectedPackage] = useState<any>(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-900/50 text-yellow-400'
+        return 'bg-yellow-900/50 text-yellow-400';
       case 'in-transit':
-        return 'bg-blue-900/50 text-blue-400'
+        return 'bg-blue-900/50 text-blue-400';
       case 'delivered':
-        return 'bg-green-900/50 text-green-400'
+        return 'bg-green-900/50 text-green-400';
       case 'cancelled':
-        return 'bg-red-900/50 text-red-400'
+        return 'bg-red-900/50 text-red-400';
       default:
-        return 'bg-gray-900/50 text-gray-400'
+        return 'bg-gray-900/50 text-gray-400';
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -84,28 +83,30 @@ export default function PackageManagement() {
         {[
           {
             title: 'Active Packages',
-            value: mockPackages.filter(p => p.status !== 'delivered' && p.status !== 'cancelled').length,
+            value: mockPackages.filter(
+              (p) => p.status !== 'delivered' && p.status !== 'cancelled',
+            ).length,
             icon: FiPackage,
-            color: 'text-blue-500'
+            color: 'text-blue-500',
           },
           {
             title: 'In Transit',
-            value: mockPackages.filter(p => p.status === 'in-transit').length,
+            value: mockPackages.filter((p) => p.status === 'in-transit').length,
             icon: FiClock,
-            color: 'text-yellow-500'
+            color: 'text-yellow-500',
           },
           {
             title: 'Delivered',
-            value: mockPackages.filter(p => p.status === 'delivered').length,
+            value: mockPackages.filter((p) => p.status === 'delivered').length,
             icon: FiCheck,
-            color: 'text-green-500'
+            color: 'text-green-500',
           },
           {
             title: 'Total Spent',
             value: `$${mockPackages.reduce((acc, pkg) => acc + pkg.price, 0).toFixed(2)}`,
             icon: FiDollarSign,
-            color: 'text-purple-500'
-          }
+            color: 'text-purple-500',
+          },
         ].map((stat, index) => (
           <motion.div
             key={index}
@@ -115,7 +116,9 @@ export default function PackageManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">{stat.title}</p>
-                <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {stat.value}
+                </p>
               </div>
               <div className={`p-3 rounded-full bg-gray-700/50 ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
@@ -127,19 +130,22 @@ export default function PackageManagement() {
 
       {/* Filters */}
       <div className="flex space-x-4">
-        {['all', 'pending', 'in-transit', 'delivered', 'cancelled'].map((status) => (
-          <button
-            key={status}
-            onClick={() => setStatusFilter(status as PackageStatus | 'all')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-              ${statusFilter === status 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+        {['all', 'pending', 'in-transit', 'delivered', 'cancelled'].map(
+          (status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status as PackageStatus | 'all')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
+              ${
+                statusFilter === status
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
-          >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-          </button>
-        ))}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ),
+        )}
       </div>
 
       {/* Packages Table */}
@@ -170,9 +176,12 @@ export default function PackageManagement() {
             </thead>
             <tbody className="divide-y divide-gray-700">
               {mockPackages
-                .filter(pkg => statusFilter === 'all' || pkg.status === statusFilter)
+                .filter(
+                  (pkg) =>
+                    statusFilter === 'all' || pkg.status === statusFilter,
+                )
                 .map((pkg) => (
-                  <tr 
+                  <tr
                     key={pkg.id}
                     className="hover:bg-gray-700/50 transition-colors"
                   >
@@ -195,7 +204,8 @@ export default function PackageManagement() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded-full
                         ${getStatusColor(pkg.status)}`}
                       >
                         {pkg.status}
@@ -220,8 +230,8 @@ export default function PackageManagement() {
                       <div className="flex items-center space-x-3">
                         <motion.button
                           onClick={() => {
-                            setSelectedPackage(pkg)
-                            setShowDetails(true)
+                            setSelectedPackage(pkg);
+                            setShowDetails(true);
                           }}
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
@@ -250,7 +260,7 @@ export default function PackageManagement() {
                       </div>
                     </td>
                   </tr>
-              ))}
+                ))}
             </tbody>
           </table>
         </div>
@@ -290,16 +300,22 @@ export default function PackageManagement() {
               <div>
                 <p className="text-sm text-gray-400">Estimated Delivery</p>
                 <p className="text-white">
-                  {new Date(selectedPackage.estimatedDelivery).toLocaleDateString()}
+                  {new Date(
+                    selectedPackage.estimatedDelivery,
+                  ).toLocaleDateString()}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-gray-400">Priority</p>
-                <p className="text-white capitalize">{selectedPackage.priority}</p>
+                <p className="text-white capitalize">
+                  {selectedPackage.priority}
+                </p>
               </div>
               <div>
                 <p className="text-sm text-gray-400">Insurance</p>
-                <p className="text-white">{selectedPackage.insurance ? 'Yes' : 'No'}</p>
+                <p className="text-white">
+                  {selectedPackage.insurance ? 'Yes' : 'No'}
+                </p>
               </div>
             </div>
 
@@ -312,9 +328,13 @@ export default function PackageManagement() {
 
             {selectedPackage.traveler && (
               <div>
-                <p className="text-sm text-gray-400 mb-2">Traveler Information</p>
+                <p className="text-sm text-gray-400 mb-2">
+                  Traveler Information
+                </p>
                 <div className="bg-gray-700/50 rounded-lg p-4">
-                  <p className="text-white font-medium">{selectedPackage.traveler.name}</p>
+                  <p className="text-white font-medium">
+                    {selectedPackage.traveler.name}
+                  </p>
                   <div className="mt-2 text-sm text-gray-400">
                     <p>Rating: {selectedPackage.traveler.rating} ⭐️</p>
                     <p>Completed Trips: {selectedPackage.traveler.trips}</p>
@@ -326,5 +346,5 @@ export default function PackageManagement() {
         </Modal>
       )}
     </div>
-  )
+  );
 }

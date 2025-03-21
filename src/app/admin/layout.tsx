@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import {
   FiUsers,
   FiPackage,
@@ -13,19 +13,19 @@ import {
   FiShield,
   FiMenu,
   FiX,
-} from "react-icons/fi";
-import Sidebar from "@/components/admin/Sidebar";
-import { Provider } from "react-redux";
-import store from "@/store/store";
+} from 'react-icons/fi';
+import Sidebar from '@/components/admin/Sidebar';
+import { Provider } from 'react-redux';
+import store from '@/store/store';
 
 const navigation = [
-  { name: "Dashboard", href: "/admin", icon: FiPieChart },
-  { name: "Users", href: "/admin/users", icon: FiUsers },
-  { name: "Packages", href: "/admin/packages", icon: FiPackage },
-  { name: "Transactions", href: "/admin/transactions", icon: FiDollarSign },
-  { name: "Support", href: "/admin/support", icon: FiMessageSquare },
-  { name: "Security", href: "/admin/security", icon: FiShield },
-  { name: "Settings", href: "/admin/settings", icon: FiSettings },
+  { name: 'Dashboard', href: '/admin', icon: FiPieChart },
+  { name: 'Users', href: '/admin/users', icon: FiUsers },
+  { name: 'Packages', href: '/admin/packages', icon: FiPackage },
+  { name: 'Transactions', href: '/admin/transactions', icon: FiDollarSign },
+  { name: 'Support', href: '/admin/support', icon: FiMessageSquare },
+  { name: 'Security', href: '/admin/security', icon: FiShield },
+  { name: 'Settings', href: '/admin/settings', icon: FiSettings },
 ];
 
 export default function AdminLayout({
@@ -38,23 +38,20 @@ export default function AdminLayout({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Skip auth check for login page
-    if (pathname === "/admin/login") {
+    if (pathname === '/admin/login') {
       setIsLoading(false);
       return;
     }
 
-    // Check if user is authenticated
-    const isAdmin = localStorage.getItem("isAdmin");
+    const isAdmin = localStorage.getItem('isAdmin');
     if (!isAdmin) {
-      router.push("/admin/login");
+      router.push('/admin/login');
     } else {
       setIsLoading(false);
     }
   }, [pathname, router]);
 
-  // Don't show sidebar on login page
-  if (pathname === "/admin/login") {
+  if (pathname === '/admin/login') {
     return <>{children}</>;
   }
 

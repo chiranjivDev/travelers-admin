@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import RootLayoutContent from '@/components/RootLayoutContent';
-
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import '/node_modules/flag-icons/css/flag-icons.min.css';
+import AuthProvider from '@/providers/RouteGuardProvider';
+import RouteGuardProvider from '@/providers/RouteGuardProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -11,17 +15,25 @@ export const metadata: Metadata = {
     'Save money on shipping by connecting with travelers heading to your destination. Join our community of trusted travelers and senders.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={locale === 'fa' ? 'rtl' : 'ltr'}>
       <body
-        className={`${inter.className} min-h-screen bg-[#0f172a] text-white`}
+        className={`${inter.className} min-h-screen  bg-[#0f172a] text-white`}
       >
-        <RootLayoutContent>{children}</RootLayoutContent>
+        <NextIntlClientProvider messages={messages}>
+          <RootLayoutContent>
+            <RouteGuardProvider>{children}</RouteGuardProvider>
+          </RootLayoutContent>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

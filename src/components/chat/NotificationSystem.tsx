@@ -1,86 +1,96 @@
-'use client'
+'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { 
+import { createContext, useContext, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
   FiBell,
   FiCheck,
   FiDollarSign,
   FiPackage,
   FiMessageCircle,
-  FiClock
-} from 'react-icons/fi'
+  FiClock,
+} from 'react-icons/fi';
 
-export type NotificationType = 'offer' | 'message' | 'status' | 'reminder' | 'alert'
+export type NotificationType =
+  | 'offer'
+  | 'message'
+  | 'status'
+  | 'reminder'
+  | 'alert';
 
 interface Notification {
-  id: string
-  type: NotificationType
-  title: string
-  message: string
-  timestamp: Date
-  read: boolean
-  action?: () => void
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  timestamp: Date;
+  read: boolean;
+  action?: () => void;
 }
 
 interface NotificationContextType {
-  notifications: Notification[]
-  addNotification: (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => void
-  markAsRead: (id: string) => void
-  clearNotification: (id: string) => void
-  clearAll: () => void
+  notifications: Notification[];
+  addNotification: (
+    notification: Omit<Notification, 'id' | 'timestamp' | 'read'>,
+  ) => void;
+  markAsRead: (id: string) => void;
+  clearNotification: (id: string) => void;
+  clearAll: () => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined,
+);
 
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+export function NotificationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const addNotification = (notification: Omit<Notification, 'id' | 'timestamp' | 'read'>) => {
+  const addNotification = (
+    notification: Omit<Notification, 'id' | 'timestamp' | 'read'>,
+  ) => {
     const newNotification: Notification = {
       ...notification,
       id: Date.now().toString(),
       timestamp: new Date(),
-      read: false
-    }
-    setNotifications(prev => [newNotification, ...prev])
+      read: false,
+    };
+    setNotifications((prev) => [newNotification, ...prev]);
 
-    // Show browser notification if supported
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification(notification.title, {
         body: notification.message,
-        icon: '/logo.png'
-      })
+        icon: '/logo.png',
+      });
     }
 
-    // Auto-remove after 5 seconds
     setTimeout(() => {
-      clearNotification(newNotification.id)
-    }, 5000)
-  }
+      clearNotification(newNotification.id);
+    }, 5000);
+  };
 
   const markAsRead = (id: string) => {
-    setNotifications(prev =>
-      prev.map(notif =>
-        notif.id === id ? { ...notif, read: true } : notif
-      )
-    )
-  }
+    setNotifications((prev) =>
+      prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif)),
+    );
+  };
 
   const clearNotification = (id: string) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== id))
-  }
+    setNotifications((prev) => prev.filter((notif) => notif.id !== id));
+  };
 
   const clearAll = () => {
-    setNotifications([])
-  }
+    setNotifications([]);
+  };
 
-  // Request notification permission on mount
   useEffect(() => {
     if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission()
+      Notification.requestPermission();
     }
-  }, [])
+  }, []);
 
   return (
     <NotificationContext.Provider
@@ -89,25 +99,27 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         addNotification,
         markAsRead,
         clearNotification,
-        clearAll
+        clearAll,
       }}
     >
       {children}
     </NotificationContext.Provider>
-  )
+  );
 }
 
 export function useNotifications() {
-  const context = useContext(NotificationContext)
+  const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error('useNotifications must be used within NotificationProvider')
+    throw new Error(
+      'useNotifications must be used within NotificationProvider',
+    );
   }
-  return context
+  return context;
 }
 
 export function NotificationBell() {
-  const { notifications } = useNotifications()
-  const unreadCount = notifications.filter(n => !n.read).length
+  const { notifications } = useNotifications();
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <div className="relative">
@@ -118,26 +130,27 @@ export function NotificationBell() {
         </span>
       )}
     </div>
-  )
+  );
 }
 
 export function NotificationPanel() {
-  const { notifications, markAsRead, clearNotification, clearAll } = useNotifications()
+  const { notifications, markAsRead, clearNotification, clearAll } =
+    useNotifications();
 
   const getIcon = (type: NotificationType) => {
     switch (type) {
       case 'offer':
-        return <FiDollarSign className="w-5 h-5 text-green-400" />
+        return <FiDollarSign className="w-5 h-5 text-green-400" />;
       case 'message':
-        return <FiMessageCircle className="w-5 h-5 text-blue-400" />
+        return <FiMessageCircle className="w-5 h-5 text-blue-400" />;
       case 'status':
-        return <FiCheck className="w-5 h-5 text-purple-400" />
+        return <FiCheck className="w-5 h-5 text-purple-400" />;
       case 'reminder':
-        return <FiClock className="w-5 h-5 text-yellow-400" />
+        return <FiClock className="w-5 h-5 text-yellow-400" />;
       case 'alert':
-        return <FiPackage className="w-5 h-5 text-red-400" />
+        return <FiPackage className="w-5 h-5 text-red-400" />;
     }
-  }
+  };
 
   return (
     <div className="absolute right-0 mt-2 w-80 bg-gray-800 rounded-xl shadow-lg z-50">
@@ -159,7 +172,7 @@ export function NotificationPanel() {
               No notifications
             </div>
           ) : (
-            notifications.map(notification => (
+            notifications.map((notification) => (
               <motion.div
                 key={notification.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -169,23 +182,27 @@ export function NotificationPanel() {
                   notification.read ? 'opacity-60' : ''
                 }`}
                 onClick={() => {
-                  markAsRead(notification.id)
-                  notification.action?.()
+                  markAsRead(notification.id);
+                  notification.action?.();
                 }}
               >
                 <div className="flex items-start space-x-3">
                   <div className="mt-1">{getIcon(notification.type)}</div>
                   <div className="flex-1">
-                    <div className="font-medium text-white">{notification.title}</div>
-                    <div className="text-sm text-gray-400">{notification.message}</div>
+                    <div className="font-medium text-white">
+                      {notification.title}
+                    </div>
+                    <div className="text-sm text-gray-400">
+                      {notification.message}
+                    </div>
                     <div className="text-xs text-gray-500 mt-1">
                       {new Date(notification.timestamp).toLocaleTimeString()}
                     </div>
                   </div>
                   <button
                     onClick={(e) => {
-                      e.stopPropagation()
-                      clearNotification(notification.id)
+                      e.stopPropagation();
+                      clearNotification(notification.id);
                     }}
                     className="text-gray-500 hover:text-white"
                   >
@@ -198,5 +215,5 @@ export function NotificationPanel() {
         </AnimatePresence>
       </div>
     </div>
-  )
+  );
 }

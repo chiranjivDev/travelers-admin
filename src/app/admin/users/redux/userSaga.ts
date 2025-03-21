@@ -1,4 +1,4 @@
-import { put, call } from "redux-saga/effects";
+import { put, call } from 'redux-saga/effects';
 import {
   fetchUsersRequest,
   fetchUsersSuccess,
@@ -9,12 +9,10 @@ import {
   deleteUserRequest,
   deleteUserSuccess,
   deleteUserFailure,
-} from "./userSlice";
-import { axiosInstance } from "@/services/httpServices";
-import { API_URL } from "@/services/webConstants";
-import { GET_ALL_USERS } from "./userAction";
-
-// Fetch Users Saga
+} from './userSlice';
+import { axiosInstance } from '@/services/httpServices';
+import { API_URL } from '@/services/webConstants';
+import { GET_ALL_USERS } from './userAction';
 export function* fetchUsersSaga() {
   try {
     yield put(fetchUsersRequest());
@@ -24,12 +22,10 @@ export function* fetchUsersSaga() {
     yield put(fetchUsersSuccess(response.data));
   } catch (error) {
     yield put(
-      fetchUsersFailure(error.response?.data?.message || error.message)
+      fetchUsersFailure(error.response?.data?.message || error.message),
     );
   }
 }
-
-// Update User Status Saga
 export function* updateUserStatusSaga(action) {
   try {
     yield put(updateUserStatusRequest());
@@ -43,7 +39,7 @@ export function* updateUserStatusSaga(action) {
     const response = yield call(
       axiosInstance.patch,
       `${API_URL.USERS}/${id}`,
-      userStatus
+      userStatus,
     );
     if (response.status === 200) {
       yield put(updateUserStatusSuccess());
@@ -51,12 +47,10 @@ export function* updateUserStatusSaga(action) {
     }
   } catch (error) {
     yield put(
-      updateUserStatusFailure(error.response?.data?.message || error.message)
+      updateUserStatusFailure(error.response?.data?.message || error.message),
     );
   }
 }
-
-// DELETE USER SAGA
 export function* deleteUserSaga(action) {
   try {
     yield put(deleteUserRequest());
@@ -67,7 +61,7 @@ export function* deleteUserSaga(action) {
     yield put(deleteUserSuccess({ userId }));
   } catch (error) {
     yield put(
-      deleteUserFailure(error.response?.data?.message || error.message)
+      deleteUserFailure(error.response?.data?.message || error.message),
     );
   }
 }

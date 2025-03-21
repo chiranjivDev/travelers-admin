@@ -40,7 +40,7 @@ console.log('base url', process.env.BASE_URL);
 //     // }
 //     return config;
 //   },
-//   (error) => Promise.reject(error)
+//   (error) => Promise.reject(error),
 // );
 
 // for admin (will refactor later)

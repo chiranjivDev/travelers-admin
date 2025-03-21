@@ -48,8 +48,6 @@ export default function BecomeTraveler() {
     },
   });
 
-  // console trip package
-  console.log('trip package: ', formData);
   const dispatch = useDispatch();
 
   const slideVariants = {
@@ -73,8 +71,6 @@ export default function BecomeTraveler() {
   const handleBack = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const handleSubmit = async () => {
-    // TODO: Implement submission logic
-    console.log('Submitting form data:', formData);
     dispatch({
       type: CREATE_TRIP,
       payload: {

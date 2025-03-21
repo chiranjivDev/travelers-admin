@@ -1,89 +1,90 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface Trip {
-  id: number
-  traveler: string
-  from: string
-  to: string
-  date: string
-  price: number
-  rating: number
-  reviews: number
-  capacity: string
-  requests: number
+  id: number;
+  traveler: string;
+  from: string;
+  to: string;
+  date: string;
+  price: number;
+  rating: number;
+  reviews: number;
+  capacity: string;
+  requests: number;
 }
 
 export default function BrowseTrips() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'price' | 'rating'>('all')
-  const [showPostTripForm, setShowPostTripForm] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState<
+    'all' | 'price' | 'rating'
+  >('all');
+  const [showPostTripForm, setShowPostTripForm] = useState(false);
   const [newTrip, setNewTrip] = useState({
     from: '',
     to: '',
     date: '',
     price: '',
-    capacity: ''
-  })
+    capacity: '',
+  });
 
-  // Mock data for trips
   const trips: Trip[] = [
     {
       id: 1,
-      traveler: "John Doe",
-      from: "New York",
-      to: "Los Angeles",
-      date: "2024-02-15",
+      traveler: 'John Doe',
+      from: 'New York',
+      to: 'Los Angeles',
+      date: '2024-02-15',
       price: 50,
       rating: 4.8,
       reviews: 156,
-      capacity: "Medium",
-      requests: 2
+      capacity: 'Medium',
+      requests: 2,
     },
     {
       id: 2,
-      traveler: "Jane Smith",
-      from: "San Francisco",
-      to: "Chicago",
-      date: "2024-02-18",
+      traveler: 'Jane Smith',
+      from: 'San Francisco',
+      to: 'Chicago',
+      date: '2024-02-18',
       price: 45,
       rating: 4.9,
       reviews: 203,
-      capacity: "Large",
-      requests: 1
+      capacity: 'Large',
+      requests: 1,
     },
     {
       id: 3,
-      traveler: "Mike Johnson",
-      from: "Miami",
-      to: "Boston",
-      date: "2024-02-20",
+      traveler: 'Mike Johnson',
+      from: 'Miami',
+      to: 'Boston',
+      date: '2024-02-20',
       price: 55,
       rating: 4.7,
       reviews: 89,
-      capacity: "Small",
-      requests: 0
-    }
-  ]
+      capacity: 'Small',
+      requests: 0,
+    },
+  ];
 
   const handlePostTrip = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle trip posting logic here
-    setShowPostTripForm(false)
-  }
+    e.preventDefault();
+    setShowPostTripForm(false);
+  };
 
   const filteredTrips = trips
-    .filter(trip => 
-      trip.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      trip.to.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(
+      (trip) =>
+        trip.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.to.toLowerCase().includes(searchTerm.toLowerCase()),
     )
     .sort((a, b) => {
-      if (selectedFilter === 'price') return a.price - b.price
-      if (selectedFilter === 'rating') return b.rating - a.rating
-      return 0
-    })
+      if (selectedFilter === 'price') return a.price - b.price;
+      if (selectedFilter === 'rating') return b.rating - a.rating;
+      return 0;
+    });
 
   return (
     <main className="min-h-screen py-20 px-4">
@@ -110,7 +111,9 @@ export default function BrowseTrips() {
                   <input
                     type="text"
                     value={newTrip.from}
-                    onChange={(e) => setNewTrip(prev => ({ ...prev, from: e.target.value }))}
+                    onChange={(e) =>
+                      setNewTrip((prev) => ({ ...prev, from: e.target.value }))
+                    }
                     className="w-full px-4 py-2 bg-gray-700/50 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Origin city"
                   />
@@ -120,7 +123,9 @@ export default function BrowseTrips() {
                   <input
                     type="text"
                     value={newTrip.to}
-                    onChange={(e) => setNewTrip(prev => ({ ...prev, to: e.target.value }))}
+                    onChange={(e) =>
+                      setNewTrip((prev) => ({ ...prev, to: e.target.value }))
+                    }
                     className="w-full px-4 py-2 bg-gray-700/50 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Destination city"
                   />
@@ -130,15 +135,24 @@ export default function BrowseTrips() {
                   <input
                     type="date"
                     value={newTrip.date}
-                    onChange={(e) => setNewTrip(prev => ({ ...prev, date: e.target.value }))}
+                    onChange={(e) =>
+                      setNewTrip((prev) => ({ ...prev, date: e.target.value }))
+                    }
                     className="w-full px-4 py-2 bg-gray-700/50 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Available Capacity</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Available Capacity
+                  </label>
                   <select
                     value={newTrip.capacity}
-                    onChange={(e) => setNewTrip(prev => ({ ...prev, capacity: e.target.value }))}
+                    onChange={(e) =>
+                      setNewTrip((prev) => ({
+                        ...prev,
+                        capacity: e.target.value,
+                      }))
+                    }
                     className="w-full px-4 py-2 bg-gray-700/50 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Select capacity</option>
@@ -148,11 +162,15 @@ export default function BrowseTrips() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Price (per package)</label>
+                  <label className="block text-sm font-medium mb-2">
+                    Price (per package)
+                  </label>
                   <input
                     type="number"
                     value={newTrip.price}
-                    onChange={(e) => setNewTrip(prev => ({ ...prev, price: e.target.value }))}
+                    onChange={(e) =>
+                      setNewTrip((prev) => ({ ...prev, price: e.target.value }))
+                    }
                     className="w-full px-4 py-2 bg-gray-700/50 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Enter price in USD"
                   />
@@ -179,7 +197,7 @@ export default function BrowseTrips() {
 
         {/* Search and Filters */}
         <div className="mb-12">
-          <motion.div 
+          <motion.div
             className="flex flex-col md:flex-row gap-4 items-center justify-between"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -195,8 +213,8 @@ export default function BrowseTrips() {
               <button
                 onClick={() => setSelectedFilter('all')}
                 className={`px-6 py-2 rounded-full transition-all ${
-                  selectedFilter === 'all' 
-                    ? 'bg-blue-600 text-white' 
+                  selectedFilter === 'all'
+                    ? 'bg-blue-600 text-white'
                     : 'bg-gray-800/50 hover:bg-gray-800'
                 }`}
               >
@@ -205,8 +223,8 @@ export default function BrowseTrips() {
               <button
                 onClick={() => setSelectedFilter('price')}
                 className={`px-6 py-2 rounded-full transition-all ${
-                  selectedFilter === 'price' 
-                    ? 'bg-blue-600 text-white' 
+                  selectedFilter === 'price'
+                    ? 'bg-blue-600 text-white'
                     : 'bg-gray-800/50 hover:bg-gray-800'
                 }`}
               >
@@ -215,8 +233,8 @@ export default function BrowseTrips() {
               <button
                 onClick={() => setSelectedFilter('rating')}
                 className={`px-6 py-2 rounded-full transition-all ${
-                  selectedFilter === 'rating' 
-                    ? 'bg-blue-600 text-white' 
+                  selectedFilter === 'rating'
+                    ? 'bg-blue-600 text-white'
                     : 'bg-gray-800/50 hover:bg-gray-800'
                 }`}
               >
@@ -228,7 +246,7 @@ export default function BrowseTrips() {
 
         {/* Trip Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredTrips.map(trip => (
+          {filteredTrips.map((trip) => (
             <motion.div
               key={trip.id}
               className="bg-gray-800/50 backdrop-blur-sm p-6 rounded-2xl"
@@ -266,7 +284,9 @@ export default function BrowseTrips() {
                 </p>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-400">{trip.requests} package requests</span>
+                <span className="text-sm text-gray-400">
+                  {trip.requests} package requests
+                </span>
                 <button className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-all">
                   View Details
                 </button>
@@ -276,5 +296,5 @@ export default function BrowseTrips() {
         </div>
       </div>
     </main>
-  )
+  );
 }

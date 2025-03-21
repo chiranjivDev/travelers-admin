@@ -1,15 +1,21 @@
+import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
 
 export const CommunicationPreferences = ({ control, errors }) => {
+  const t = useTranslations('SenderForm.steps.step4');
   return (
     <div>
       <h2 className="text-xl font-bold mb-4 text-gray-700">
-        Step 4: Communication Preference
+        {/* Step 4: Communication Preference */}
+        {t('title')}
       </h2>
 
       {/* Phone Number */}
       <div className="mb-4">
-        <label className="block text-gray-700">Phone Number</label>
+        <label className="block text-gray-700">
+          {/* Phone Number */}
+          {t('fields.phoneNumber')}
+        </label>
         <Controller
           name="phone"
           control={control}
@@ -32,7 +38,10 @@ export const CommunicationPreferences = ({ control, errors }) => {
 
       {/* Communication Preferences */}
       <div className="mb-4">
-        <label className="block text-gray-700">Communication Preference</label>
+        <label className="block text-gray-700">
+          {/* Communication Preference */}
+          {t('fields.communicationPreference')}
+        </label>
         <Controller
           name="communication"
           control={control}
@@ -53,7 +62,8 @@ export const CommunicationPreferences = ({ control, errors }) => {
                     onChange(newValue);
                   }}
                 />{' '}
-                WhatsApp
+                {/* WhatsApp */}
+                {t('fields.options.whatsapp')}
               </label>
               <label className="mr-4 text-gray-700">
                 <input
@@ -67,7 +77,8 @@ export const CommunicationPreferences = ({ control, errors }) => {
                     onChange(newValue);
                   }}
                 />{' '}
-                Email
+                {/* Email */}
+                {t('fields.options.email')}
               </label>
               <label className="mr-4 text-gray-700">
                 <input
@@ -81,7 +92,8 @@ export const CommunicationPreferences = ({ control, errors }) => {
                     onChange(newValue);
                   }}
                 />{' '}
-                Phone
+                {/* Phone */}
+                {t('fields.options.phone')}
               </label>
             </div>
           )}

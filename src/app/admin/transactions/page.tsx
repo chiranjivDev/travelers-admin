@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   FiDollarSign,
   FiSearch,
@@ -11,9 +11,7 @@ import {
   FiCheckCircle,
   FiXCircle,
   FiClock,
-} from 'react-icons/fi'
-
-// Mock data
+} from 'react-icons/fi';
 const mockTransactions = [
   {
     id: 'TRX001',
@@ -29,51 +27,51 @@ const mockTransactions = [
     id: 'TRX002',
     date: '2024-12-19',
     type: 'Traveler Payment',
-    amount: 120.50,
+    amount: 120.5,
     status: 'Pending',
     from: 'DeliveryConnect',
     to: 'Mike Johnson',
     paymentMethod: 'Bank Transfer',
   },
-  // Add more mock transactions here
-]
+];
 
 const statusColors = {
-  'Completed': 'bg-green-500',
-  'Pending': 'bg-yellow-500',
-  'Failed': 'bg-red-500',
-  'Refunded': 'bg-purple-500',
-}
+  Completed: 'bg-green-500',
+  Pending: 'bg-yellow-500',
+  Failed: 'bg-red-500',
+  Refunded: 'bg-purple-500',
+};
 
 const StatusIcon = ({ status }) => {
   switch (status) {
     case 'Completed':
-      return <FiCheckCircle className="w-5 h-5 text-green-500" />
+      return <FiCheckCircle className="w-5 h-5 text-green-500" />;
     case 'Pending':
-      return <FiClock className="w-5 h-5 text-yellow-500" />
+      return <FiClock className="w-5 h-5 text-yellow-500" />;
     case 'Failed':
-      return <FiXCircle className="w-5 h-5 text-red-500" />
+      return <FiXCircle className="w-5 h-5 text-red-500" />;
     default:
-      return null
+      return null;
   }
-}
+};
 
 export default function TransactionsPage() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('All')
-  const [typeFilter, setTypeFilter] = useState('All')
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [typeFilter, setTypeFilter] = useState('All');
 
-  const filteredTransactions = mockTransactions.filter(transaction => {
-    const matchesSearch = 
+  const filteredTransactions = mockTransactions.filter((transaction) => {
+    const matchesSearch =
       transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       transaction.from.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.to.toLowerCase().includes(searchTerm.toLowerCase())
-    
-    const matchesStatus = statusFilter === 'All' || transaction.status === statusFilter
-    const matchesType = typeFilter === 'All' || transaction.type === typeFilter
-    
-    return matchesSearch && matchesStatus && matchesType
-  })
+      transaction.to.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === 'All' || transaction.status === statusFilter;
+    const matchesType = typeFilter === 'All' || transaction.type === typeFilter;
+
+    return matchesSearch && matchesStatus && matchesType;
+  });
 
   return (
     <div className="space-y-6">
@@ -81,7 +79,9 @@ export default function TransactionsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-white">Transaction History</h1>
-          <p className="text-gray-400 mt-1">Monitor all financial transactions</p>
+          <p className="text-gray-400 mt-1">
+            Monitor all financial transactions
+          </p>
         </div>
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -108,7 +108,9 @@ export default function TransactionsPage() {
             <h3 className="text-gray-400 text-sm font-medium">{card.title}</h3>
             <p className="text-2xl font-bold text-white mt-2">{card.value}</p>
             {card.change && (
-              <span className="text-green-400 text-sm font-medium">{card.change}</span>
+              <span className="text-green-400 text-sm font-medium">
+                {card.change}
+              </span>
             )}
             {card.count && (
               <span className="text-gray-400 text-sm font-medium">
@@ -203,7 +205,9 @@ export default function TransactionsPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <StatusIcon status={transaction.status} />
-                      <span className="ml-2 text-sm text-white">{transaction.id}</span>
+                      <span className="ml-2 text-sm text-white">
+                        {transaction.id}
+                      </span>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
@@ -219,13 +223,17 @@ export default function TransactionsPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full text-white ${statusColors[transaction.status]}`}>
+                    <span
+                      className={`px-2 py-1 text-xs font-medium rounded-full text-white ${statusColors[transaction.status]}`}
+                    >
                       {transaction.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-white">{transaction.from}</div>
-                    <div className="text-sm text-gray-400">{transaction.to}</div>
+                    <div className="text-sm text-gray-400">
+                      {transaction.to}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                     {transaction.paymentMethod}
@@ -246,5 +254,5 @@ export default function TransactionsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

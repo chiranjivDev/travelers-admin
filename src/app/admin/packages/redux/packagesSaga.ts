@@ -1,4 +1,4 @@
-import { put, call } from "redux-saga/effects";
+import { put, call } from 'redux-saga/effects';
 import {
   fetchPackagesRequest,
   fetchPackagesSuccess,
@@ -9,12 +9,10 @@ import {
   deletePackageRequest,
   deletePackageSuccess,
   deletePackageFailure,
-} from "./packagesSlice";
-import { axiosInstance } from "@/services/httpServices";
-import { API_URL } from "@/services/webConstants";
-import { GET_ALL_PACKAGES } from "./packagesAction";
-
-// Fetch Packages Saga
+} from './packagesSlice';
+import { axiosInstance } from '@/services/httpServices';
+import { API_URL } from '@/services/webConstants';
+import { GET_ALL_PACKAGES } from './packagesAction';
 export function* PackagesSaga() {
   try {
     yield put(fetchPackagesRequest());
@@ -22,17 +20,15 @@ export function* PackagesSaga() {
     yield put(fetchPackagesSuccess(response.data));
   } catch (error) {
     yield put(
-      fetchPackagesFailure(error.response?.data?.message || error.message)
+      fetchPackagesFailure(error.response?.data?.message || error.message),
     );
   }
 }
-
-// Update Packages Status
 export function* updatepackagesStatusSaga(action) {
   try {
     yield put(updatePackagesStatusRequest());
     const { id, status } = action.payload;
-    const newStatus = status === "active" ? "inactive" : "active";
+    const newStatus = status === 'active' ? 'inactive' : 'active';
     const payload = {
       status: newStatus,
     };
@@ -40,7 +36,7 @@ export function* updatepackagesStatusSaga(action) {
     const response = yield call(
       axiosInstance.patch,
       `${API_URL.ADMIN_PACKAGES}/${id}`,
-      payload
+      payload,
     );
     if (response.status === 200) {
       yield put(updatePackagesStatusSuccess());
@@ -50,8 +46,6 @@ export function* updatepackagesStatusSaga(action) {
     yield put(updatePackagesStatusFailure(error.message));
   }
 }
-
-// delete packages
 export function* deletePackageSaga(action) {
   try {
     yield put(deletePackageRequest());
@@ -59,7 +53,7 @@ export function* deletePackageSaga(action) {
     const { userId } = action.payload;
     const response = yield call(
       axiosInstance.delete,
-      `${API_URL.ADMIN_PACKAGES}/${userId}`
+      `${API_URL.ADMIN_PACKAGES}/${userId}`,
     );
     if (response.status === 200) {
       yield put(deletePackageSuccess({ userId }));
@@ -67,7 +61,7 @@ export function* deletePackageSaga(action) {
     }
   } catch (error) {
     yield put(
-      deletePackageFailure(error.response?.data?.message || error.message)
+      deletePackageFailure(error.response?.data?.message || error.message),
     );
   }
 }

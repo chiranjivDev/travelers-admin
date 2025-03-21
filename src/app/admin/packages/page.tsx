@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   FiPackage,
   FiSearch,
@@ -11,52 +11,49 @@ import {
   FiEye,
   FiCheck,
   FiX,
-} from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
-import { type } from "os";
+} from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
+import { type } from 'os';
 import {
   DELETE_PACKAGE,
   GET_ALL_PACKAGES,
   UPDATE_PACKAGE_STATUS,
-} from "./redux/packagesAction";
-
-// Mock data
+} from './redux/packagesAction';
 const mockPackages = [
   {
-    id: "PKG001",
-    title: "Electronics Package",
-    sender: "John Doe",
-    receiver: "Jane Smith",
-    status: "In Transit",
-    origin: "New York",
-    destination: "Los Angeles",
+    id: 'PKG001',
+    title: 'Electronics Package',
+    sender: 'John Doe',
+    receiver: 'Jane Smith',
+    status: 'In Transit',
+    origin: 'New York',
+    destination: 'Los Angeles',
     price: 149.99,
-    created_at: "2024-12-20",
+    created_at: '2024-12-20',
   },
   {
-    id: "PKG002",
-    title: "Clothing Items",
-    sender: "Mike Johnson",
-    receiver: "Sarah Wilson",
-    status: "Pending",
-    origin: "Chicago",
-    destination: "Miami",
+    id: 'PKG002',
+    title: 'Clothing Items',
+    sender: 'Mike Johnson',
+    receiver: 'Sarah Wilson',
+    status: 'Pending',
+    origin: 'Chicago',
+    destination: 'Miami',
     price: 79.99,
-    created_at: "2024-12-19",
+    created_at: '2024-12-19',
   },
-  // Add more mock packages here
 ];
 
 const statusColors = {
-  "In Transit": "bg-blue-500",
-  Pending: "bg-yellow-500",
-  Delivered: "bg-green-500",
-  Cancelled: "bg-red-500",
+  'In Transit': 'bg-blue-500',
+  'Pending': 'bg-yellow-500',
+  'Delivered': 'bg-green-500',
+  'Cancelled': 'bg-red-500',
 };
 
 export default function PackagesPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
   const dispatch = useDispatch();
   const packages = useSelector((state) => state.adminpackages.packages);
 
@@ -71,7 +68,7 @@ export default function PackagesPage() {
       pkg.sender.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.sender.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = statusFilter === "All" || pkg.status === statusFilter;
+    const matchesStatus = statusFilter === 'All' || pkg.status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });

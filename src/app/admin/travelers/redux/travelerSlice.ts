@@ -1,14 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const travelerSlice = createSlice({
-  name: "travelers",
+  name: 'travelers',
   initialState: {
     travelers: [],
     loading: false,
     error: null,
   },
   reducers: {
-    // Fetch Traveler Actions
     fetchTravelerRequest: (state) => {
       state.loading = true;
       state.error = null;
@@ -22,7 +21,6 @@ const travelerSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Update Traveler Status Actions
     updateTravelerStatusRequest: (state) => {
       state.loading = true;
       state.error = null;
@@ -35,7 +33,6 @@ const travelerSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Delete Traveler Actions
     deleteTravelerRequest: (state) => {
       state.loading = true;
       state.error = null;
@@ -45,7 +42,7 @@ const travelerSlice = createSlice({
       const { userId } = action.payload;
 
       state.travelers = state.travelers.filter(
-        (traveler) => traveler.id !== userId
+        (traveler) => traveler.id !== userId,
       );
     },
     deleteTravelerFailure: (state, action) => {

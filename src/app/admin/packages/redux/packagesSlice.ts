@@ -1,14 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const packageSlice = createSlice({
-  name: "package",
+  name: 'package',
   initialState: {
     packages: [],
     loading: false,
     error: null,
   },
   reducers: {
-    // Fetch Packages Actions
     fetchPackagesRequest(state) {
       state.loading = true;
       state.error = null;
@@ -21,7 +20,6 @@ const packageSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    // Update Packages Status
     updatePackagesStatusRequest(state) {
       state.loading = true;
       state.error = null;
@@ -33,7 +31,6 @@ const packageSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    // delete packages
     deletePackageRequest(state) {
       state.loading = true;
       state.error = null;
@@ -41,7 +38,7 @@ const packageSlice = createSlice({
     deletePackageSuccess(state, action) {
       state.loading = false;
       state.packages = state.packages.filter(
-        (pkg) => pkg.id !== action.payload.userId
+        (pkg) => pkg.id !== action.payload.userId,
       );
     },
     deletePackageFailure(state, action) {

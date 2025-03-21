@@ -4,9 +4,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
   const { user } = useAuth();
+  const t = useTranslations('HomePage');
+
+  const getHowItWorks = useTranslations('HomePage.howItWorks');
+  const steps = getHowItWorks.raw('steps', { returnObjects: true }) || [];
+
+  const benefitsSection = useTranslations('HomePage.benefitsSection');
+  const benefits = benefitsSection.raw('benefits');
+
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -57,35 +66,13 @@ export default function Home() {
             className="space-y-8"
           >
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-              Connect, Travel & Deliver
+              {t('title')}
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-              Join our community of travelers and senders. Save money on
-              shipping while helping others earn from their travels.
+              {t('description')}
             </p>
 
             {/* CTA Buttons */}
-            {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/form">
-                <motion.button
-                  className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-full text-lg font-semibold transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Send a Package
-                </motion.button>
-              </Link>
-              <Link href="/traveler-form">
-                <motion.button
-                  className="px-8 py-4 bg-purple-600 hover:bg-purple-700 rounded-full text-lg font-semibold transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Become a Traveler
-                </motion.button>
-              </Link>
-            </div> */}
-
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {user ? (
                 user.permissions === 'sender' ? (
@@ -95,7 +82,7 @@ export default function Home() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Send a Package
+                      {t('buttons.sendPackage')}
                     </motion.button>
                   </Link>
                 ) : user.permissions === 'traveler' ? (
@@ -105,7 +92,7 @@ export default function Home() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Become a Traveler
+                      {t('buttons.becomeTraveler')}
                     </motion.button>
                   </Link>
                 ) : null
@@ -116,7 +103,7 @@ export default function Home() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Login
+                    {t('buttons.login')}
                   </motion.button>
                 </Link>
               )}
@@ -125,16 +112,34 @@ export default function Home() {
             {/* Trust Indicators */}
             <div className="pt-12 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
-                <h3 className="text-3xl font-bold text-blue-400">10K+</h3>
-                <p className="text-gray-400">Active Users</p>
+                <h3 className="text-3xl font-bold text-blue-400">
+                  {' '}
+                  {t('trustIndicators.activeUsers.count')}
+                </h3>
+                <p className="text-gray-400">
+                  {' '}
+                  {t('trustIndicators.activeUsers.label')}
+                </p>
               </div>
               <div className="text-center">
-                <h3 className="text-3xl font-bold text-purple-400">15K+</h3>
-                <p className="text-gray-400">Deliveries</p>
+                <h3 className="text-3xl font-bold text-purple-400">
+                  {' '}
+                  {t('trustIndicators.deliveries.count')}
+                </h3>
+                <p className="text-gray-400">
+                  {' '}
+                  {t('trustIndicators.deliveries.label')}
+                </p>
               </div>
               <div className="text-center">
-                <h3 className="text-3xl font-bold text-blue-400">50+</h3>
-                <p className="text-gray-400">Countries</p>
+                <h3 className="text-3xl font-bold text-blue-400">
+                  {' '}
+                  {t('trustIndicators.countries.count')}
+                </h3>
+                <p className="text-gray-400">
+                  {' '}
+                  {t('trustIndicators.countries.label')}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -169,33 +174,14 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4">How It Works</h2>
+            <h2 className="text-4xl font-bold mb-4">{t('howItWorks.title')}</h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              A simple and secure way to connect package senders with travelers
+              {t('howItWorks.description')}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'List Your Journey or Package',
-                description:
-                  'Share your travel plans as a traveler or list your package details as a sender.',
-                icon: '✈️',
-              },
-              {
-                title: 'Connect & Agree',
-                description:
-                  'Match with the perfect delivery partner and agree on terms through our secure platform.',
-                icon: '🤝',
-              },
-              {
-                title: 'Track & Deliver',
-                description:
-                  'Track your package in real-time and complete the delivery with our secure payment system.',
-                icon: '📦',
-              },
-            ].map((step, i) => (
+            {steps?.map((step, i) => (
               <motion.div
                 key={i}
                 className="p-8 rounded-2xl bg-gray-800/50 backdrop-blur-sm hover:bg-gray-800/80 transition-all duration-300"
@@ -222,53 +208,15 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-4">
-              Why Choose DeliveryConnect?
+              {t('benefitsSection.title')}
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Experience the future of package delivery with our innovative
-              platform
+              {t('benefitsSection.description')}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Cost-Effective',
-                description:
-                  'Save up to 70% on shipping costs compared to traditional services.',
-                icon: '💰',
-              },
-              {
-                title: 'Secure & Safe',
-                description:
-                  'Verified users, secure payments, and package insurance for peace of mind.',
-                icon: '🔒',
-              },
-              {
-                title: 'Eco-Friendly',
-                description:
-                  'Reduce carbon footprint by utilizing existing travel routes.',
-                icon: '🌱',
-              },
-              {
-                title: 'Global Network',
-                description:
-                  'Access to travelers worldwide for international deliveries.',
-                icon: '🌍',
-              },
-              {
-                title: 'Real-Time Tracking',
-                description:
-                  "Track your package's journey with live updates and notifications.",
-                icon: '📱',
-              },
-              {
-                title: '24/7 Support',
-                description:
-                  'Dedicated customer support team ready to assist you anytime.',
-                icon: '🎯',
-              },
-            ].map((benefit, i) => (
+            {benefits.map((benefit, i) => (
               <motion.div
                 key={i}
                 className="p-6 rounded-2xl bg-gray-800/50 backdrop-blur-sm hover:bg-gray-800/80 transition-all duration-300"
@@ -294,10 +242,9 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <h2 className="text-4xl font-bold">Ready to Get Started?</h2>
+            <h2 className="text-4xl font-bold"> {t('ctaSection.title')}</h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Join thousands of users who are already saving money and earning
-              through our platform
+              {t('ctaSection.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/send-package">
@@ -306,7 +253,7 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Send Your First Package
+                  {t('ctaSection.buttons.sendPackage')}
                 </motion.button>
               </Link>
               <Link href="/browse-trips">
@@ -315,7 +262,7 @@ export default function Home() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Browse Available Trips
+                  {t('ctaSection.buttons.browseTrips')}
                 </motion.button>
               </Link>
             </div>

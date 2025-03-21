@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
   FiUsers,
   FiPackage,
@@ -10,17 +10,16 @@ import {
   FiTruck,
   FiAlertCircle,
   FiCheckCircle,
-} from "react-icons/fi";
+} from 'react-icons/fi';
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is authenticated
-    const isAdmin = localStorage.getItem("isAdmin");
+    const isAdmin = localStorage.getItem('isAdmin');
     if (!isAdmin) {
-      router.push("/admin/login");
+      router.push('/admin/login');
     } else {
       setIsLoading(false);
     }
@@ -28,59 +27,59 @@ export default function AdminDashboard() {
 
   const stats = [
     {
-      name: "Total Users",
-      value: "12,345",
-      change: "+12%",
+      name: 'Total Users',
+      value: '12,345',
+      change: '+12%',
       icon: FiUsers,
-      color: "blue",
+      color: 'blue',
     },
     {
-      name: "Active Deliveries",
-      value: "1,234",
-      change: "+23%",
+      name: 'Active Deliveries',
+      value: '1,234',
+      change: '+23%',
       icon: FiPackage,
-      color: "green",
+      color: 'green',
     },
     {
-      name: "Revenue",
-      value: "$123,456",
-      change: "+8%",
+      name: 'Revenue',
+      value: '$123,456',
+      change: '+8%',
       icon: FiDollarSign,
-      color: "purple",
+      color: 'purple',
     },
     {
-      name: "Active Travelers",
-      value: "456",
-      change: "+15%",
+      name: 'Active Travelers',
+      value: '456',
+      change: '+15%',
       icon: FiTruck,
-      color: "orange",
+      color: 'orange',
     },
   ];
 
   const recentActivity = [
     {
       id: 1,
-      type: "user_signup",
-      message: "New user registration: John Doe",
-      time: "5 minutes ago",
+      type: 'user_signup',
+      message: 'New user registration: John Doe',
+      time: '5 minutes ago',
       icon: FiCheckCircle,
-      color: "text-green-400",
+      color: 'text-green-400',
     },
     {
       id: 2,
-      type: "delivery_started",
-      message: "New delivery started: Package #12345",
-      time: "10 minutes ago",
+      type: 'delivery_started',
+      message: 'New delivery started: Package #12345',
+      time: '10 minutes ago',
       icon: FiPackage,
-      color: "text-blue-400",
+      color: 'text-blue-400',
     },
     {
       id: 3,
-      type: "issue_reported",
-      message: "Issue reported: Delivery delayed #98765",
-      time: "15 minutes ago",
+      type: 'issue_reported',
+      message: 'Issue reported: Delivery delayed #98765',
+      time: '15 minutes ago',
       icon: FiAlertCircle,
-      color: "text-red-400",
+      color: 'text-red-400',
     },
   ];
 
@@ -157,7 +156,7 @@ export default function AdminDashboard() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => router.push("/admin/users")}
+            onClick={() => router.push('/admin/users')}
             className="p-4 bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-medium"
           >
             Manage Users
@@ -165,7 +164,7 @@ export default function AdminDashboard() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => router.push("/admin/deliveries")}
+            onClick={() => router.push('/admin/deliveries')}
             className="p-4 bg-green-600 hover:bg-green-700 rounded-xl text-white font-medium"
           >
             View Deliveries
@@ -173,7 +172,7 @@ export default function AdminDashboard() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => router.push("/admin/reports")}
+            onClick={() => router.push('/admin/reports')}
             className="p-4 bg-purple-600 hover:bg-purple-700 rounded-xl text-white font-medium"
           >
             Generate Reports

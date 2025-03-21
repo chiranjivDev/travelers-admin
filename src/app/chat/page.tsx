@@ -1,22 +1,24 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ChatLayout from '@/components/chat/ChatLayout';
 import { getSocket } from '@/lib/socket';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearOrdersState } from '../sender/dashboard/redux/orderSlice';
 
 export default function ChatPage() {
+  const { createOrderSuccess, order } = useSelector((state) => state.order);
   const searchParams = useSearchParams();
   const userId = searchParams.get('user');
+  const travelerPkgIdFromQuery = searchParams.get('travelerPkgId');
+  const senderPkgIdFromQuery = searchParams.get('senderPkgId');
   const [showModal, setShowModal] = useState(true);
-
-  console.log('user id from chats', userId);
 
   useEffect(() => {
     const socket = getSocket();
     if (socket) {
-      console.log('Emitting get_my_rooms event');
       socket.emit('get_my_rooms');
     }
   }, []);
@@ -29,14 +31,24 @@ export default function ChatPage() {
         JSON.stringify({
           receiverId: userId,
           message: 'Hi',
-          // senderPkgId: '',
-          // travelerPkgId: '',
-        })
+          senderPkgId: senderPkgIdFromQuery,
+          travelerPkgId: travelerPkgIdFromQuery,
+        }),
       );
-      console.log('Sent private message to:', userId);
-      setShowModal(false); // Close modal after sending the message
+      setShowModal(false);
     }
   };
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+  useEffect(() => {
+    if (createOrderSuccess) {
+      router.push(
+        `/payment?amount=${order?.amount}&orderId=${order?.order_id}`,
+      );
+      dispatch(clearOrdersState());
+    }
+  }, [createOrderSuccess]);
 
   return (
     <>

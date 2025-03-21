@@ -1,11 +1,8 @@
-// Backup of working version - Created for recovery purposes
-'use client';
+  'use client';
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-
-// All existing interfaces remain the same
-interface DeliveryMethodProps {
+  interface DeliveryMethodProps {
   type: 'pickup' | 'delivery';
   value: any;
   onChange: (method: any) => void;
@@ -51,6 +48,4 @@ export interface DeliveryOffer {
     specialInstructions?: string;
   };
 }
-
-// Existing component code
-${fs.readFileSync('/Users/khosroheidari/Desktop/delivery-package/src/components/DeliveryMethod.tsx', 'utf8')}
+  ${fs.readFileSync('/Users/khosroheidari/Desktop/delivery-package/src/components/DeliveryMethod.tsx', 'utf8')}

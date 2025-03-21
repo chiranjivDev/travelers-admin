@@ -12,9 +12,7 @@ import {
   FiArrowUp,
   FiArrowDown
 } from 'react-icons/fi'
-
-// Mock data
-const mockEarnings = {
+  const mockEarnings = {
   totalEarnings: 2850.00,
   pendingPayouts: 450.00,
   completedDeliveries: 24,
@@ -143,8 +141,7 @@ export default function EarningsDashboard() {
           </div>
           <div className="h-64 flex items-end justify-between space-x-2">
             {mockEarnings.monthlyStats.map((stat, index) => {
-              const height = (stat.earnings / 1200) * 100 // Max height percentage
-              return (
+              const height = (stat.earnings / 1200) * 100                return (
                 <div key={index} className="flex-1 flex flex-col items-center">
                   <div
                     className="w-full bg-blue-600/50 rounded-t-lg transition-all duration-500"

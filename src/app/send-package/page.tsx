@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// import { packageCategories } from './packageCategories';
 import AddressInput from '@/components/AddressInput';
 import DeliveryMethod, {
   DeliveryMethodDetails,
@@ -30,9 +29,9 @@ interface AddressDetails {
 }
 
 interface FormData {
-  packageName: string; // package name
-  price: number; // price
-  description: string; // description
+  packageName: string;
+  price: number;
+  description: string;
   category: string;
   subcategory: string;
   selectedSize?: 'small' | 'medium' | 'large' | 'custom';
@@ -84,7 +83,6 @@ interface FormData {
 }
 
 export default function SendPackage() {
-  // use selector for categories
   const [showOrderComponent, setShowOrderComponent] = useState(false);
   const {
     categories: packageCategories,
@@ -93,8 +91,6 @@ export default function SendPackage() {
   } = useSelector((state) => state.packages);
 
   const dispatch = useDispatch();
-
-  console.log('send package response ==> ', sendPackageResponse);
 
   useEffect(() => {
     if (sendPackageSuccess) {
@@ -109,9 +105,9 @@ export default function SendPackage() {
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
-    packageName: '', // package name
-    price: '', // price
-    description: '', // description
+    packageName: '',
+    price: '',
+    description: '',
     category: '',
     subcategory: '',
     selectedSize: undefined,
@@ -240,8 +236,6 @@ export default function SendPackage() {
     },
     {
       id: 3,
-      // title: 'Review',
-      // subtitle: 'Confirm details',
       title: 'Package Delivery',
       subtitle: 'Set Delivery details',
       icon: (
@@ -283,13 +277,9 @@ export default function SendPackage() {
   const handleNext = () => setStep(step + 1);
   const handlePrev = () => setStep(step - 1);
 
-  // Handle send package form submit
   const handleSubmit = (e: React.FormEvent) => {
-    console.log('current step', step);
     e.preventDefault();
-    console.log('Send package Form submitted:', formData);
 
-    // dispatch send package
     dispatch({
       type: SEND_PACKAGE,
       payload: {
@@ -302,12 +292,9 @@ export default function SendPackage() {
     setStep((prev) => prev + 1);
   };
 
-  // Handle File Upload
   const handleFileUpload = (e) => {
-    console.log('inside handle file upload');
     const files = Array.from(e.target.files || []);
     const newPhotos = files.map((file) => URL.createObjectURL(file));
-    console.log('new photos', newPhotos);
     setFormData((prev) => ({
       ...prev,
       packagePhotos: [...prev.packagePhotos, ...newPhotos],
@@ -321,7 +308,6 @@ export default function SendPackage() {
 
   const renderStep = () => {
     switch (step) {
-      // What are you sending
       case 1:
         return (
           <motion.div
@@ -444,7 +430,7 @@ export default function SendPackage() {
                       {packageCategories
                         .find(
                           (category) =>
-                            category.categoryId === formData.category
+                            category.categoryId === formData.category,
                         )
                         ?.subcategories.map((subcategory) => (
                           <option
@@ -564,16 +550,6 @@ export default function SendPackage() {
                               <button
                                 type="button"
                                 className="absolute top-2 right-2 p-1.5 rounded-full bg-red-100 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                                // onClick={() => {
-                                //   const newPhotos =
-                                //     formData.packagePhotos.filter(
-                                //       (_, i) => i !== index
-                                //     );
-                                //   setFormData({
-                                //     ...formData,
-                                //     packagePhotos: newPhotos,
-                                //   });
-                                // }}
                                 onClick={() => removePhoto(index)}
                               >
                                 <svg
@@ -620,7 +596,6 @@ export default function SendPackage() {
           </motion.div>
         );
 
-      // Pick up details
       case 2:
         return (
           <motion.div
@@ -648,7 +623,7 @@ export default function SendPackage() {
                     setFormData({ ...formData, pickupMethod: method })
                   }
                   className="w-full"
-                  triggerParentStep={handleParentStep} // add this
+                  triggerParentStep={handleParentStep}
                 />
               </div>
               {/* Step Navigation */}
@@ -672,7 +647,6 @@ export default function SendPackage() {
           </motion.div>
         );
 
-      // Confirm details
       case 3:
         return (
           <motion.div
@@ -697,14 +671,13 @@ export default function SendPackage() {
 
               <div className="space-y-6">
                 <DeliveryMethod
-                  type="delivery" // modified for testing
-                  value={formData.deliveryMethod} // modified for testing
-                  onChange={
-                    (method) =>
-                      setFormData({ ...formData, deliveryMethod: method }) // modified for testing
+                  type="delivery"
+                  value={formData.deliveryMethod}
+                  onChange={(method) =>
+                    setFormData({ ...formData, deliveryMethod: method })
                   }
                   className="w-full"
-                  triggerParentStep={handleParentStep} // added for testing
+                  triggerParentStep={handleParentStep}
                 />
               </div>
 
@@ -736,7 +709,6 @@ export default function SendPackage() {
     }
   };
 
-  // Additional step for placing order
   if (showOrderComponent) {
     return <SelectTraveler sendPackageResponse={sendPackageResponse} />;
   }
@@ -833,8 +805,6 @@ export default function SendPackage() {
     </div>
   );
 }
-
-// compoent for selecting a traveler and placing an order
 const SelectTraveler = ({ sendPackageResponse }) => {
   const [selectedTrip, setSelectedTrip] = useState('');
   const { trips } = useSelector((state) => state.trips);
@@ -843,14 +813,12 @@ const SelectTraveler = ({ sendPackageResponse }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // fetch user information
   const { user } = useAuth();
 
   useEffect(() => {
     dispatch({ type: TRIPS });
   }, [dispatch]);
 
-  // handle create Order
   const handleCreateOrder = (e) => {
     e.preventDefault();
     if (!selectedTrip) {

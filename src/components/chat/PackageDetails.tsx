@@ -1,50 +1,83 @@
-'use client'
+'use client';
 
-import { Package, TripDetails, useSimpleChat } from '@/contexts/SimpleChatContext'
-import { useEffect, useCallback } from 'react'
-import { FiPackage, FiMap, FiCalendar, FiDollarSign, FiInfo, FiCamera, FiThermometer, FiShield, FiClock, FiTruck } from 'react-icons/fi'
+import {
+  Package,
+  TripDetails,
+  useSimpleChat,
+} from '@/contexts/SimpleChatContext';
+import { useEffect, useCallback } from 'react';
+import {
+  FiPackage,
+  FiMap,
+  FiCalendar,
+  FiDollarSign,
+  FiInfo,
+  FiCamera,
+  FiThermometer,
+  FiShield,
+  FiClock,
+  FiTruck,
+} from 'react-icons/fi';
 
 interface PackageDetailsProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 export default function PackageDetails({ onClose }: PackageDetailsProps) {
-  const { activePackage, currentUser, otherUser, updatePackage } = useSimpleChat()
+  const { activePackage, currentUser, otherUser, updatePackage } =
+    useSimpleChat();
 
-  const handleClose = useCallback((e: React.MouseEvent | KeyboardEvent) => {
-    if (e.type === 'keydown' && (e as KeyboardEvent).key !== 'Escape') {
-      return
-    }
-    onClose()
-  }, [onClose])
+  const handleClose = useCallback(
+    (e: React.MouseEvent | KeyboardEvent) => {
+      if (e.type === 'keydown' && (e as KeyboardEvent).key !== 'Escape') {
+        return;
+      }
+      onClose();
+    },
+    [onClose],
+  );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleClose)
-    return () => document.removeEventListener('keydown', handleClose)
-  }, [handleClose])
+    document.addEventListener('keydown', handleClose);
+    return () => document.removeEventListener('keydown', handleClose);
+  }, [handleClose]);
 
-  if (!activePackage) return null
+  if (!activePackage) return null;
 
-  const isSender = currentUser?.role === 'sender'
-  const travelerTrip = otherUser?.role === 'traveler' ? otherUser.activeTrip : null
+  const isSender = currentUser?.role === 'sender';
+  const travelerTrip =
+    otherUser?.role === 'traveler' ? otherUser.activeTrip : null;
 
   const renderTripMatch = (pkg: Package, trip?: TripDetails | null) => {
-    if (!trip) return null
+    if (!trip) return null;
 
-    const matchScore = calculateTripMatch(pkg, trip)
-    const matchClass = matchScore > 80 ? 'bg-green-500' : matchScore > 50 ? 'bg-yellow-500' : 'bg-red-500'
+    const matchScore = calculateTripMatch(pkg, trip);
+    const matchClass =
+      matchScore > 80
+        ? 'bg-green-500'
+        : matchScore > 50
+          ? 'bg-yellow-500'
+          : 'bg-red-500';
 
     return (
       <div className="mt-4 p-4 rounded-lg bg-gray-800">
         <h3 className="text-lg font-semibold mb-2">Trip Match Analysis</h3>
         <div className="flex items-center gap-2 mb-2">
-          <div className={`h-2 flex-grow rounded ${matchClass}`} style={{ width: `${matchScore}%` }} />
+          <div
+            className={`h-2 flex-grow rounded ${matchClass}`}
+            style={{ width: `${matchScore}%` }}
+          />
           <span>{matchScore}% Match</span>
         </div>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span>Route Match:</span>
-            <span>{pkg.origin === trip.route.from && pkg.destination === trip.route.to ? '✅' : '❌'}</span>
+            <span>
+              {pkg.origin === trip.route.from &&
+              pkg.destination === trip.route.to
+                ? '✅'
+                : '❌'}
+            </span>
           </div>
           <div className="flex justify-between">
             <span>Date Match:</span>
@@ -52,7 +85,9 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
           </div>
           <div className="flex justify-between">
             <span>Weight Limit:</span>
-            <span>{pkg.weight <= trip.preferences.maxWeight ? '✅' : '❌'}</span>
+            <span>
+              {pkg.weight <= trip.preferences.maxWeight ? '✅' : '❌'}
+            </span>
           </div>
           <div className="flex justify-between">
             <span>Available Capacity:</span>
@@ -60,53 +95,58 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const calculateTripMatch = (pkg: Package, trip: TripDetails): number => {
-    let score = 0
+    let score = 0;
 
-    // Route match (40%)
     if (pkg.origin === trip.route.from && pkg.destination === trip.route.to) {
-      score += 40
+      score += 40;
     } else if (trip.route.stops?.includes(pkg.destination)) {
-      score += 30
+      score += 30;
     }
 
-    // Date match (30%)
     if (isDateWithinRange(pkg.date, trip.dates)) {
-      score += 30
+      score += 30;
     }
 
-    // Weight and capacity (20%)
-    if (pkg.weight <= trip.preferences.maxWeight && pkg.weight <= trip.capacity.available) {
-      score += 20
+    if (
+      pkg.weight <= trip.preferences.maxWeight &&
+      pkg.weight <= trip.capacity.available
+    ) {
+      score += 20;
     } else if (pkg.weight <= trip.preferences.maxWeight) {
-      score += 10
+      score += 10;
     }
 
-    // Package type compatibility (10%)
-    const packageType = pkg.category?.toLowerCase() || ''
-    if (trip.preferences.acceptedTypes.some(type => packageType.includes(type.toLowerCase()))) {
-      score += 10
+    const packageType = pkg.category?.toLowerCase() || '';
+    if (
+      trip.preferences.acceptedTypes.some((type) =>
+        packageType.includes(type.toLowerCase()),
+      )
+    ) {
+      score += 10;
     }
 
-    return score
-  }
+    return score;
+  };
 
   const isDateWithinRange = (date: string, tripDates: TripDetails['dates']) => {
-    const packageDate = new Date(date)
-    const departureDate = new Date(tripDates.departure)
-    const arrivalDate = new Date(tripDates.arrival)
-    const flexibilityMs = tripDates.flexibility * 24 * 60 * 60 * 1000
+    const packageDate = new Date(date);
+    const departureDate = new Date(tripDates.departure);
+    const arrivalDate = new Date(tripDates.arrival);
+    const flexibilityMs = tripDates.flexibility * 24 * 60 * 60 * 1000;
 
-    return packageDate >= new Date(departureDate.getTime() - flexibilityMs) &&
-           packageDate <= new Date(arrivalDate.getTime() + flexibilityMs)
-  }
+    return (
+      packageDate >= new Date(departureDate.getTime() - flexibilityMs) &&
+      packageDate <= new Date(arrivalDate.getTime() + flexibilityMs)
+    );
+  };
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4" 
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
       style={{ zIndex: 9999 }}
       onClick={handleClose}
       role="dialog"
@@ -114,23 +154,23 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
     >
       <div
         className="bg-gray-900 rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto relative"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={handleClose}
           className="absolute right-4 top-4 p-2 hover:bg-gray-800 rounded-full transition-colors text-gray-400 hover:text-white"
           aria-label="Close dialog"
         >
-          <svg 
-            className="w-6 h-6" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
@@ -138,7 +178,7 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
 
         <div className="pr-12">
           <h2 className="text-xl font-semibold mb-6">Package Details</h2>
-          
+
           {/* Basic Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -182,11 +222,15 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
               </div>
               <div>
                 <span className="text-gray-400">Category:</span>
-                <div className="text-white">{activePackage.category || 'N/A'}</div>
+                <div className="text-white">
+                  {activePackage.category || 'N/A'}
+                </div>
               </div>
               <div>
                 <span className="text-gray-400">Status:</span>
-                <div className="text-white capitalize">{activePackage.status.replace('_', ' ')}</div>
+                <div className="text-white capitalize">
+                  {activePackage.status.replace('_', ' ')}
+                </div>
               </div>
             </div>
           </div>
@@ -196,15 +240,27 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
             <h3 className="text-lg font-semibold mb-3">Services</h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="flex items-center gap-2">
-                <FiShield className={activePackage.insurance ? 'text-green-400' : 'text-gray-500'} />
+                <FiShield
+                  className={
+                    activePackage.insurance ? 'text-green-400' : 'text-gray-500'
+                  }
+                />
                 <span>Insurance</span>
               </div>
               <div className="flex items-center gap-2">
-                <FiClock className={activePackage.priority ? 'text-green-400' : 'text-gray-500'} />
+                <FiClock
+                  className={
+                    activePackage.priority ? 'text-green-400' : 'text-gray-500'
+                  }
+                />
                 <span>Priority</span>
               </div>
               <div className="flex items-center gap-2">
-                <FiTruck className={activePackage.tracking ? 'text-green-400' : 'text-gray-500'} />
+                <FiTruck
+                  className={
+                    activePackage.tracking ? 'text-green-400' : 'text-gray-500'
+                  }
+                />
                 <span>Tracking</span>
               </div>
             </div>
@@ -220,7 +276,10 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
                     <span className="text-gray-400">Handling:</span>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {activePackage.requirements.handling.map((req, index) => (
-                        <span key={index} className="px-2 py-1 bg-gray-800 rounded-full text-sm">
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-gray-800 rounded-full text-sm"
+                        >
                           {req}
                         </span>
                       ))}
@@ -232,19 +291,32 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
                     <FiThermometer className="text-red-400" />
                     <span className="text-gray-400">Temperature:</span>
                     <span>
-                      {activePackage.requirements.temperature.min}°C - {activePackage.requirements.temperature.max}°C
+                      {activePackage.requirements.temperature.min}°C -{' '}
+                      {activePackage.requirements.temperature.max}°C
                     </span>
                   </div>
                 )}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex items-center gap-2">
-                    <span className={activePackage.requirements.fragile ? 'text-yellow-400' : 'text-gray-500'}>
+                    <span
+                      className={
+                        activePackage.requirements.fragile
+                          ? 'text-yellow-400'
+                          : 'text-gray-500'
+                      }
+                    >
                       📦
                     </span>
                     <span>Fragile</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={activePackage.requirements.hazardous ? 'text-red-400' : 'text-gray-500'}>
+                    <span
+                      className={
+                        activePackage.requirements.hazardous
+                          ? 'text-red-400'
+                          : 'text-gray-500'
+                      }
+                    >
                       ⚠️
                     </span>
                     <span>Hazardous</span>
@@ -260,8 +332,15 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
               <h3 className="text-lg font-semibold mb-3">Photos</h3>
               <div className="grid grid-cols-2 gap-2">
                 {activePackage.photos.map((photo, index) => (
-                  <div key={index} className="aspect-square rounded-lg overflow-hidden">
-                    <img src={photo} alt={`Package photo ${index + 1}`} className="w-full h-full object-cover" />
+                  <div
+                    key={index}
+                    className="aspect-square rounded-lg overflow-hidden"
+                  >
+                    <img
+                      src={photo}
+                      alt={`Package photo ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 ))}
               </div>
@@ -271,7 +350,9 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
           {/* Special Instructions */}
           {activePackage.specialInstructions && (
             <div className="border-t border-gray-700 pt-4">
-              <h3 className="text-lg font-semibold mb-3">Special Instructions</h3>
+              <h3 className="text-lg font-semibold mb-3">
+                Special Instructions
+              </h3>
               <div className="bg-gray-800 p-3 rounded-lg">
                 <FiInfo className="inline-block mr-2 text-blue-400" />
                 {activePackage.specialInstructions}
@@ -299,14 +380,19 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
                       <div className="text-sm text-gray-400">
                         {new Date(event.timestamp).toLocaleString()}
                       </div>
-                      <div className="font-medium capitalize">{event.status.replace('_', ' ')}</div>
+                      <div className="font-medium capitalize">
+                        {event.status.replace('_', ' ')}
+                      </div>
                       {event.location && (
                         <div className="text-sm text-gray-300">
-                          <FiMap className="inline-block mr-1" /> {event.location}
+                          <FiMap className="inline-block mr-1" />{' '}
+                          {event.location}
                         </div>
                       )}
                       {event.note && (
-                        <div className="text-sm text-gray-300 mt-1">{event.note}</div>
+                        <div className="text-sm text-gray-300 mt-1">
+                          {event.note}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -317,5 +403,5 @@ export default function PackageDetails({ onClose }: PackageDetailsProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

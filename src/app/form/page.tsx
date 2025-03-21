@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { senderMultistep } from './steps';
 import { PackageDetails } from './steps/PackageDetails';
 import { PickupDetails } from './steps/PickupDetails';
 import { DeliveryDetails } from './steps/DeliveryDetails';
@@ -12,13 +11,16 @@ import { PlaceOrder } from './steps/PlaceOrder';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearPackagesState } from '../sender/dashboard/redux/packagesSlice';
 import { SEND_PACKAGE } from '../sender/dashboard/redux/packagesAction';
+import { useTranslations } from 'next-intl';
+import ProgressHeaders from './steps/ProgressSteps';
 
 const PackageCreationForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const { sendPackageSuccess, sendPackageLoading } = useSelector(
-    (state) => state.packages
+    (state) => state.packages,
   );
 
+  const t = useTranslations('SenderForm');
   const {
     control,
     getValues,
@@ -49,16 +51,13 @@ const PackageCreationForm = () => {
         postal: '',
         city: '',
       },
-      // for pickup
       pickupDate: '',
       preferredTime: '',
       phone: '',
       communication: [],
       packagePhotos: [],
-      // for delivery
       deliveryDate: '',
       preferredDeliveryTime: '',
-      // new fields
       requiresCarefulHandling: false,
       isFragile: false,
       insurance: false,
@@ -69,7 +68,6 @@ const PackageCreationForm = () => {
 
   const dispatch = useDispatch();
 
-  // Function to handle Next step with validation and form submission
   const nextStep = async () => {
     const isValid = await trigger();
 
@@ -80,20 +78,14 @@ const PackageCreationForm = () => {
         setCurrentStep((prevStep) => prevStep + 1);
       }
     } else {
-      console.log('Validation failed for step:', currentStep);
     }
   };
 
-  // handle previous
   const prevStep = () => {
     setCurrentStep((prevStep) => prevStep - 1);
   };
 
-  // handle next
   const submitForm = (data) => {
-    console.log('Form submitted:', data);
-
-    // Create a payload as per our backend implementation and make api call
     const createPackagePayload = {
       name: data?.name,
       categoryId: data?.category,
@@ -102,15 +94,10 @@ const PackageCreationForm = () => {
       description: data?.description,
       packagePhotos: data?.packagePhotos || [],
       weight: Number(data?.weight),
-      pickupLocation: data?.origin?.city || '', // Pickup location needs to be modified in the backend
-      deliveryLocation: data?.destination?.city || '', // Delivery location needs to be modified in the backend
-      // Dimensions needs to be updated in the backend implementation
-      // dimensions: {
-      //   length: Number(data?.dimension?.length),
-      //   width: Number(data?.dimension?.width),
-      //   height: Number(data?.dimension?.height),
-      // },
-      dimensions: 20, // hardcoded
+      pickupLocation: data?.origin?.city || '',
+      deliveryLocation: data?.destination?.city || '',
+
+      dimensions: 20,
       preferredTimes: data?.preferredTime,
       preferredDate: data?.pickupDate,
       communicationPreferences: data?.communication?.join(', '),
@@ -122,34 +109,13 @@ const PackageCreationForm = () => {
       insurance: data?.insurance,
       priority: data?.priority,
 
-      // Form data does not include the below fields
-      // needs to be updated in the backend implementation
       availabilityDates: data?.pickupDate,
       tracking: '',
       allowPostalDelivery: false,
       postalDeliveryDetails: '',
       restricted: false,
-
-      // modified payload fields
-      // origin: {
-      //   street: data?.origin?.street,
-      //   postal: data?.origin?.postal,
-      //   city: data?.origin?.city,
-      // },
-      // destination: {
-      //   street: data?.destination?.street,
-      //   postal: data?.destination?.postal,
-      //   city: data?.destination?.city,
-      // },
-      // pickupDate: data?.pickupDate,
-      // pickupTime: data?.preferredTime,
-      // deliveryDate: data?.deliveryDate,
-      // deliveryTime: data?.preferredDeliveryTime,
-      // phone: data?.phone,
     };
-    console.log('updated payload', createPackagePayload);
 
-    // Mapped/updated payload
     const mappedPayload = {
       name: data?.name || '',
       price: Number(data?.price) || 0,
@@ -190,22 +156,14 @@ const PackageCreationForm = () => {
       phone: data?.phone || '',
     };
 
-    console.log('mapped payload', mappedPayload);
-
-    // dispatch send package
     dispatch({
       type: SEND_PACKAGE,
       payload: mappedPayload,
     });
-
-    // if (true) {
-    //   setCurrentStep((prevStep) => prevStep + 1);
-    // }
   };
 
   useEffect(() => {
     if (sendPackageSuccess) {
-      console.log('inside useEffect');
       setCurrentStep((prevStep) => prevStep + 1);
       dispatch(clearPackagesState());
     }
@@ -213,40 +171,19 @@ const PackageCreationForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <form className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-xl">
             {/* Progress Indicator */}
-            <div className="flex flex-col items-center p-6">
+            <div className="flex flex-col items-center sm:p-6">
               {/* Steps container */}
               <div className="flex justify-between items-start w-full">
-                {senderMultistep.map((s) => (
-                  <div
-                    key={s.id}
-                    className={`flex flex-col items-center w-1/5 ${s.id === currentStep ? 'opacity-100' : 'opacity-60'} `}
-                  >
-                    {/* Icon */}
-                    <div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center mb-2
-            ${s.id <= currentStep ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'}
-            ${s.id === currentStep ? 'ring-2 ring-blue-400 ring-offset-2' : ''}`}
-                    >
-                      {s.icon}
-                    </div>
+                {/* progress bar */}
 
-                    {/* Step title and subtitle */}
-                    <div className="text-center">
-                      <p
-                        className={`text-sm font-medium mb-1 ${s.id === currentStep ? 'text-blue-600' : 'text-gray-600'}`}
-                      >
-                        {s.title}
-                      </p>
-                      <p className="text-xs text-gray-500 max-w-[120px] mx-auto">
-                        {s.subtitle}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                <ProgressHeaders
+                  currentStep={currentStep}
+                  setCurrentStep={setCurrentStep}
+                />
               </div>
             </div>
 
@@ -286,7 +223,7 @@ const PackageCreationForm = () => {
                     onClick={prevStep}
                     className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-400 focus:outline-none"
                   >
-                    Back
+                    {t('buttons.back')}
                   </button>
                 )}
                 <button
@@ -300,10 +237,10 @@ const PackageCreationForm = () => {
                   disabled={sendPackageLoading}
                 >
                   {sendPackageLoading
-                    ? 'Loading...'
+                    ? t('buttons.loading')
                     : currentStep === 5
-                      ? 'Create Package'
-                      : 'Next'}
+                      ? t('buttons.createPackage')
+                      : t('buttons.next')}
                 </button>
               </div>
             )}

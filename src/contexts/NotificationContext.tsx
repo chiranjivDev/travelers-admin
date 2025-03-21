@@ -1,41 +1,57 @@
-import { createContext, useContext, useCallback, useState, ReactNode } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { FiCheck, FiX, FiShare2, FiBookmark, FiHeart } from 'react-icons/fi'
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useState,
+  ReactNode,
+} from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { FiCheck, FiX, FiShare2, FiBookmark, FiHeart } from 'react-icons/fi';
 
-type NotificationType = 'success' | 'error' | 'info'
+type NotificationType = 'success' | 'error' | 'info';
 
 interface Notification {
-  id: string
-  message: string
-  type: NotificationType
-  icon?: ReactNode
+  id: string;
+  message: string;
+  type: NotificationType;
+  icon?: ReactNode;
 }
 
 interface NotificationContextType {
-  showNotification: (message: string, type: NotificationType, icon?: ReactNode) => void
+  showNotification: (
+    message: string,
+    type: NotificationType,
+    icon?: ReactNode,
+  ) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined,
+);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const showNotification = useCallback((message: string, type: NotificationType, icon?: ReactNode) => {
-    const id = Math.random().toString(36).substr(2, 9)
-    setNotifications(prev => [...prev, { id, message, type, icon }])
+  const showNotification = useCallback(
+    (message: string, type: NotificationType, icon?: ReactNode) => {
+      const id = Math.random().toString(36).substr(2, 9);
+      setNotifications((prev) => [...prev, { id, message, type, icon }]);
 
-    // Remove notification after 3 seconds
-    setTimeout(() => {
-      setNotifications(prev => prev.filter(notification => notification.id !== id))
-    }, 3000)
-  }, [])
+      setTimeout(() => {
+        setNotifications((prev) =>
+          prev.filter((notification) => notification.id !== id),
+        );
+      }, 3000);
+    },
+    [],
+  );
 
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
       <div className="fixed bottom-4 right-4 z-50 space-y-2">
         <AnimatePresence>
-          {notifications.map(notification => (
+          {notifications.map((notification) => (
             <motion.div
               key={notification.id}
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -47,8 +63,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
                   notification.type === 'success'
                     ? 'bg-green-500'
                     : notification.type === 'error'
-                    ? 'bg-red-500'
-                    : 'bg-blue-500'
+                      ? 'bg-red-500'
+                      : 'bg-blue-500'
                 }
               `}
             >
@@ -61,13 +77,15 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         </AnimatePresence>
       </div>
     </NotificationContext.Provider>
-  )
+  );
 }
 
 export function useNotification() {
-  const context = useContext(NotificationContext)
+  const context = useContext(NotificationContext);
   if (context === undefined) {
-    throw new Error('useNotification must be used within a NotificationProvider')
+    throw new Error(
+      'useNotification must be used within a NotificationProvider',
+    );
   }
-  return context
+  return context;
 }

@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { motion } from 'framer-motion'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
   FiHome,
   FiUsers,
@@ -13,7 +13,8 @@ import {
   FiPieChart,
   FiMessageSquare,
   FiLogOut,
-} from 'react-icons/fi'
+  FiFlag,
+} from 'react-icons/fi';
 
 const menuItems = [
   { name: 'Dashboard', icon: FiHome, path: '/admin' },
@@ -21,18 +22,19 @@ const menuItems = [
   { name: 'Packages', icon: FiPackage, path: '/admin/packages' },
   { name: 'Travelers', icon: FiTruck, path: '/admin/travelers' },
   { name: 'Transactions', icon: FiDollarSign, path: '/admin/transactions' },
+  { name: 'Disputes', icon: FiFlag, path: '/admin/issues' },
   { name: 'Analytics', icon: FiPieChart, path: '/admin/analytics' },
   { name: 'Messages', icon: FiMessageSquare, path: '/admin/messages' },
   { name: 'Settings', icon: FiSettings, path: '/admin/settings' },
-]
+];
 
 export default function Sidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const handleLogout = () => {
-    localStorage.removeItem('isAdmin')
-    window.location.href = '/admin/login'
-  }
+    localStorage.removeItem('isAdmin');
+    window.location.href = '/admin/login';
+  };
 
   return (
     <div className="h-screen w-64 bg-gray-900 border-r border-gray-800 flex flex-col">
@@ -51,7 +53,7 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
         {menuItems.map((item) => {
-          const isActive = pathname === item.path
+          const isActive = pathname === item.path;
           return (
             <Link key={item.path} href={item.path}>
               <motion.div
@@ -67,7 +69,7 @@ export default function Sidebar() {
                 <span className="font-medium">{item.name}</span>
               </motion.div>
             </Link>
-          )
+          );
         })}
       </nav>
 
@@ -84,5 +86,5 @@ export default function Sidebar() {
         </motion.button>
       </div>
     </div>
-  )
+  );
 }

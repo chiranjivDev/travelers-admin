@@ -27,8 +27,6 @@ import { useNotification } from '@/contexts/NotificationContext';
 import { useSavedTrips } from '@/contexts/SavedTripsContext';
 import { format, parseISO } from 'date-fns';
 import Avatar from '@/components/common/Avatar';
-
-// Create a client-only wrapper component
 const ClientOnly = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -48,7 +46,7 @@ interface DestinationFlexibility {
 
 interface TripCardProps {
   trip: TripDetails;
-  onChatClick: (travelerId: string) => void;
+  onChatClick?: (travelerId: string) => void;
 }
 
 const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
@@ -64,7 +62,6 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
     setIsSaved(isTripSaved(trip.id));
   }, [isTripSaved, trip.id]);
 
-  // handle Save
   const handleSave = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -74,17 +71,16 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
         showNotification(
           'Trip removed from saved items',
           'info',
-          <FiBookmark />
+          <FiBookmark />,
         );
       } else {
         saveTrip(trip.id);
         showNotification('Trip saved for later', 'success', <FiBookmark />);
       }
     },
-    [isSaved, trip.id, saveTrip, unsaveTrip, showNotification]
+    [isSaved, trip.id, saveTrip, unsaveTrip, showNotification],
   );
 
-  // handle Like
   const handleLike = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -92,13 +88,12 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
       showNotification(
         isLiked ? 'Trip removed from favorites' : 'Trip added to favorites',
         'info',
-        <FiHeart />
+        <FiHeart />,
       );
     },
-    [isLiked, showNotification]
+    [isLiked, showNotification],
   );
 
-  // handle share
   const handleShare = useCallback(
     (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -119,7 +114,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
             showNotification(
               'Trip shared successfully',
               'success',
-              <FiShare2 />
+              <FiShare2 />,
             );
           })
           .catch(console.error);
@@ -132,7 +127,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
           .catch(console.error);
       }
     },
-    [trip, showNotification]
+    [trip, showNotification],
   );
 
   return (
@@ -336,7 +331,7 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
                 -{' '}
                 {format(
                   parseISO(trip.tripDetails.arrivalDateTime),
-                  'MMM d, yyyy'
+                  'MMM d, yyyy',
                 )}
               </div>
               {/* {trip.dates.flexibility > 0 && (
@@ -448,12 +443,14 @@ const TripCard = memo(function TripCard({ trip, onChatClick }: TripCardProps) {
           >
             View Details
           </Link>
-          <button
-            onClick={() => onChatClick(trip.traveler.id)}
-            className="flex-1 bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors"
-          >
-            Chat Now
-          </button>
+          {onChatClick && (
+            <button
+              onClick={() => onChatClick(trip.traveler.id, trip.id)}
+              className="flex-1 bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors"
+            >
+              Chat Now
+            </button>
+          )}
         </div>
       </div>
     </motion.div>

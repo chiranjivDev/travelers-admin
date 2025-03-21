@@ -13,10 +13,14 @@ import { CREATE_TRIP } from '../traveler/redux/tripsAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { clearTripsState } from '../traveler/redux/tripsSlice';
+import { ProgressHeader } from './steps/ProgressHeader';
+import { useTranslations } from 'next-intl';
 
 const TravelerForm = () => {
   const { addTripSuccess } = useSelector((state) => state.trips);
   const [step, setStep] = useState(1);
+  const t = useTranslations('travellerForm'); // language translation
+
   // Initialize React Hook Form
   const {
     register,
@@ -140,7 +144,7 @@ const TravelerForm = () => {
 
     // format available reception times
     const availableReceptionTimes = Object.keys(
-      data.packageReceptionDetails?.availableTimes
+      data.packageReceptionDetails?.availableTimes,
     )
       .filter((key) => data.packageReceptionDetails?.availableTimes[key]) // Include only `true` values
       .join(', ');
@@ -248,50 +252,8 @@ const TravelerForm = () => {
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Progress Steps */}
         <div className="mb-8">
-          <div className="flex justify-between items-center">
-            {steps.map((stepItem, index) => (
-              <div
-                key={index}
-                className={`flex items-center ${
-                  index !== steps.length - 1 ? 'flex-1' : ''
-                }`}
-              >
-                <div className="text-center flex-1">
-                  <div
-                    className={`
-                      w-12 h-12 mx-auto rounded-full flex items-center justify-center
-                      ${
-                        step > index + 1
-                          ? 'bg-green-500 text-white'
-                          : step === index + 1
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200/10 text-gray-500'
-                      }
-                      mb-2 text-xl
-                    `}
-                  >
-                    {stepItem.icon}
-                  </div>
-                  <p className="text-sm text-gray-300 mt-2 max-w-[150px] mx-auto">
-                    {stepItem.title}
-                  </p>
-                </div>
-                {index !== steps.length - 1 && (
-                  <div className="flex-1 h-1 mx-4">
-                    <div className="h-full bg-gray-700 rounded">
-                      <div
-                        className={`h-full ${
-                          step > index + 1 ? 'bg-green-500' : 'bg-gray-700'
-                        } rounded transition-all duration-300`}
-                        style={{
-                          width: step > index + 1 ? '100%' : '0%',
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+          <div className="flex justify-between items-start sm:items-center">
+            <ProgressHeader step={step} setStep={setStep} />
           </div>
         </div>
 
@@ -335,7 +297,8 @@ const TravelerForm = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Back
+                  {/* Back */}
+                  {t('buttons.back')}
                 </motion.button>
               )}
               <motion.button
@@ -345,7 +308,7 @@ const TravelerForm = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {getButtonText(step)}
+                {getButtonText(step, t)}
               </motion.button>
             </div>
           </form>
@@ -354,4 +317,5 @@ const TravelerForm = () => {
     </div>
   );
 };
+
 export default TravelerForm;

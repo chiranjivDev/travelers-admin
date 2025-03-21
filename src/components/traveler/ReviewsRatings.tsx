@@ -1,64 +1,64 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
   FiStar,
   FiThumbsUp,
   FiThumbsDown,
   FiMessageSquare,
   FiFilter,
   FiUser,
-  FiPackage
-} from 'react-icons/fi'
-import Modal from '../admin/Modal'
-
-// Mock data
+  FiPackage,
+} from 'react-icons/fi';
+import Modal from '../admin/Modal';
 const mockReviews = [
   {
     id: 1,
     sender: {
       name: 'John Doe',
       avatar: null,
-      location: 'New York, USA'
+      location: 'New York, USA',
     },
     package: {
       id: 'PKG-2024-001',
       route: 'New York to London',
-      date: '2024-01-15'
+      date: '2024-01-15',
     },
     rating: 5,
-    comment: 'Excellent service! The package was delivered on time and in perfect condition. Very professional and communicative throughout the process.',
+    comment:
+      'Excellent service! The package was delivered on time and in perfect condition. Very professional and communicative throughout the process.',
     tags: ['On Time', 'Professional', 'Great Communication'],
     helpful: 12,
     notHelpful: 1,
     date: '2024-01-20',
-    reply: null
+    reply: null,
   },
   {
     id: 2,
     sender: {
       name: 'Jane Smith',
       avatar: null,
-      location: 'Paris, France'
+      location: 'Paris, France',
     },
     package: {
       id: 'PKG-2024-002',
       route: 'Paris to Berlin',
-      date: '2024-01-10'
+      date: '2024-01-10',
     },
     rating: 4,
-    comment: 'Good service overall. Delivery was slightly delayed but communication was excellent. Would use again.',
+    comment:
+      'Good service overall. Delivery was slightly delayed but communication was excellent. Would use again.',
     tags: ['Professional', 'Good Communication'],
     helpful: 8,
     notHelpful: 2,
     date: '2024-01-15',
     reply: {
       text: 'Thank you for your feedback! I apologize for the slight delay. I always strive to provide the best service possible.',
-      date: '2024-01-16'
-    }
-  }
-]
+      date: '2024-01-16',
+    },
+  },
+];
 
 const mockStats = {
   averageRating: 4.8,
@@ -68,30 +68,30 @@ const mockStats = {
     4: 8,
     3: 2,
     2: 0,
-    1: 0
+    1: 0,
   },
   tags: [
     { name: 'On Time', count: 38 },
     { name: 'Professional', count: 42 },
     { name: 'Great Communication', count: 35 },
     { name: 'Careful Handling', count: 30 },
-    { name: 'Friendly', count: 28 }
-  ]
-}
+    { name: 'Friendly', count: 28 },
+  ],
+};
 
 export default function ReviewsRatings() {
-  const [selectedReview, setSelectedReview] = useState<any>(null)
-  const [showReplyModal, setShowReplyModal] = useState(false)
-  const [filterRating, setFilterRating] = useState<number | null>(null)
-  const [replyText, setReplyText] = useState('')
+  const [selectedReview, setSelectedReview] = useState<any>(null);
+  const [showReplyModal, setShowReplyModal] = useState(false);
+  const [filterRating, setFilterRating] = useState<number | null>(null);
+  const [replyText, setReplyText] = useState('');
 
-  const filteredReviews = mockReviews.filter(review => 
-    filterRating === null || review.rating === filterRating
-  )
+  const filteredReviews = mockReviews.filter(
+    (review) => filterRating === null || review.rating === filterRating,
+  );
 
   const getRatingPercentage = (rating: number) => {
-    return (mockStats.ratingBreakdown[rating] / mockStats.totalReviews) * 100
-  }
+    return (mockStats.ratingBreakdown[rating] / mockStats.totalReviews) * 100;
+  };
 
   return (
     <div className="space-y-6">
@@ -115,7 +115,11 @@ export default function ReviewsRatings() {
                         ? 'text-yellow-400'
                         : 'text-gray-600'
                     }`}
-                    fill={star <= Math.round(mockStats.averageRating) ? 'currentColor' : 'none'}
+                    fill={
+                      star <= Math.round(mockStats.averageRating)
+                        ? 'currentColor'
+                        : 'none'
+                    }
                   />
                 ))}
                 <span className="ml-2 text-gray-400">
@@ -166,9 +170,10 @@ export default function ReviewsRatings() {
         <button
           onClick={() => setFilterRating(null)}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-            ${filterRating === null
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            ${
+              filterRating === null
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
         >
           All
@@ -178,9 +183,10 @@ export default function ReviewsRatings() {
             key={rating}
             onClick={() => setFilterRating(rating)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-              ${filterRating === rating
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              ${
+                filterRating === rating
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
           >
             {rating} <FiStar className="inline w-4 h-4 ml-1" />
@@ -214,7 +220,9 @@ export default function ReviewsRatings() {
                   <h4 className="text-lg font-medium text-white">
                     {review.sender.name}
                   </h4>
-                  <p className="text-sm text-gray-400">{review.sender.location}</p>
+                  <p className="text-sm text-gray-400">
+                    {review.sender.location}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center">
@@ -222,7 +230,9 @@ export default function ReviewsRatings() {
                   <FiStar
                     key={star}
                     className={`w-5 h-5 ${
-                      star <= review.rating ? 'text-yellow-400' : 'text-gray-600'
+                      star <= review.rating
+                        ? 'text-yellow-400'
+                        : 'text-gray-600'
                     }`}
                     fill={star <= review.rating ? 'currentColor' : 'none'}
                   />
@@ -284,8 +294,8 @@ export default function ReviewsRatings() {
               {!review.reply && (
                 <motion.button
                   onClick={() => {
-                    setSelectedReview(review)
-                    setShowReplyModal(true)
+                    setSelectedReview(review);
+                    setShowReplyModal(true);
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -306,8 +316,8 @@ export default function ReviewsRatings() {
         <Modal
           isOpen={showReplyModal}
           onClose={() => {
-            setShowReplyModal(false)
-            setReplyText('')
+            setShowReplyModal(false);
+            setReplyText('');
           }}
           title={`Reply to ${selectedReview.sender.name}'s Review`}
         >
@@ -319,9 +329,13 @@ export default function ReviewsRatings() {
                   <FiStar
                     key={star}
                     className={`w-4 h-4 ${
-                      star <= selectedReview.rating ? 'text-yellow-400' : 'text-gray-600'
+                      star <= selectedReview.rating
+                        ? 'text-yellow-400'
+                        : 'text-gray-600'
                     }`}
-                    fill={star <= selectedReview.rating ? 'currentColor' : 'none'}
+                    fill={
+                      star <= selectedReview.rating ? 'currentColor' : 'none'
+                    }
                   />
                 ))}
               </div>
@@ -347,8 +361,8 @@ export default function ReviewsRatings() {
             <div className="flex justify-end space-x-4">
               <motion.button
                 onClick={() => {
-                  setShowReplyModal(false)
-                  setReplyText('')
+                  setShowReplyModal(false);
+                  setReplyText('');
                 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -370,5 +384,5 @@ export default function ReviewsRatings() {
         </Modal>
       )}
     </div>
-  )
+  );
 }

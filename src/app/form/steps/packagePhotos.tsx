@@ -1,29 +1,30 @@
+import { useTranslations } from 'next-intl';
 import React from 'react';
 import { useWatch } from 'react-hook-form';
 
 const PackagePhotos = ({ control, getValues, setValue }) => {
-  // Handle file upload by updating the 'packagePhotos' field
+  const t = useTranslations('SenderForm.steps.step1.packagePhotos');
+  const photoguidelines = useTranslations(
+    'SenderForm.steps.step1.packagePhotos.photoGuidelines',
+  );
+  const tips = photoguidelines.raw('tips', { returnObjects: true }) || [];
+
   const handleFileUpload = (e) => {
     const files = e.target.files;
     const fileArray = Array.from(files).map((file) =>
-      URL.createObjectURL(file)
+      URL.createObjectURL(file),
     );
 
-    // Get existing photos from the form and add the new ones
     const updatedPhotos = [...getValues('packagePhotos'), ...fileArray];
 
-    // Update the 'packagePhotos' field in the form
     setValue('packagePhotos', updatedPhotos);
-
-    console.log('updatedPhotos', updatedPhotos);
   };
 
-  // Handle removing a photo from the list
   const removePhoto = (index) => {
     const updatedPhotos = getValues('packagePhotos').filter(
-      (_, i) => i !== index
+      (_, i) => i !== index,
     );
-    setValue('packagePhotos', updatedPhotos); // Update the form state
+    setValue('packagePhotos', updatedPhotos);
   };
 
   const packagePhotos = useWatch({ control, name: 'packagePhotos' });
@@ -31,12 +32,14 @@ const PackagePhotos = ({ control, getValues, setValue }) => {
   return (
     <div className="mt-8">
       <h3 className="text-lg font-semibold mb-4 text-gray-700">
-        Package Photos
+        {/* Package Photos */}
+        {t('title')}
       </h3>
       <p className="text-sm text-gray-600 mb-4">
-        Add photos of your package to help travelers better understand its
+        {/* Add photos of your package to help travelers better understand its
         appearance and condition. This also helps with package verification
-        during pickup and delivery.
+        during pickup and delivery. */}
+        {t('description')}
       </p>
 
       <div className="relative">
@@ -69,7 +72,7 @@ const PackagePhotos = ({ control, getValues, setValue }) => {
                   className="sr-only"
                   accept="image/*"
                   multiple
-                  onChange={handleFileUpload} // Call the handleFileUpload function
+                  onChange={handleFileUpload}
                 />
               </label>
               <p className="pl-1">or drag and drop</p>
@@ -99,7 +102,7 @@ const PackagePhotos = ({ control, getValues, setValue }) => {
                   <button
                     type="button"
                     className="absolute top-2 right-2 p-1.5 rounded-full bg-red-100 text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => removePhoto(index)} // Remove photo on click
+                    onClick={() => removePhoto(index)}
                   >
                     <svg
                       className="w-4 h-4"
@@ -125,13 +128,16 @@ const PackagePhotos = ({ control, getValues, setValue }) => {
       {/* Information about photos */}
       <div className="mt-4 bg-blue-50 rounded-lg p-4">
         <h4 className="text-sm font-medium text-blue-900 mb-2">
-          Photo Guidelines
+          {/* Photo Guidelines */}
+          {t('photoGuidelines.title')}
         </h4>
         <ul className="text-sm text-blue-700 space-y-1">
-          <li>• Take clear, well-lit photos from multiple angles</li>
+          {/* <li>• Take clear, well-lit photos from multiple angles</li>
           <li>• Include any fragile/handling labels if present</li>
           <li>• Show the packaging condition clearly</li>
-          <li>• Avoid including personal or sensitive information in photos</li>
+          <li>• Avoid including personal or sensitive information in photos</li> */}
+
+          {tips?.map((tip, index) => <li key={index}>• {tip}</li>)}
         </ul>
       </div>
     </div>

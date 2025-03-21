@@ -1,49 +1,52 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { motion } from 'framer-motion'
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+  const t = useTranslations('Footer');
+
   const footerSections = [
     {
-      title: 'Company',
+      title: t('company.title'),
       links: [
-        { name: 'About Us', href: '/about' },
-        { name: 'How It Works', href: '/how-it-works' },
-        { name: 'Safety', href: '/safety' },
-        { name: 'Careers', href: '/careers' },
-        { name: 'Press', href: '/press' },
+        { name: t('company.aboutUs'), href: '/about' },
+        { name: t('company.howItWorks'), href: '/how-it-works' },
+        { name: t('company.safety'), href: '/safety' },
+        { name: t('company.careers'), href: '/careers' },
+        { name: t('company.press'), href: '/press' },
       ],
     },
     {
-      title: 'Services',
+      title: t('services.title'),
       links: [
-        { name: 'Send Package', href: '/send-package' },
-        { name: 'Browse Trips', href: '/browse-trips' },
-        { name: 'Become a Traveler', href: '/become-traveler' },
-        { name: 'Business Solutions', href: '/business' },
+        { name: t('services.sendPackage'), href: '/send-package' },
+        { name: t('services.browseTrips'), href: '/browse-trips' },
+        { name: t('services.becomeTraveler'), href: '/become-traveler' },
+        { name: t('services.businessSolutions'), href: '/business' },
       ],
     },
     {
-      title: 'Support',
+      title: t('support.title'),
       links: [
-        { name: 'Help Center', href: '/help' },
-        { name: 'Contact Us', href: '/contact' },
-        { name: 'FAQs', href: '/faq' },
-        { name: 'Terms of Service', href: '/terms' },
-        { name: 'Privacy Policy', href: '/privacy' },
+        { name: t('support.helpCenter'), href: '/help' },
+        { name: t('support.contactUs'), href: '/contact' },
+        { name: t('support.faqs'), href: '/faq' },
+        { name: t('support.termsOfService'), href: '/terms' },
+        { name: t('support.privacyPolicy'), href: '/privacy' },
       ],
     },
     {
-      title: 'Connect',
+      title: t('connect.title'),
       links: [
-        { name: 'Twitter', href: '#' },
-        { name: 'Facebook', href: '#' },
-        { name: 'Instagram', href: '#' },
-        { name: 'LinkedIn', href: '#' },
+        { name: t('connect.twitter'), href: '#' },
+        { name: t('connect.facebook'), href: '#' },
+        { name: t('connect.instagram'), href: '#' },
+        { name: t('connect.linkedin'), href: '#' },
       ],
     },
-  ]
+  ];
 
   return (
     <footer className="bg-[#0f172a] border-t border-gray-800">
@@ -90,11 +93,12 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-sm text-gray-400">
-              {new Date().getFullYear()} DeliveryConnect. All rights reserved.
+              {new Date().getFullYear()} DeliveryConnect.{' '}
+              {t('allRightsReserved')}
             </div>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

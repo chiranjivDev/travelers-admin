@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 export const PlaceOrder = () => {
   const [selectedTrip, setSelectedTrip] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  // redux state
   const { trips } = useSelector((state) => state.trips);
   const { createOrderSuccess } = useSelector((state) => state.order);
   const { sendPackageResponse } = useSelector((state) => state.packages);
@@ -25,7 +24,6 @@ export const PlaceOrder = () => {
         type: SEARCH_TRAVELER_PACKAGE,
         payload: {
           searchKeyword: '',
-          // startDate: sendPackageResponse?.preferredDate,
           startDate: sendPackageResponse?.pickupDate,
           endDate: sendPackageResponse?.deliveryDate,
         },
@@ -33,7 +31,6 @@ export const PlaceOrder = () => {
     }
   }, [dispatch]);
 
-  // handle create Order
   const handleCreateOrder = (e) => {
     e.preventDefault();
     if (!selectedTrip) {
@@ -48,7 +45,6 @@ export const PlaceOrder = () => {
     dispatch({ type: CREATE_ORDER, payload });
   };
 
-  // on success navigate to home screen
   useEffect(() => {
     if (createOrderSuccess) {
       router.push('/');
@@ -56,52 +52,26 @@ export const PlaceOrder = () => {
     }
   }, [createOrderSuccess]);
 
-  // Debounce the search query
   const debouncedSearch = useDebounce(searchQuery, 700);
-  // Handle search input change
   const handleSearchChange = (e) => {
     const keyword = e.target.value;
     setSearchQuery(keyword);
   };
 
-  // Dispatch action when debounced search value changes
   useEffect(() => {
-    // if (debouncedSearch) {
     dispatch({
       type: SEARCH_TRAVELER_PACKAGE,
       payload: {
         searchKeyword: debouncedSearch,
-        // startDate: sendPackageResponse?.preferredDate,
         startDate: sendPackageResponse?.pickupDate,
         endDate: sendPackageResponse?.deliveryDate,
       },
     });
-    // }
   }, [debouncedSearch, dispatch]);
 
-  // handle cancel
   const handleCancel = (e) => {
     e.preventDefault();
     router.push('/');
-
-    // dispatch({
-    //   type: SEARCH_TRAVELER_PACKAGE,
-    //   payload: {
-    //     searchKeyword: '',
-    //     startDate: '2025-01-20',
-    //     endDate: '2025-01-21',
-    //   },
-    // });
-
-    // dispatch({
-    //   type: SEARCH_TRAVELER_PACKAGE,
-    //   payload: {
-    //     searchKeyword: '',
-    //     startDate: sendPackageResponse?.preferredDate,
-    //     endDate: sendPackageResponse?.deliveryDate,
-    //   },
-    // });
-    console.log('create package response', sendPackageResponse);
   };
 
   return (
@@ -110,7 +80,6 @@ export const PlaceOrder = () => {
         Select a Traveler and Place Your Order
       </h2>
 
-      {/* Search Bar UI */}
       <div className="mb-6">
         <input
           type="text"
@@ -121,7 +90,6 @@ export const PlaceOrder = () => {
         />
       </div>
 
-      {/* Vertical Scroll List of Traveler Packages mock api reponse */}
       <div
         className={`${trips.length === 0 ? '' : 'h-96'} overflow-y-auto space-y-4 mt-6 mb-6`}
       >
@@ -135,7 +103,7 @@ export const PlaceOrder = () => {
               key={trip.id}
               className={`flex items-start p-4 bg-white rounded-lg shadow-md hover:shadow-lg cursor-pointer ${
                 selectedTrip === trip.id
-                  ? 'bg-blue-100 border-2 border-green-500' // Design for selected trip
+                  ? 'bg-blue-100 border-2 border-green-500'
                   : ''
               }`}
               onClick={() => setSelectedTrip(trip.id)}
@@ -167,9 +135,7 @@ export const PlaceOrder = () => {
         )}
       </div>
 
-      {/* Button Container */}
       <div className="flex justify-end space-x-4">
-        {/* Cancel Button */}
         <button
           onClick={handleCancel}
           className="py-3 px-6 bg-red-600 text-white font-medium rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
@@ -177,7 +143,6 @@ export const PlaceOrder = () => {
           Cancel
         </button>
 
-        {/* Place Order Button */}
         <button
           onClick={handleCreateOrder}
           className={`py-3 px-6 font-medium rounded-lg shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 
@@ -187,21 +152,6 @@ export const PlaceOrder = () => {
           Place Order
         </button>
       </div>
-
-      {/* Dropdown  */}
-      {/* Select a trip/traveler package */}
-      {/* <select
-        value={selectedTrip}
-        onChange={(e) => setSelectedTrip(e.target.value)}
-        className="mb-6 p-3 border border-gray-300 rounded-lg w-full bg-white text-gray-700 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none"
-      >
-        <option value="">Select a Traveler</option>
-        {trips?.map((trip) => (
-          <option key={trip.id} value={trip.id}>
-            {trip.name}
-          </option>
-        ))}
-      </select> */}
     </div>
   );
 };

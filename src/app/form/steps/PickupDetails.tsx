@@ -1,14 +1,20 @@
+import { useTranslations } from 'next-intl';
 import { Controller } from 'react-hook-form';
 
 export const PickupDetails = ({ control, errors }) => {
+  const t = useTranslations('SenderForm.steps.step2');
   return (
     <div>
       <h2 className="text-xl font-bold mb-4 text-gray-700">
-        Step 2: Package Pickup Details
+        {/* Step 2: Package Pickup Details */}
+        {t('title')}
       </h2>
 
       <div className="mb-4">
-        <label className="block text-gray-700">Origin Street</label>
+        <label className="block text-gray-700">
+          {/* Origin Street */}
+          {t('fields.originStreet')}
+        </label>
         <Controller
           name="origin.street"
           control={control}
@@ -23,7 +29,10 @@ export const PickupDetails = ({ control, errors }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700">Origin Postal</label>
+        <label className="block text-gray-700">
+          {/* Origin Postal */}
+          {t('fields.originPostal')}
+        </label>
         <Controller
           name="origin.postal"
           control={control}
@@ -38,7 +47,10 @@ export const PickupDetails = ({ control, errors }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700">Origin City</label>
+        <label className="block text-gray-700">
+          {/* Origin City */}
+          {t('fields.originCity')}
+        </label>
         <Controller
           name="origin.city"
           control={control}
@@ -53,7 +65,10 @@ export const PickupDetails = ({ control, errors }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700">Pickup Date</label>
+        <label className="block text-gray-700">
+          {/* Pickup Date */}
+          {t('fields.pickupDate')}
+        </label>
         <Controller
           name="pickupDate"
           control={control}
@@ -72,7 +87,10 @@ export const PickupDetails = ({ control, errors }) => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700">Preferred Time</label>
+        <label className="block text-gray-700">
+          {/* Preferred Time */}
+          {t('fields.preferredTime')}
+        </label>
         <Controller
           name="preferredTime"
           control={control}

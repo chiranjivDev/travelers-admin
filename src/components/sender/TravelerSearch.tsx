@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
   FiUser,
   FiStar,
   FiCalendar,
@@ -10,11 +10,9 @@ import {
   FiPackage,
   FiDollarSign,
   FiMessageSquare,
-  FiSearch
-} from 'react-icons/fi'
-import Modal from '../admin/Modal'
-
-// Mock data
+  FiSearch,
+} from 'react-icons/fi';
+import Modal from '../admin/Modal';
 const mockTravelers = [
   {
     id: 1,
@@ -28,7 +26,7 @@ const mockTravelers = [
       to: 'London, UK',
       date: '2024-02-01',
       capacity: '20kg',
-      price: 15 // price per kg
+      price: 15,
     },
     languages: ['English', 'French'],
     joinDate: '2023-01-15',
@@ -38,9 +36,9 @@ const mockTravelers = [
         user: 'John Doe',
         rating: 5,
         comment: 'Very professional and punctual delivery.',
-        date: '2024-01-15'
-      }
-    ]
+        date: '2024-01-15',
+      },
+    ],
   },
   {
     id: 2,
@@ -54,7 +52,7 @@ const mockTravelers = [
       to: 'Berlin, Germany',
       date: '2024-02-05',
       capacity: '15kg',
-      price: 12 // price per kg
+      price: 12,
     },
     languages: ['English', 'German'],
     joinDate: '2023-03-20',
@@ -64,28 +62,29 @@ const mockTravelers = [
         user: 'Jane Smith',
         rating: 4,
         comment: 'Good service, package arrived safely.',
-        date: '2024-01-10'
-      }
-    ]
+        date: '2024-01-10',
+      },
+    ],
   },
-  // Add more mock travelers...
-]
+];
 
 export default function TravelerSearch() {
-  const [selectedTraveler, setSelectedTraveler] = useState<any>(null)
-  const [showDetails, setShowDetails] = useState(false)
-  const [searchOrigin, setSearchOrigin] = useState('')
-  const [searchDestination, setSearchDestination] = useState('')
-  const [dateFilter, setDateFilter] = useState('')
+  const [selectedTraveler, setSelectedTraveler] = useState<any>(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [searchOrigin, setSearchOrigin] = useState('');
+  const [searchDestination, setSearchDestination] = useState('');
+  const [dateFilter, setDateFilter] = useState('');
 
-  const filteredTravelers = mockTravelers.filter(traveler => {
-    const matchesOrigin = traveler.route.from.toLowerCase()
-      .includes(searchOrigin.toLowerCase())
-    const matchesDestination = traveler.route.to.toLowerCase()
-      .includes(searchDestination.toLowerCase())
-    const matchesDate = !dateFilter || traveler.route.date === dateFilter
-    return matchesOrigin && matchesDestination && matchesDate
-  })
+  const filteredTravelers = mockTravelers.filter((traveler) => {
+    const matchesOrigin = traveler.route.from
+      .toLowerCase()
+      .includes(searchOrigin.toLowerCase());
+    const matchesDestination = traveler.route.to
+      .toLowerCase()
+      .includes(searchDestination.toLowerCase());
+    const matchesDate = !dateFilter || traveler.route.date === dateFilter;
+    return matchesOrigin && matchesDestination && matchesDate;
+  });
 
   return (
     <div className="space-y-6">
@@ -149,14 +148,20 @@ export default function TravelerSearch() {
                 )}
               </div>
               <div>
-                <h3 className="text-lg font-medium text-white">{traveler.name}</h3>
+                <h3 className="text-lg font-medium text-white">
+                  {traveler.name}
+                </h3>
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center">
                     <FiStar className="w-4 h-4 text-yellow-400" />
-                    <span className="ml-1 text-sm text-gray-300">{traveler.rating}</span>
+                    <span className="ml-1 text-sm text-gray-300">
+                      {traveler.rating}
+                    </span>
                   </div>
                   <span className="text-gray-400">•</span>
-                  <span className="text-sm text-gray-400">{traveler.trips} trips</span>
+                  <span className="text-sm text-gray-400">
+                    {traveler.trips} trips
+                  </span>
                 </div>
               </div>
             </div>
@@ -173,7 +178,9 @@ export default function TravelerSearch() {
               </div>
               <div className="flex items-center text-gray-300">
                 <FiCalendar className="w-4 h-4 mr-2" />
-                <span>{new Date(traveler.route.date).toLocaleDateString()}</span>
+                <span>
+                  {new Date(traveler.route.date).toLocaleDateString()}
+                </span>
               </div>
             </div>
 
@@ -193,8 +200,8 @@ export default function TravelerSearch() {
             <div className="flex justify-between pt-4">
               <motion.button
                 onClick={() => {
-                  setSelectedTraveler(traveler)
-                  setShowDetails(true)
+                  setSelectedTraveler(traveler);
+                  setShowDetails(true);
                 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -240,14 +247,20 @@ export default function TravelerSearch() {
                 )}
               </div>
               <div>
-                <h3 className="text-xl font-medium text-white">{selectedTraveler.name}</h3>
+                <h3 className="text-xl font-medium text-white">
+                  {selectedTraveler.name}
+                </h3>
                 <div className="flex items-center space-x-2 mt-1">
                   <div className="flex items-center">
                     <FiStar className="w-4 h-4 text-yellow-400" />
-                    <span className="ml-1 text-gray-300">{selectedTraveler.rating}</span>
+                    <span className="ml-1 text-gray-300">
+                      {selectedTraveler.rating}
+                    </span>
                   </div>
                   <span className="text-gray-400">•</span>
-                  <span className="text-gray-400">{selectedTraveler.trips} trips</span>
+                  <span className="text-gray-400">
+                    {selectedTraveler.trips} trips
+                  </span>
                   {selectedTraveler.verified && (
                     <>
                       <span className="text-gray-400">•</span>
@@ -278,7 +291,9 @@ export default function TravelerSearch() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Capacity</p>
-                  <p className="text-white">{selectedTraveler.route.capacity}</p>
+                  <p className="text-white">
+                    {selectedTraveler.route.capacity}
+                  </p>
                 </div>
               </div>
             </div>
@@ -305,10 +320,14 @@ export default function TravelerSearch() {
                 {selectedTraveler.reviews.map((review: any, index: number) => (
                   <div key={index} className="bg-gray-700/50 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-medium">{review.user}</span>
+                      <span className="text-white font-medium">
+                        {review.user}
+                      </span>
                       <div className="flex items-center">
                         <FiStar className="w-4 h-4 text-yellow-400" />
-                        <span className="ml-1 text-gray-300">{review.rating}</span>
+                        <span className="ml-1 text-gray-300">
+                          {review.rating}
+                        </span>
                       </div>
                     </div>
                     <p className="text-gray-300">{review.comment}</p>
@@ -345,5 +364,5 @@ export default function TravelerSearch() {
         </Modal>
       )}
     </div>
-  )
+  );
 }

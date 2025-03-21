@@ -27,8 +27,6 @@ import { useNotification } from '@/contexts/NotificationContext';
 import { Menu, Transition } from '@headlessui/react';
 import Avatar from '@/components/common/Avatar';
 import { Package } from '@/data/mockPackages';
-
-// Create a client-only wrapper component
 const ClientOnly = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -50,6 +48,7 @@ export default function PackageCard({
   package: pkg,
   onViewDetails,
   onChatClick,
+  t,
 }: PackageCardProps) {
   const [showActions, setShowActions] = useState(false);
   const { isPackageSaved, savePackage, unsavePackage } = useSavedPackages();
@@ -70,7 +69,7 @@ export default function PackageCard({
         showNotification(
           'Package removed from saved items',
           'info',
-          <FiBookmark />
+          <FiBookmark />,
         );
       } else {
         savePackage(pkg.id);
@@ -78,7 +77,7 @@ export default function PackageCard({
       }
       setIsSaved(!isSaved);
     },
-    [isSaved, pkg.id, savePackage, unsavePackage, showNotification]
+    [isSaved, pkg.id, savePackage, unsavePackage, showNotification],
   );
 
   const handleLike = useCallback(
@@ -90,10 +89,10 @@ export default function PackageCard({
           ? 'Package removed from favorites'
           : 'Package added to favorites',
         'info',
-        <FiHeart />
+        <FiHeart />,
       );
     },
-    [isLiked, showNotification]
+    [isLiked, showNotification],
   );
 
   const handleShare = useCallback(
@@ -116,7 +115,7 @@ export default function PackageCard({
             showNotification(
               'Package shared successfully',
               'success',
-              <FiShare2 />
+              <FiShare2 />,
             );
           })
           .catch(console.error);
@@ -129,7 +128,7 @@ export default function PackageCard({
           .catch(console.error);
       }
     },
-    [pkg.id, pkg.origin, pkg.destination, showNotification]
+    [pkg.id, pkg.origin, pkg.destination, showNotification],
   );
 
   const handleChat = useCallback(
@@ -137,7 +136,7 @@ export default function PackageCard({
       e.stopPropagation();
       onChatClick?.(pkg);
     },
-    [pkg, onChatClick]
+    [pkg, onChatClick],
   );
 
   return (
@@ -242,7 +241,9 @@ export default function PackageCard({
                 <FiStar className="w-4 h-4 text-yellow-500 mr-1" />
                 <span>{pkg.sender.rating}</span>
                 <span className="mx-1">·</span>
-                <span>{pkg.sender.reviewCount} reviews</span>
+                <span>
+                  {pkg.sender.reviewCount} {t('card.reviews')}
+                </span>
               </div>
             </div>
           </div>
@@ -256,7 +257,7 @@ export default function PackageCard({
           <div className="flex-1">
             <div className="flex items-center text-gray-400 text-sm mb-1">
               <FiMapPin className="w-4 h-4 mr-1" />
-              From
+              {t('card.from')}
             </div>
             <div className="font-medium">{pkg?.origin?.city}</div>
           </div>
@@ -266,7 +267,7 @@ export default function PackageCard({
           <div className="flex-1">
             <div className="flex items-center text-gray-400 text-sm mb-1">
               <FiMapPin className="w-4 h-4 mr-1" />
-              To
+              {t('card.to')}
             </div>
             <div className="font-medium">{pkg?.destination?.city}</div>
           </div>
@@ -277,7 +278,7 @@ export default function PackageCard({
           <div>
             <div className="flex items-center text-gray-400 text-sm mb-1">
               <FiCalendar className="w-4 h-4 mr-1" />
-              Delivery Date
+              {t('card.deliveryDate')}
             </div>
             <div className="font-medium">
               {format(parseISO(pkg.deliveryDate), 'MMM d, yyyy')}
@@ -286,7 +287,7 @@ export default function PackageCard({
           <div>
             <div className="flex items-center text-gray-400 text-sm mb-1">
               <FiPackage className="w-4 h-4 mr-1" />
-              Package Details
+              {t('card.packageDetails')}
             </div>
             <div className="font-medium">
               {pkg.weight}kg · {pkg.dimension.length} x {pkg.dimension.width} x{' '}
@@ -299,7 +300,7 @@ export default function PackageCard({
         <div>
           <div className="flex items-center text-gray-400 text-sm mb-2">
             <FiPackage className="w-4 h-4 mr-1" />
-            Package Description
+            {t('card.packageDescription')}
           </div>
           <p
             className={`text-sm text-gray-300 ${isExpanded ? '' : 'line-clamp-2'}`}
@@ -328,13 +329,13 @@ export default function PackageCard({
             {pkg.insurance && (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-500">
                 <FiShield className="w-3 h-3 mr-1" />
-                Insured
+                {t('card.insured')}
               </span>
             )}
             {pkg.priority && (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/10 text-purple-500">
                 <FiClock className="w-3 h-3 mr-1" />
-                Priority
+                {t('card.priority')}
               </span>
             )}
             {pkg.tracking && (
@@ -346,7 +347,7 @@ export default function PackageCard({
             {pkg.specialInstructions && (
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-500">
                 <FiInfo className="w-3 h-3 mr-1" />
-                Special Instructions
+                {t('card.specialInstructions')}
               </span>
             )}
           </div>
@@ -354,14 +355,15 @@ export default function PackageCard({
 
         {/* Action Buttons */}
         <div className="flex space-x-3 mt-6">
-          <button
-            // onClick={handleChat}
-            onClick={() => onChatClick(pkg?.sender?.id)}
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
-          >
-            <FiMessageSquare className="w-5 h-5 mr-2" />
-            Chat with Sender
-          </button>
+          {onChatClick && (
+            <button
+              onClick={() => onChatClick(pkg?.sender?.id, pkg?.packageID)}
+              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
+            >
+              <FiMessageSquare className="w-5 h-5 mr-2" />
+              {t('card.chatWithSender')}
+            </button>
+          )}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -370,7 +372,7 @@ export default function PackageCard({
             className="flex-1 bg-gray-700 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors flex items-center justify-center"
           >
             <FiInfo className="w-5 h-5 mr-2" />
-            View Details
+            {t('card.viewDetails')}
           </button>
         </div>
       </div>

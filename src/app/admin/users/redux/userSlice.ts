@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState: {
     users: [],
     loading: false,
@@ -21,7 +21,6 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
-    // New reducers for updating user status
     updateUserStatusRequest: (state) => {
       state.loading = true;
       state.error = null;
@@ -34,7 +33,6 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
-    // DELETE USERS FROM LIST
     deleteUserRequest: (state) => {
       state.loading = true;
       state.error = null;
@@ -43,7 +41,7 @@ const userSlice = createSlice({
     deleteUserSuccess: (state, action) => {
       state.loading = false;
       state.users = state.users.filter(
-        (user) => user.id !== action.payload.userId
+        (user) => user.id !== action.payload.userId,
       );
     },
 

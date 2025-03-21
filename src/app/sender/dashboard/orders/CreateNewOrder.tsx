@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 export const CreateNewOrder = ({ selectedSenderPackage, onClose }: any) => {
   const { trips } = useSelector((state) => state.trips);
   const { createOrderSuccess, createOrderLoading } = useSelector(
-    (state) => state.order
+    (state) => state.order,
   );
 
   const [selectedTrip, setSelectedTrip] = useState('');
@@ -19,46 +19,35 @@ export const CreateNewOrder = ({ selectedSenderPackage, onClose }: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  console.log('selected sender package: ', selectedSenderPackage);
-  console.log('trips', trips);
-  console.log('selected trip', selectedTrip);
-
   useEffect(() => {
     dispatch({
       type: SEARCH_TRAVELER_PACKAGE,
       payload: {
         searchKeyword: '',
-        // startDate: selectedSenderPackage?.preferredDate,
         startDate: selectedSenderPackage?.pickupDate,
         endDate: selectedSenderPackage?.deliveryDate,
       },
     });
-    console.log('dispatching search');
   }, [dispatch, selectedSenderPackage.packageID]);
 
-  // Debounce the search query
   const debouncedSearch = useDebounce(searchQuery, 700);
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     const keyword = e.target.value;
     setSearchQuery(keyword);
   };
 
-  // Dispatch action when debounced search value changes
   useEffect(() => {
     dispatch({
       type: SEARCH_TRAVELER_PACKAGE,
       payload: {
         searchKeyword: debouncedSearch,
-        // startDate: selectedSenderPackage?.preferredDate,
         startDate: selectedSenderPackage?.pickupDate,
         endDate: selectedSenderPackage?.deliveryDate,
       },
     });
   }, [debouncedSearch, dispatch]);
 
-  // Handle Place Order
   const handlePlaceOrder = (e) => {
     e.preventDefault();
     if (!selectedTrip) {
@@ -73,7 +62,6 @@ export const CreateNewOrder = ({ selectedSenderPackage, onClose }: any) => {
     dispatch({ type: CREATE_ORDER, payload });
   };
 
-  // on success navigate to home screen
   useEffect(() => {
     if (createOrderSuccess) {
       onClose();
@@ -81,23 +69,12 @@ export const CreateNewOrder = ({ selectedSenderPackage, onClose }: any) => {
     }
   }, [createOrderSuccess]);
 
-  // Handle Navigate to Chat
   const handleChatClick = useCallback(
     (travelerId: string) => {
-      console.log('traveler id:', travelerId);
       router.push(`/chat?user=${travelerId}`);
     },
-    [router]
+    [router],
   );
-
-  // navigate to simple chats
-  // const handleChatClick = useCallback(
-  //   (travelerId: string) => {
-  //     console.log('traveler id:', travelerId);
-  //     router.push(`/simple-chat`);
-  //   },
-  //   [router]
-  // );
 
   return (
     <div>
@@ -157,10 +134,9 @@ export const CreateNewOrder = ({ selectedSenderPackage, onClose }: any) => {
                   {trip.tripDetails.departureDateTime}
                 </p>
               </div>
-              {/* Chat Button */}
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevents selecting the trip when clicking chat
+                  e.stopPropagation();
                   handleChatClick(trip.traveler.id);
                 }}
                 className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 transition-all"
@@ -172,7 +148,6 @@ export const CreateNewOrder = ({ selectedSenderPackage, onClose }: any) => {
         )}
       </div>
 
-      {/* place order button */}
       <div className="text-center">
         <button
           onClick={handlePlaceOrder}

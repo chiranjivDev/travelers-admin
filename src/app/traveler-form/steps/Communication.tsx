@@ -3,8 +3,10 @@
 import React from 'react';
 import { FiInfo } from 'react-icons/fi';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useTranslations } from 'next-intl';
 
 const Communication = ({ register, errors }) => {
+  const t = useTranslations('travellerForm.steps.step3');
   return (
     <div className="space-y-6 relative">
       {/* Cosmic background elements - Reduced blur and simplified gradients */}
@@ -29,7 +31,8 @@ const Communication = ({ register, errors }) => {
             🌟
           </span>
           <h3 className="text-xl font-bold bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
-            Communication Preferences
+            {/* Communication Preferences */}
+            {t('title')}
           </h3>
           <Tooltip content="Choose how senders can contact you">
             <div className="p-1 rounded-full hover:bg-white/5 transition-colors duration-150">
@@ -49,7 +52,8 @@ const Communication = ({ register, errors }) => {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(168,85,247,0.05),transparent_70%)] pointer-events-none" />
             <div className="flex items-center space-x-2 mb-4">
               <h4 className="text-lg font-semibold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
-                Contact Methods
+                {/* Contact Methods */}
+                {t('contactMethods.label')}
               </h4>
               <Tooltip content="Select your preferred ways to communicate">
                 <div className="p-1 rounded-full hover:bg-white/5 transition-colors duration-150">
@@ -58,7 +62,11 @@ const Communication = ({ register, errors }) => {
               </Tooltip>
             </div>
             <div className="space-y-2">
-              {['email', 'phone', 'chat'].map((method) => (
+              {[
+                t('contactMethods.email'),
+                t('contactMethods.phone'),
+                t('contactMethods.chat'),
+              ].map((method) => (
                 <div
                   key={method}
                   className="flex items-center p-3 rounded-lg bg-[#1a2235]/50
@@ -97,7 +105,8 @@ const Communication = ({ register, errors }) => {
           >
             <div className="flex items-center space-x-2 mb-4">
               <h4 className="text-lg font-semibold bg-gradient-to-r from-emerald-300 to-indigo-300 bg-clip-text text-transparent">
-                Contact Details
+                {/* Contact Details */}
+                {t('contactDetails.label')}
               </h4>
               <Tooltip content="Your contact information will only be shared after booking">
                 <div className="p-1 rounded-full hover:bg-white/5 transition-colors duration-150">
@@ -111,7 +120,8 @@ const Communication = ({ register, errors }) => {
               <div>
                 <div className="flex items-center space-x-2 mb-2">
                   <label className="text-sm font-medium text-gray-200">
-                    Travel Package Name
+                    {/* Travel Package Name */}
+                    {t('contactDetails.travelPackageName.label')}
                   </label>
                   <Tooltip content="Enter the name you want to use for your package">
                     <FiInfo className="w-3 h-3 text-gray-400" />
@@ -137,7 +147,8 @@ const Communication = ({ register, errors }) => {
               <div>
                 <div className="flex items-center space-x-2 mb-2">
                   <label className="text-sm font-medium text-gray-200">
-                    Email Address
+                    {/* Email Address */}
+                    {t('contactDetails.emailAddress.label')}
                   </label>
                   <Tooltip content="Enter the email you want to use for communications">
                     <FiInfo className="w-3 h-3 text-gray-400" />
@@ -167,7 +178,8 @@ const Communication = ({ register, errors }) => {
               <div>
                 <div className="flex items-center space-x-2 mb-2">
                   <label className="text-sm font-medium text-gray-200">
-                    Phone Number
+                    {/* Phone Number */}
+                    {t('contactDetails.phoneNumber.label')}
                   </label>
                   <Tooltip content="Include country code (e.g., +1 for USA)">
                     <FiInfo className="w-3 h-3 text-gray-400" />
@@ -207,7 +219,8 @@ const Communication = ({ register, errors }) => {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(59,130,246,0.05),transparent_70%)] pointer-events-none" />
             <div className="flex items-center space-x-2 mb-4">
               <h4 className="text-lg font-semibold bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent">
-                Availability
+                {/* Availability */}
+                {t('availability.label')}
               </h4>
               <Tooltip content="Set your preferred contact hours">
                 <div className="p-1 rounded-full hover:bg-white/5 transition-colors duration-150">
@@ -216,7 +229,11 @@ const Communication = ({ register, errors }) => {
               </Tooltip>
             </div>
             <div className="space-y-2">
-              {['morning', 'afternoon', 'evening'].map((time) => (
+              {[
+                t('availability.morning'),
+                t('availability.afternoon'),
+                t('availability.evening'),
+              ].map((time) => (
                 <div
                   key={time}
                   className="flex items-center p-3 rounded-lg bg-[#1a2235]/50

@@ -2,8 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-
-// Types
 export interface Message {
   id: string;
   senderId: string;
@@ -43,8 +41,6 @@ interface ChatContextType {
   isTyping: boolean;
   setIsTyping: (typing: boolean) => void;
 }
-
-// Mock data
 const mockUsers: ChatUser[] = [
   {
     id: '1',
@@ -101,17 +97,15 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [messages, setMessages] = useState<Message[]>(mockMessages);
   const [isTyping, setIsTyping] = useState(false);
 
-  console.log('active conversation', activeConversation);
-
   const sendMessage = (
     content: string,
-    type: 'text' | 'file' | 'image' = 'text'
+    type: 'text' | 'file' | 'image' = 'text',
   ) => {
     if (!activeConversation) return;
 
     const newMessage: Message = {
       id: Date.now().toString(),
-      senderId: '1', // Current user ID
+      senderId: '1',
       receiverId:
         activeConversation.participants.find((id) => id !== '1') || '',
       content,
@@ -122,12 +116,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
     setMessages((prev) => [...prev, newMessage]);
 
-    // Simulate message delivery
     setTimeout(() => {
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.id === newMessage.id ? { ...msg, status: 'delivered' } : msg
-        )
+          msg.id === newMessage.id ? { ...msg, status: 'delivered' } : msg,
+        ),
       );
     }, 1000);
   };
@@ -135,30 +128,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const markAsRead = (messageId: string) => {
     setMessages((prev) =>
       prev.map((msg) =>
-        msg.id === messageId ? { ...msg, status: 'read' } : msg
-      )
+        msg.id === messageId ? { ...msg, status: 'read' } : msg,
+      ),
     );
   };
-
-  // Simulate receiving messages
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (activeConversation && Math.random() > 0.7) {
-  //       const newMessage: Message = {
-  //         id: Date.now().toString(),
-  //         senderId: '2',
-  //         receiverId: '1',
-  //         content: 'This is a simulated response',
-  //         timestamp: new Date(),
-  //         status: 'delivered',
-  //         type: 'text'
-  //       }
-  //       setMessages(prev => [...prev, newMessage])
-  //     }
-  //   }, 15000)
-
-  //   return () => clearInterval(interval)
-  // }, [activeConversation])
 
   return (
     <ChatContext.Provider

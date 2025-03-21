@@ -13,6 +13,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { USER_LOGGED_IN } from '@/app/signup/redux/authActions';
+import { persistor } from '@/store/store';
+import { clearChatState } from '@/app/chat/redux/chatsSlice';
 
 export type UserRole = 'Sender' | 'Traveler' | 'Admin';
 
@@ -34,8 +36,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Mock users database for testing
 const MOCK_USERS = {
   'admin@example.com': {
     id: 'admin1',
@@ -70,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Check for stored auth token and validate it
     const checkAuth = async () => {
       try {
         const storedUser = localStorage.getItem('user');
@@ -86,19 +85,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
-  // const login = async (email: string, password: string) => {
-  //   // Mock login for demonstration
-  //   const mockUser = MOCK_USERS[email as keyof typeof MOCK_USERS];
-  //   if (!mockUser || mockUser.password !== password) {
-  //     throw new Error('Invalid credentials');
-  //   }
-
-  //   const { password: _, ...userWithoutPassword } = mockUser;
-  //   setUser(userWithoutPassword);
-  //   localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-  // };
-
-  // Temporary Implementation for login
   const dispatch = useDispatch();
   const login = async (email: string, password: string) => {
     try {
@@ -107,18 +93,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         {
           email,
           password,
-        }
+        },
       );
-
-      console.log('response from UI, LOGIN', response);
 
       const { data } = response;
       setUser(data);
       localStorage.setItem('user', JSON.stringify(data));
 
-      // Show success toast after successful login
       toast.success('Login successful! Welcome back.');
-      // Dispatch user_logged_in action
       dispatch({ type: USER_LOGGED_IN });
     } catch (err) {
       toast.error('Login failed. Please try again.');
@@ -128,40 +110,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     setUser(null);
-    router.push('/');
+    dispatch(clearChatState());
+    persistor.purge();
     localStorage.removeItem('user');
+
+    router.push('/');
     toast.success('Logout successful!');
   };
 
-  // const register = async (email: string, password: string, role: UserRole) => {
-  //   // Mock registration
-  //   if (MOCK_USERS[email as keyof typeof MOCK_USERS]) {
-  //     throw new Error('User already exists');
-  //   }
-
-  //   const newUser = {
-  //     id: Math.random().toString(36).substr(2, 9),
-  //     name: email.split('@')[0],
-  //     email,
-  //     roles: [role],
-  //     activeRole: role,
-  //   };
-
-  //   // In a real app, you would make an API call here
-  //   setUser(newUser);
-  //   localStorage.setItem('user', JSON.stringify(newUser));
-  // };
-
-  // Temporary Implementation for signup
   const register = async (
     email: string,
     password: string,
     role: UserRole,
     fullName: string,
-    phoneNumber: string
+    phoneNumber: string,
   ) => {
-    // const role: UserRole = 'Traveler';
-    console.log('role ====>', role);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}users`,
@@ -171,14 +134,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           password,
           permissions: role,
           phone: phoneNumber,
-        }
+        },
       );
-      console.log('response from UI, SIGNUP', response);
       const { data } = response;
-      // Show success toast after successful registration
       toast.success('Registration successful! Welcome to our platform.');
-      // setUser(data);
-      // localStorage.setItem('user', JSON.stringify(data));
     } catch (err) {
       toast.error('Registration failed. Please try again.');
       throw new Error('Registration failed. Please try again.');

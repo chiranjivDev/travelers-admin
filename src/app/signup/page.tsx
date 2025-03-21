@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import PhoneVerification from './PhoneVerification';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -11,21 +13,13 @@ export default function SignUpPage() {
   const [role, setRole] = useState<UserRole>('Sender');
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
   const { register } = useAuth();
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     await register(email, password, role);
-  //     router.push('/'); // Redirect to home page after registration
-  //   } catch (err) {
-  //     setError('Registration failed. Please try again.');
-  //   }
-  // };
+  const t = useTranslations('SignupPage');
 
-  // Temporary Implementation for signup
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -42,15 +36,15 @@ export default function SignUpPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Create your account
+            {t('title')}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-400">
-            Or{' '}
+            {t('subtitle')}{' '}
             <Link
               href="/login"
               className="font-medium text-blue-500 hover:text-blue-400"
             >
-              sign in to your account
+              {t('loginLink')}
             </Link>
           </p>
         </div>
@@ -89,11 +83,18 @@ export default function SignUpPage() {
                 type="tel"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-700 placeholder-gray-500 text-white bg-gray-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Phone Number"
+                placeholder="Phone Number (Include Country Code)"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
+
+            {/* Phone Verification component */}
+            <PhoneVerification
+              phoneNumber={phoneNumber}
+              onVerifySuccess={() => setIsVerified(true)}
+              isVerified={isVerified}
+            />
 
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -127,6 +128,7 @@ export default function SignUpPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
             <div>
               <label htmlFor="role" className="sr-only">
                 Role
@@ -149,8 +151,9 @@ export default function SignUpPage() {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={!isVerified}
             >
-              Create Account
+              {t('signupButton')}
             </button>
           </div>
         </form>

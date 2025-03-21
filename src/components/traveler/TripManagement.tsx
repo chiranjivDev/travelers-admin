@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
   FiMapPin,
   FiCalendar,
   FiPackage,
@@ -12,11 +12,9 @@ import {
   FiEye,
   FiEdit2,
   FiTrash2,
-  FiPlus
-} from 'react-icons/fi'
-import Modal from '../admin/Modal'
-
-// Mock data
+  FiPlus,
+} from 'react-icons/fi';
+import Modal from '../admin/Modal';
 const mockTrips = [
   {
     id: 1,
@@ -27,7 +25,7 @@ const mockTrips = [
     arrivalDate: '2024-02-02',
     capacity: {
       total: '20kg',
-      available: '15kg'
+      available: '15kg',
     },
     pricePerKg: 15,
     packages: [
@@ -36,13 +34,13 @@ const mockTrips = [
         trackingId: 'PKG-2024-001',
         sender: 'John Doe',
         weight: '5kg',
-        price: 75.00,
-        status: 'confirmed'
-      }
+        price: 75.0,
+        status: 'confirmed',
+      },
     ],
     notes: 'Direct flight, can carry electronics and documents',
     transportMode: 'Flight',
-    flightNumber: 'BA178'
+    flightNumber: 'BA178',
   },
   {
     id: 2,
@@ -53,7 +51,7 @@ const mockTrips = [
     arrivalDate: '2024-01-21',
     capacity: {
       total: '15kg',
-      available: '10kg'
+      available: '10kg',
     },
     pricePerKg: 12,
     packages: [
@@ -62,38 +60,37 @@ const mockTrips = [
         trackingId: 'PKG-2024-002',
         sender: 'Jane Smith',
         weight: '5kg',
-        price: 60.00,
-        status: 'in-transit'
-      }
+        price: 60.0,
+        status: 'in-transit',
+      },
     ],
     notes: 'Train journey, flexible with pickup/delivery times',
     transportMode: 'Train',
-    trainNumber: 'TGV 6201'
+    trainNumber: 'TGV 6201',
   },
-  // Add more mock trips...
-]
+];
 
-type TripStatus = 'upcoming' | 'in-progress' | 'completed' | 'cancelled'
+type TripStatus = 'upcoming' | 'in-progress' | 'completed' | 'cancelled';
 
 export default function TripManagement() {
-  const [statusFilter, setStatusFilter] = useState<TripStatus | 'all'>('all')
-  const [selectedTrip, setSelectedTrip] = useState<any>(null)
-  const [showDetails, setShowDetails] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<TripStatus | 'all'>('all');
+  const [selectedTrip, setSelectedTrip] = useState<any>(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'upcoming':
-        return 'bg-blue-900/50 text-blue-400'
+        return 'bg-blue-900/50 text-blue-400';
       case 'in-progress':
-        return 'bg-yellow-900/50 text-yellow-400'
+        return 'bg-yellow-900/50 text-yellow-400';
       case 'completed':
-        return 'bg-green-900/50 text-green-400'
+        return 'bg-green-900/50 text-green-400';
       case 'cancelled':
-        return 'bg-red-900/50 text-red-400'
+        return 'bg-red-900/50 text-red-400';
       default:
-        return 'bg-gray-900/50 text-gray-400'
+        return 'bg-gray-900/50 text-gray-400';
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -102,35 +99,47 @@ export default function TripManagement() {
         {[
           {
             title: 'Active Trips',
-            value: mockTrips.filter(t => t.status === 'in-progress').length,
+            value: mockTrips.filter((t) => t.status === 'in-progress').length,
             icon: FiMapPin,
-            color: 'text-blue-500'
+            color: 'text-blue-500',
           },
           {
             title: 'Total Packages',
-            value: mockTrips.reduce((acc, trip) => acc + trip.packages.length, 0),
+            value: mockTrips.reduce(
+              (acc, trip) => acc + trip.packages.length,
+              0,
+            ),
             icon: FiPackage,
-            color: 'text-yellow-500'
+            color: 'text-yellow-500',
           },
           {
             title: 'Available Capacity',
-            value: mockTrips
-              .filter(t => t.status !== 'completed' && t.status !== 'cancelled')
-              .reduce((acc, trip) => acc + parseInt(trip.capacity.available), 0) + 'kg',
+            value:
+              mockTrips
+                .filter(
+                  (t) => t.status !== 'completed' && t.status !== 'cancelled',
+                )
+                .reduce(
+                  (acc, trip) => acc + parseInt(trip.capacity.available),
+                  0,
+                ) + 'kg',
             icon: FiClock,
-            color: 'text-green-500'
+            color: 'text-green-500',
           },
           {
             title: 'Potential Earnings',
             value: `$${mockTrips
-              .filter(t => t.status !== 'completed' && t.status !== 'cancelled')
+              .filter(
+                (t) => t.status !== 'completed' && t.status !== 'cancelled',
+              )
               .reduce((acc, trip) => {
-                const availableKg = parseInt(trip.capacity.available)
-                return acc + (availableKg * trip.pricePerKg)
-              }, 0).toFixed(2)}`,
+                const availableKg = parseInt(trip.capacity.available);
+                return acc + availableKg * trip.pricePerKg;
+              }, 0)
+              .toFixed(2)}`,
             icon: FiDollarSign,
-            color: 'text-purple-500'
-          }
+            color: 'text-purple-500',
+          },
         ].map((stat, index) => (
           <motion.div
             key={index}
@@ -140,7 +149,9 @@ export default function TripManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">{stat.title}</p>
-                <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {stat.value}
+                </p>
               </div>
               <div className={`p-3 rounded-full bg-gray-700/50 ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
@@ -165,25 +176,30 @@ export default function TripManagement() {
 
       {/* Filters */}
       <div className="flex space-x-4">
-        {['all', 'upcoming', 'in-progress', 'completed', 'cancelled'].map((status) => (
-          <button
-            key={status}
-            onClick={() => setStatusFilter(status as TripStatus | 'all')}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-              ${statusFilter === status 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+        {['all', 'upcoming', 'in-progress', 'completed', 'cancelled'].map(
+          (status) => (
+            <button
+              key={status}
+              onClick={() => setStatusFilter(status as TripStatus | 'all')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
+              ${
+                statusFilter === status
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
-          >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-          </button>
-        ))}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ),
+        )}
       </div>
 
       {/* Trips Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {mockTrips
-          .filter(trip => statusFilter === 'all' || trip.status === statusFilter)
+          .filter(
+            (trip) => statusFilter === 'all' || trip.status === statusFilter,
+          )
           .map((trip) => (
             <motion.div
               key={trip.id}
@@ -193,7 +209,8 @@ export default function TripManagement() {
               {/* Trip Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <span className={`px-2 py-1 text-xs font-medium rounded-full
+                  <span
+                    className={`px-2 py-1 text-xs font-medium rounded-full
                     ${getStatusColor(trip.status)}`}
                   >
                     {trip.status}
@@ -203,8 +220,8 @@ export default function TripManagement() {
                 <div className="flex items-center space-x-2">
                   <motion.button
                     onClick={() => {
-                      setSelectedTrip(trip)
-                      setShowDetails(true)
+                      setSelectedTrip(trip);
+                      setShowDetails(true);
                     }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -291,7 +308,8 @@ export default function TripManagement() {
               <div className="pt-2 border-t border-gray-700">
                 <p className="text-sm text-gray-400">Packages</p>
                 <p className="text-white mt-1">
-                  {trip.packages.length} package{trip.packages.length !== 1 ? 's' : ''} assigned
+                  {trip.packages.length} package
+                  {trip.packages.length !== 1 ? 's' : ''} assigned
                 </p>
               </div>
             </motion.div>
@@ -310,7 +328,8 @@ export default function TripManagement() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <p className="text-sm text-gray-400">Status</p>
-                <span className={`px-2 py-1 text-xs font-medium rounded-full
+                <span
+                  className={`px-2 py-1 text-xs font-medium rounded-full
                   ${getStatusColor(selectedTrip.status)}`}
                 >
                   {selectedTrip.status}
@@ -343,7 +362,8 @@ export default function TripManagement() {
               <div>
                 <p className="text-sm text-gray-400">Available Capacity</p>
                 <p className="text-white">
-                  {selectedTrip.capacity.available} / {selectedTrip.capacity.total}
+                  {selectedTrip.capacity.available} /{' '}
+                  {selectedTrip.capacity.total}
                 </p>
               </div>
               <div>
@@ -369,18 +389,27 @@ export default function TripManagement() {
                   <div key={pkg.id} className="bg-gray-700/50 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <span className="text-white font-medium">{pkg.trackingId}</span>
-                        <p className="text-sm text-gray-400">From: {pkg.sender}</p>
+                        <span className="text-white font-medium">
+                          {pkg.trackingId}
+                        </span>
+                        <p className="text-sm text-gray-400">
+                          From: {pkg.sender}
+                        </p>
                       </div>
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded-full
                         ${getStatusColor(pkg.status)}`}
                       >
                         {pkg.status}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-300">Weight: {pkg.weight}</span>
-                      <span className="text-gray-300">Price: ${pkg.price.toFixed(2)}</span>
+                      <span className="text-gray-300">
+                        Weight: {pkg.weight}
+                      </span>
+                      <span className="text-gray-300">
+                        Price: ${pkg.price.toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -412,5 +441,5 @@ export default function TripManagement() {
         </Modal>
       )}
     </div>
-  )
+  );
 }

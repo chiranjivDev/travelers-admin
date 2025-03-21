@@ -4,7 +4,7 @@ const chatsSlice = createSlice({
   name: 'chats',
   initialState: {
     chatList: [],
-    chatMessages: [], // Storing messages by chat ID
+    chatMessages: [],
     loadingChatList: false,
     loadingChatMessages: false,
     sendingMessage: false,
@@ -13,13 +13,11 @@ const chatsSlice = createSlice({
     file_url: null,
   },
   reducers: {
-    // Fetch Chat List Actions
     fetchChatListRequest(state) {
       state.loadingChatList = true;
       state.error = null;
     },
     fetchChatListSuccess(state, action) {
-      console.log('inside chat list', action);
       state.loadingChatList = false;
       state.chatList = action.payload;
     },
@@ -28,7 +26,6 @@ const chatsSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Fetch Chat Messages Actions
     fetchChatMessagesRequest(state) {
       state.loadingChatMessages = true;
       state.error = null;
@@ -38,21 +35,12 @@ const chatsSlice = createSlice({
       state.chatMessages = action.payload;
     },
     newMessageHandler(state, action) {
-      console.log('inside new message handler', action);
       state.chatMessages = [...state.chatMessages, action.payload];
     },
     updateOfferStatus(state, action) {
-      console.log('inside update offer status of the message', action);
       const { id: messageId, offerStatus } = action.payload;
-      console.log(
-        'inside update offer status of the message',
-        messageId,
-        offerStatus
-      );
-
-      // Find the message with the given messageId and update its offerStatus
       const messageIndex = state.chatMessages.findIndex(
-        (message) => message.id === messageId
+        (message) => message.id === messageId,
       );
 
       if (messageIndex !== -1) {
@@ -65,9 +53,7 @@ const chatsSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Upload file
     setFileUrl(state, action) {
-      console.log('upload file url slice', action.payload);
       state.file_url = action.payload;
     },
 
@@ -75,7 +61,6 @@ const chatsSlice = createSlice({
       state.file_url = null;
     },
 
-    // Send Message Actions
     sendMessageRequest(state) {
       state.sendingMessage = true;
       state.sendMessageSuccess = false;
@@ -95,10 +80,11 @@ const chatsSlice = createSlice({
       state.error = action.payload;
     },
 
-    // Clear Chat State
     clearChatState(state) {
       state.sendMessageSuccess = false;
       state.error = null;
+      state.chatList = [];
+      state.chatMessages = [];
     },
   },
 });

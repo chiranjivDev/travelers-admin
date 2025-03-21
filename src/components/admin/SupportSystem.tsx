@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
   FiMessageSquare,
   FiUser,
   FiClock,
@@ -10,11 +10,9 @@ import {
   FiAlertCircle,
   FiTag,
   FiSend,
-  FiPaperclip
-} from 'react-icons/fi'
-import Modal from './Modal'
-
-// Mock data - Replace with real data from API
+  FiPaperclip,
+} from 'react-icons/fi';
+import Modal from './Modal';
 const mockTickets = [
   {
     id: 1,
@@ -30,65 +28,64 @@ const mockTickets = [
         id: 1,
         sender: 'John Smith',
         role: 'user',
-        message: 'My delivery is delayed by 3 days now. Need urgent assistance.',
-        timestamp: '2024-01-15T10:30:00'
+        message:
+          'My delivery is delayed by 3 days now. Need urgent assistance.',
+        timestamp: '2024-01-15T10:30:00',
       },
       {
         id: 2,
         sender: 'Support Team',
         role: 'admin',
-        message: 'We are looking into this issue. Could you please provide your tracking number?',
-        timestamp: '2024-01-15T14:20:00'
-      }
-    ]
+        message:
+          'We are looking into this issue. Could you please provide your tracking number?',
+        timestamp: '2024-01-15T14:20:00',
+      },
+    ],
   },
-  // Add more mock tickets...
-]
+];
 
-type TicketStatus = 'open' | 'in-progress' | 'resolved' | 'closed'
-type TicketPriority = 'low' | 'medium' | 'high'
+type TicketStatus = 'open' | 'in-progress' | 'resolved' | 'closed';
+type TicketPriority = 'low' | 'medium' | 'high';
 
 export default function SupportSystem() {
-  const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all')
-  const [selectedTicket, setSelectedTicket] = useState<any>(null)
-  const [showTicket, setShowTicket] = useState(false)
-  const [newMessage, setNewMessage] = useState('')
+  const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
+  const [selectedTicket, setSelectedTicket] = useState<any>(null);
+  const [showTicket, setShowTicket] = useState(false);
+  const [newMessage, setNewMessage] = useState('');
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open':
-        return 'bg-yellow-900/50 text-yellow-400'
+        return 'bg-yellow-900/50 text-yellow-400';
       case 'in-progress':
-        return 'bg-blue-900/50 text-blue-400'
+        return 'bg-blue-900/50 text-blue-400';
       case 'resolved':
-        return 'bg-green-900/50 text-green-400'
+        return 'bg-green-900/50 text-green-400';
       case 'closed':
-        return 'bg-gray-900/50 text-gray-400'
+        return 'bg-gray-900/50 text-gray-400';
       default:
-        return 'bg-gray-900/50 text-gray-400'
+        return 'bg-gray-900/50 text-gray-400';
     }
-  }
+  };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'text-red-400'
+        return 'text-red-400';
       case 'medium':
-        return 'text-yellow-400'
+        return 'text-yellow-400';
       case 'low':
-        return 'text-green-400'
+        return 'text-green-400';
       default:
-        return 'text-gray-400'
+        return 'text-gray-400';
     }
-  }
+  };
 
   const handleSendMessage = () => {
-    if (!newMessage.trim()) return
+    if (!newMessage.trim()) return;
 
-    // TODO: Implement message sending
-    console.log('Sending message:', newMessage)
-    setNewMessage('')
-  }
+    setNewMessage('');
+  };
 
   return (
     <div className="space-y-6">
@@ -99,26 +96,26 @@ export default function SupportSystem() {
             title: 'Total Tickets',
             value: mockTickets.length,
             icon: FiMessageSquare,
-            color: 'text-blue-500'
+            color: 'text-blue-500',
           },
           {
             title: 'Open Tickets',
-            value: mockTickets.filter(t => t.status === 'open').length,
+            value: mockTickets.filter((t) => t.status === 'open').length,
             icon: FiClock,
-            color: 'text-yellow-500'
+            color: 'text-yellow-500',
           },
           {
             title: 'Resolved Today',
             value: 5,
             icon: FiCheck,
-            color: 'text-green-500'
+            color: 'text-green-500',
           },
           {
             title: 'High Priority',
-            value: mockTickets.filter(t => t.priority === 'high').length,
+            value: mockTickets.filter((t) => t.priority === 'high').length,
             icon: FiAlertCircle,
-            color: 'text-red-500'
-          }
+            color: 'text-red-500',
+          },
         ].map((stat, index) => (
           <motion.div
             key={index}
@@ -128,7 +125,9 @@ export default function SupportSystem() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">{stat.title}</p>
-                <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
+                <p className="text-2xl font-bold text-white mt-1">
+                  {stat.value}
+                </p>
               </div>
               <div className={`p-3 rounded-full bg-gray-700/50 ${stat.color}`}>
                 <stat.icon className="w-6 h-6" />
@@ -145,9 +144,10 @@ export default function SupportSystem() {
             key={status}
             onClick={() => setStatusFilter(status as TicketStatus | 'all')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
-              ${statusFilter === status 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              ${
+                statusFilter === status
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
           >
             {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -183,15 +183,20 @@ export default function SupportSystem() {
             </thead>
             <tbody className="divide-y divide-gray-700">
               {mockTickets
-                .filter(ticket => statusFilter === 'all' || ticket.status === statusFilter)
+                .filter(
+                  (ticket) =>
+                    statusFilter === 'all' || ticket.status === statusFilter,
+                )
                 .map((ticket) => (
-                  <tr 
+                  <tr
                     key={ticket.id}
                     className="hover:bg-gray-700/50 transition-colors"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <FiTag className={`w-4 h-4 mr-2 ${getPriorityColor(ticket.priority)}`} />
+                        <FiTag
+                          className={`w-4 h-4 mr-2 ${getPriorityColor(ticket.priority)}`}
+                        />
                         <span className="text-white">{ticket.subject}</span>
                       </div>
                     </td>
@@ -204,14 +209,17 @@ export default function SupportSystem() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded-full
                         ${getStatusColor(ticket.status)}`}
                       >
                         {ticket.status}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`text-sm ${getPriorityColor(ticket.priority)}`}>
+                      <span
+                        className={`text-sm ${getPriorityColor(ticket.priority)}`}
+                      >
                         {ticket.priority}
                       </span>
                     </td>
@@ -221,8 +229,8 @@ export default function SupportSystem() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <motion.button
                         onClick={() => {
-                          setSelectedTicket(ticket)
-                          setShowTicket(true)
+                          setSelectedTicket(ticket);
+                          setShowTicket(true);
                         }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
@@ -232,7 +240,7 @@ export default function SupportSystem() {
                       </motion.button>
                     </td>
                   </tr>
-              ))}
+                ))}
             </tbody>
           </table>
         </div>
@@ -250,7 +258,8 @@ export default function SupportSystem() {
             <div className="grid grid-cols-2 gap-4 bg-gray-700/50 rounded-lg p-4">
               <div>
                 <p className="text-sm text-gray-400">Status</p>
-                <span className={`px-2 py-1 text-xs font-medium rounded-full
+                <span
+                  className={`px-2 py-1 text-xs font-medium rounded-full
                   ${getStatusColor(selectedTicket.status)}`}
                 >
                   {selectedTicket.status}
@@ -258,7 +267,9 @@ export default function SupportSystem() {
               </div>
               <div>
                 <p className="text-sm text-gray-400">Priority</p>
-                <span className={`text-sm ${getPriorityColor(selectedTicket.priority)}`}>
+                <span
+                  className={`text-sm ${getPriorityColor(selectedTicket.priority)}`}
+                >
                   {selectedTicket.priority}
                 </span>
               </div>
@@ -283,11 +294,13 @@ export default function SupportSystem() {
                     message.role === 'admin' ? 'justify-end' : 'justify-start'
                   }`}
                 >
-                  <div className={`max-w-[80%] ${
-                    message.role === 'admin' 
-                      ? 'bg-blue-600 rounded-l-xl rounded-tr-xl' 
-                      : 'bg-gray-700 rounded-r-xl rounded-tl-xl'
-                  } p-4`}>
+                  <div
+                    className={`max-w-[80%] ${
+                      message.role === 'admin'
+                        ? 'bg-blue-600 rounded-l-xl rounded-tr-xl'
+                        : 'bg-gray-700 rounded-r-xl rounded-tl-xl'
+                    } p-4`}
+                  >
                     <div className="flex items-center space-x-2 mb-2">
                       <span className="text-sm font-medium text-white">
                         {message.sender}
@@ -336,5 +349,5 @@ export default function SupportSystem() {
         </Modal>
       )}
     </div>
-  )
+  );
 }

@@ -263,8 +263,6 @@ const Tooltip = ({
     </div>
   );
 };
-
-// ContactDetails Component
 const ContactDetails = ({
   value,
   onChange,
@@ -329,8 +327,6 @@ const ContactDetails = ({
     </div>
   );
 };
-
-// Add these constants for the weight categories
 const WEIGHT_CATEGORIES = [
   { label: '1-5 kg', value: '1-5' },
   { label: '6-10 kg', value: '6-10' },
@@ -458,7 +454,7 @@ export default function DeliveryMethod({
 
   const handleLocationChange = (
     field: keyof LocationDetails,
-    fieldValue: string
+    fieldValue: string,
   ) => {
     onChange({
       ...value,
@@ -481,7 +477,7 @@ export default function DeliveryMethod({
 
   const handleCommunicationChange = (
     method: keyof CommunicationPreferences,
-    checked: boolean
+    checked: boolean,
   ) => {
     onChange({
       ...value,
@@ -492,9 +488,6 @@ export default function DeliveryMethod({
     });
   };
 
-  console.log('current step inside delivery method', currentStep);
-
-  // handle next step
   const handleNextStep = () => {
     if (currentStep < totalSteps) {
       setCurrentStep((prev) => prev + 1);
@@ -505,7 +498,6 @@ export default function DeliveryMethod({
 
   return (
     <div className="w-full max-w-2xl mx-auto px-4 py-6">
-      {/* Progress Steps */}
       {type === 'pickup' && (
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
@@ -1553,9 +1545,6 @@ export default function DeliveryMethod({
           </button>
 
           <button
-            // onClick={() =>
-            //   currentStep < totalSteps && setCurrentStep((prev) => prev + 1)
-            // }
             onClick={handleNextStep}
             type="button"
             className={`
